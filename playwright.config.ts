@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
@@ -12,6 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   globalSetup: './auth.setup.ts',
   testDir: './tests',
+  timeout: 60 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

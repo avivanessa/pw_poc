@@ -30,6 +30,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await sideMenuComponent.clickDashboard()
         await dashboardPage.navigate('Valuation & Reconciliation')
         await valuationPage.selectClient('3M Company')
+        await valuationPage.addProject()
         await page.pause()
     })
 })
