@@ -18,6 +18,8 @@ export default class ValuationPage{
     readonly allProcedures: Locator
     readonly addProjectButton: Locator
     readonly monthPicker: Locator
+    readonly july: Locator
+    readonly thirtyOne: Locator
 
     constructor(page: Page){
         this.page = page
@@ -36,6 +38,8 @@ export default class ValuationPage{
         this.allProcedures = this.page.getByLabel('All Procedures')
         this.addProjectButton = this.page.locator('//button[@type="submit"]/span[contains(text(),"Add Project")]')
         this.monthPicker = this.page.locator('//button[@class="ant-picker-month-btn"]')
+        this.july = this.page.getByText('Jul')
+        this.thirtyOne = this.page.getByText('31')
     }
 
     async selectClient(client: string){ 
@@ -62,9 +66,13 @@ export default class ValuationPage{
         await this.opinionDate.click()
         await this.page.getByText(opinionDate, { exact: true }).click()
         await this.valuationDate.click()
+        //valuation date process:
         await this.monthPicker.click()
-        //await this.allProcedures.click()
-        //await this.fileInput.setInputFiles(counterPartyFilePath)
-        //await this.addProjectButton.click()
+        await this.july.click()
+        await this.thirtyOne.click()
+        
+        await this.allProcedures.click()
+        await this.fileInput.setInputFiles(counterPartyFilePath)
+        await this.addProjectButton.click()
     }
 }
