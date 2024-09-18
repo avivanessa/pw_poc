@@ -3,7 +3,7 @@ import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
 import ValuationPage from '../pageObjects/valuationPage'
-import homepage from '../pageObjects/homePage'
+import homepage from '../pageObjects/homepage'
 import dotenv from 'dotenv'
 import { TIMEOUT } from 'dns/promises'
 dotenv.config()
@@ -34,12 +34,13 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await page.pause()
     })
 
-    // test('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
-    //     const {homepage} = initializePages(page)
-    //     // await page.waitForTimeout(10000)
-    //     await homepage.verifyRecentActivity()
-    //     await page.pause()
-    // })
+    test.only('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
+        const {homepage} = initializePages(page)
+        await homepage.verifyRecentActivity()
+        await page.pause()
+    })
+
+    
     
 
 
