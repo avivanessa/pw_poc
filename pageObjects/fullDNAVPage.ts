@@ -1,8 +1,8 @@
 import { Locator, Page, expect } from '@playwright/test'
-import exp from 'constants'
-import { ALL } from 'dns'
-import { stat } from 'fs'
-import { memoryUsage } from 'process'
+// import exp from 'constants'
+// import { ALL } from 'dns'
+// import { stat } from 'fs'
+// import { memoryUsage } from 'process' // >>> Remove unused imports
 
 export default class SideMenuComponent{
     readonly page: Page
@@ -67,34 +67,26 @@ export default class SideMenuComponent{
         this.auditnamerecord = this.page.locator('.ant-table-row > td').first()
         this.clientnamerecord = this.page.locator('//tbody[@class="ant-table-tbody"]/tr[2]/td[2]')
         this.clientcard = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Client Data"]')
-        this.preparationstatus1 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Client Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
+        this.preparationstatus1 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Client Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]') // >>> Locator should be reviewed to avoid strict inheritance
         this.deloittecard = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Deloitte Data"]')
-        this.preparationstatus2 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Deloitte Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
+        this.preparationstatus2 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Deloitte Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]') // >>> Locator should be reviewed to avoid strict inheritance
         this.msgboxloc1 = this.page.getByRole('row', { name: 'AutoFund Check if the assets (0) from the previous year are imported Message-' }).getByRole('button')
         this.msgboxloc2 = this.page.getByRole('row', { name: 'AutoFund Check if the transactions (0) are imported Message-Black' }).getByRole('button')
         this.msgboxloc3 = this.page.getByRole('row', { name: 'AutoFund Check if the accounts (0) from the previous year are imported Message-' }).getByRole('button')
         this.clarificationtext = this.page.locator('//textarea[@name="clarification"]')
         this.btn_Save = this.page.locator('//button/span[text()="Save"]')
-        this.toggle_preparer = this.page.locator('//div[text()="Sign off by preparer"]/following-sibling::div[1]/button/div')
+        this.toggle_preparer = this.page.locator('//div[text()="Sign off by preparer"]/following-sibling::div[1]/button/div') // >>> Locator should be reviewed to avoid strict inheritance
         this.email_preparedby = this.page.locator('//div[text()="Prepared by"]/following-sibling::div[1]')
-        this.toggle_reviewer = this.page.locator('//div[text()="Sign off by reviewer"]/following-sibling::div[1]/button/div')
-        this.email_reviewedby = this.page.locator('//div[text()="Reviewed by"]/following-sibling::div[1]')
+        this.toggle_reviewer = this.page.locator('//div[text()="Sign off by reviewer"]/following-sibling::div[1]/button/div') // >>> Locator should be reviewed to avoid strict inheritance
+        this.email_reviewedby = this.page.locator('//div[text()="Reviewed by"]/following-sibling::div[1]') // >>> Locator should be reviewed to avoid strict inheritance
         this.datapreparationrecord = this.page.getByText('Planning - In Preparation').first()
         this.executionrecord = this.page.getByText('Execution - In Preparation').first()
         this.valuationtab_investment = this.page.locator('#valuationTabs-tab-investments')
         this.valuationtab_derivative = this.page.locator('#valuationTabs-tab-derivatives')
         this.alert_description = this.page.locator('//div[@class="ant-alert-description"]')
-
-
-
-
     }
 
-   
-
-    
-    async createnewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any)
-    {
+    async createnewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         // await this.selectsubmoudle(name)
@@ -116,55 +108,38 @@ export default class SideMenuComponent{
         await this.opinionDate.fill(date)
         await this.page.keyboard.press('Enter');
         this.formbutton.click()
-        await this.page.waitForTimeout(4000)
-        
-        // await expect(this.successmsg).toBeVisible()
+        await this.page.waitForTimeout(4000) // >>> remember that implicit wait times are bad practice
         this.successtxt = await this.successmsg.innerText()      
-        console.log(this.successtxt)
-        
-
-        
+        console.log(this.successtxt)     
     }
-    async verifyaduitcreated(name:any)
-    {
 
+    async verifyaduitcreated(name: any){
         console.log(this.successtxt)
         const splitmsg = this.successtxt.split(" ")
         const auditnumdata = splitmsg[0]+" "+splitmsg[1]
         console.log(auditnumdata)
         await this.auditnamerecord.hover()
         await expect(await this.clientnamerecord.innerText()).toEqual(name)
-
-
-
     }
 
-    async preparationphase()
-    {
+    async preparationphase(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         const locators = [this.clientcard,this.deloittecard]
         const statuscheck = [this.preparationstatus1,this.preparationstatus2]
-        for(const loc of locators)
-        {
-            for(const st of statuscheck)
-            {
-            if(loc==st)
-            {
-    
-            await expect(loc).toBeVisible()
-            console.log(await st.innerText())
-            // await expect(await loc.innerText()).toEqual('In Preparation')
+        for(const loc of locators){ 
+            for(const st of statuscheck) {
+                if(loc==st){
+                    await expect(loc).toBeVisible()
+                    console.log(await st.innerText())
+                }
             }
-            }
-
-        }
-      
+        }  
     }
-    async verifycardvisible(cardname)
-    {
-        const card = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+cardname+'"]')
+
+    async verifycardvisible(cardname) {
+        const card = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="' + cardname + '"]')
         await card.isVisible()
 
 
@@ -175,14 +150,14 @@ export default class SideMenuComponent{
         const card = await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+cardname+'"]')
         await card.click()
 
-
-    }
+        // >>> Try Removing empty lines to keep code clean and readable :)
+    }// >>> try leaving an empty line between methods :)
     async verifycardstatus(card, expectedstatus){
         const cardstatus = await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+card+'"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
         await expect(await cardstatus.innerText()).toEqual(expectedstatus)
 
-
-    }
+        // >>> Try Removing empty lines to keep code clean and readable :)
+    }// >>> try leaving an empty line between methods :)
     async verifyDataPreparationPhase()
     {
         await this.fulldnav.click()
@@ -194,26 +169,26 @@ export default class SideMenuComponent{
         await this.verifycardvisible('Deloitte Data')     
         await this.verifycardstatus('Deloitte Data','In Preparation')
         console.log("Deloitte Data card in preparation status")
-
+        // >>> Try Removing empty lines to keep code clean and readable :)
     }
 
     async toggleonprepareby(){
         await this.toggle_preparer.click()
-        await this.page.waitForTimeout(5000)
+        await this.page.waitForTimeout(5000) // >>> remember that implicit wait times are bad practice
         console.log(await this.email_preparedby.innerText())
         await expect(await this.email_preparedby).toBeVisible()
 
-
+        // >>> Try Removing empty lines to keep code clean and readable :)
     }
     async toggleonreviewer(){
         await this.toggle_reviewer.click()
-        await this.page.waitForTimeout(6000)
+        await this.page.waitForTimeout(6000) // >>> remember that implicit wait times are bad practice
         console.log(await this.email_reviewedby.innerText())
         await expect(this.email_reviewedby).toBeVisible()
     }
 
     async verifyclientDatachecks(){
-
+        // >>> Try Removing empty lines to keep code clean and readable :)
        
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
@@ -223,18 +198,18 @@ export default class SideMenuComponent{
         await this.clickcard('Client Data')
         const msglocators = [this.msgboxloc1,this.msgboxloc2,this.msgboxloc3]
         for(const btn of msglocators)
-        {
+        {// >>> Try identing {} to provide more readability of code blocks :)
         await btn.click()
         await this.clarificationtext.fill('TestData')
         await this.btn_Save.click()
         }
         await this.toggleonprepareby()
         await this.page.goBack()
-        await this.page.waitForTimeout(5000)
+        await this.page.waitForTimeout(5000) // >>> remember that implicit wait times are bad practice
         await this.verifycardstatus('Client Data','In Review')
+        // >>> Try Removing empty lines to keep code clean and readable :)
 
-
-    }
+    }// >>> try leaving an empty line between methods :)
     async logout()
     {
         const accountname = await this.page.locator('(//span[@class="ant-avatar-string"])[1]')
@@ -242,14 +217,14 @@ export default class SideMenuComponent{
         const logout = await this.page.locator('//div[text()="Log Out"]')
         await logout.click()
         await this.page.locator('//div[@data-test-id="audittest10002@deloitte.com"]').click()
-        await this.page.waitForTimeout(6000)
+        await this.page.waitForTimeout(6000) // >>> remember that implicit wait times are bad practice
         await this.page.locator('//div[@id="otherTile"]').click()
 
     }
     async credentialpage()
     {
         await this.page.locator('//div[@id="otherTile"]').click()
-
+        // >>> Try Removing empty lines to keep code clean and readable :)
 
     }
     async reviewwithanotheruser()
@@ -261,7 +236,7 @@ export default class SideMenuComponent{
         await this.clickcard('Client Data')
         await this.toggleonreviewer()
         await this.page.goBack()
-        await this.page.waitForTimeout(6000)
+        await this.page.waitForTimeout(6000) // >>> remember that implicit wait times are bad practice
         await this.page.reload()
         await this.verifycardstatus('Client Data','Reviewed')
         await this.verifycardstatus('Deloitte Data','Reviewed')
@@ -283,7 +258,7 @@ export default class SideMenuComponent{
         this.clickcard('Materiality')
         await this.toggleonprepareby()
         await this.page.goBack()
-        await this.page.waitForTimeout(5000)
+        await this.page.waitForTimeout(5000) // >>> remember that implicit wait times are bad practice
         await this.verifycardstatus('Materiality','In Review')
         
     }
@@ -380,8 +355,6 @@ export default class SideMenuComponent{
         }
                 
     }
-    
-
 }
 
 

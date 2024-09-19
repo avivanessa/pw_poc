@@ -1,8 +1,8 @@
 import { Locator, Page, expect,BrowserContext } from '@playwright/test'
-import { assert, log } from 'console'
-import exp from 'constants'
-import { stat } from 'fs'
-import { memoryUsage } from 'process'
+// import { assert, log } from 'console'
+// import exp from 'constants'
+// import { stat } from 'fs'
+// import { memoryUsage } from 'process'
 
 export default class SideMenuComponent{
     readonly page: Page
