@@ -396,7 +396,6 @@ export default class SideMenuComponent{
         await this.page.waitForTimeout(2000)
         await this.btn_confirm.click()
         await this.page.waitForTimeout(2000)
-
     } 
 
     async executionstatusprepareby(){
@@ -405,7 +404,6 @@ export default class SideMenuComponent{
         await this.executionrecord.click()
         const procedures = ['Valuation','Classification','FX Rates',
             'Book Value','Quantity Rollforward','Unrealized P/L']
-        // const procedures = ['Quantity Rollforward','Unrealized P/L']
         for(const pro of procedures){
             if(pro =='Valuation' || pro =='FX Rates' || pro == 'Book Value' || pro == 'Unrealized P/L'){
                 await this.clickExecutionProcedure(pro)
@@ -432,11 +430,6 @@ export default class SideMenuComponent{
             await this.page.goBack()
             await this.CostRollforwardchecks('Cost Rollforward')
             await this.page.goBack()
-
-
-
-
-       
         }
         await this.page.reload()
         await this.verifycardstatus('Valuation','In Review')
@@ -447,7 +440,9 @@ export default class SideMenuComponent{
         await this.verifycardstatus('FX Rates','In Review')
         await this.verifycardstatus('Reconciliation','In Review')
     }
+
     async executionreviewCostRollforward(){
+        // The below 3 functions can be uncommented if this function needs to run independentl
         // await this.fulldnav.click()
         // await this.submodule_auditdirectory.click()
         // await this.executionreviewrecord.click()
@@ -465,6 +460,7 @@ export default class SideMenuComponent{
     }
 
     async reviewreconciliation(){
+        // The below 3 functions can be uncommented if this function needs to run independently
         // await this.fulldnav.click()
         // await this.submodule_auditdirectory.click()
         // await this.executionreviewrecord.click()
@@ -527,6 +523,7 @@ export default class SideMenuComponent{
     }
 
     async CostRollforwardchecks(pro){
+        // The below 3 functions can be uncommented if this function needs to run independently
         // await this.fulldnav.click()
         // await this.submodule_auditdirectory.click()
         // await this.executionrecord.click()
@@ -537,15 +534,12 @@ export default class SideMenuComponent{
         for(const ic of icon_actions){
             await ic.click()
             await this.page.getByText('Prepare/Review').click()
-            // await this.prepare_review.hover()
-            // await this.prepare_review.click()
             await this.selectcategory('Finding')
             await this.page.getByPlaceholder('Enter text').fill('TestData');
             await this.btn_Save.click()
             await this.btn_confirm.click()
             await this.page.waitForTimeout(3000)
             await ic.click()
-            // await this.prepare_review.click()
             await this.page.getByText('Prepare/Review').click()
             await this.exe_toggleon_preaprer.click()
             await this.btn_confirm.click()
@@ -555,6 +549,7 @@ export default class SideMenuComponent{
     }
 
     async reconcilliationchecks(){
+        // The below 3 functions can be uncommented if this function needs to run independently
         // await this.fulldnav.click()
         // await this.submodule_auditdirectory.click()
         // await this.executionrecord.click()

@@ -99,7 +99,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await page.pause()
 
    })
-   test.only('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         // await fulldnav.logout()
         await fulldnav.executionstatusprepareby()   
