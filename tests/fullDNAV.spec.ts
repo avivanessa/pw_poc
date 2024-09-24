@@ -66,30 +66,17 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.verifyplanningphase()       
         await page.pause()
     })
-    test('TC26 - Verify User can review and signoff the materiality procedure', async ({page}) => {
+    test('TC26/29 - Verify User can review and signoff the materiality procedure and portfolio overview', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyplanningphase()    
-        await fulldnav.materialityprocedurechecks()
+        await fulldnav.planningpahsechecks()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
         expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        fulldnav.reviewmateriality()
-        await page.pause()
-    })
-    test('TC29 - Verify User can review and signoff the Portfolio Overview', async ({page}) => {
-        const {fulldnav} = initializePages(page)
-        await fulldnav.verifyplanningphase()    
-        await fulldnav.porfoliooverviewchecks()
-        await fulldnav.logout()
-        const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
-        await fulldnav.credentialpage()
-        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        fulldnav.reviewPortfolioOverview()
+        await fulldnav.reviewplanningphase()
         await page.pause()
     })
 
@@ -111,7 +98,59 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.verifyassets('Valuation')   
         await page.pause()
 
-})
+   })
+   test.only('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+        const {fulldnav} = initializePages(page)  
+        // await fulldnav.logout()
+        await fulldnav.executionstatusprepareby()   
+        const {LoginPage2} = initializePages(page)
+        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        await fulldnav.credentialpage()
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
+        await fulldnav.executionreview()
+        // await fulldnav.executionreviewCostRollforward()
+        // await fulldnav.reviewreconciliation()
+        await page.pause()
+
+    })
+    test('Verify the IDV page of Cost Rollforward and reconciliation', async ({page}) => {
+        const {fulldnav} = initializePages(page)
+        // await fulldnav.reconcilliationchecks()  
+        await fulldnav.CostRollforwardchecks('Cost Rollforward')   
+        await page.pause() //Execution - In Review
+
+    })
+    test('TC-212 Verify the audit directory concusion', async ({page}) => {
+        const {fulldnav} = initializePages(page)
+        await fulldnav.verifyconclusion()
+        await fulldnav.logout()
+        const {LoginPage2} = initializePages(page)
+        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        await fulldnav.credentialpage()
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
+        await fulldnav.reviewconclusion()
+        await page.pause() 
+
+    })
+    test('TC-213 Verify Data extraction functionality', async ({page}) => {
+        const {fulldnav} = initializePages(page)
+        await fulldnav.verifyDataextraction()
+        await fulldnav.logout()
+        const {LoginPage2} = initializePages(page)
+        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        await fulldnav.credentialpage()
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
+        await fulldnav.reviewDataextraction()
+        await page.pause() 
+
+    })
+
+  
+
+
 
 
 }
