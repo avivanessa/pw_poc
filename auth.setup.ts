@@ -17,7 +17,7 @@ async function authSetup(){
         const loginPage = new LoginPage(page)
 
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await loginPage.login(email, password)
         await page.context().storageState({ path: user1AuthFile });
     }
@@ -32,7 +32,7 @@ async function authSetup(){
         const loginPage = new LoginPage(page)
 
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await loginPage.login(email, password)
         await page.context().storageState({ path: user2AuthFile });
     }

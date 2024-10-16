@@ -7,11 +7,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 test.describe('Valuation and Reconciliation > Home Page', () => {
-    test.use({ storageState: './user1_auth.json'})
+    test.use({ storageState: './user2_auth.json'})
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
