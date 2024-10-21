@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
-import ValuationPage from '../pageObjects/valuationPage'
+import ModularPage from '../pageObjects/ModularPage'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -21,14 +21,14 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-            valuationPage: new ValuationPage(page)
+            valuationPage: new ModularPage(page)
         }
     } 
 
     test('TC306 - Validate user can create a project with templates', async ({page}) => {
         const {dashboardPage, sideMenuComponent, valuationPage} = initializePages(page)
         await sideMenuComponent.clickDashboard()
-        await dashboardPage.navigate('Valuation & Reconciliation')
+        await sideMenuComponent.clickModular()
         await valuationPage.selectClient('3M Company')
         await valuationPage.addProject()
         await page.pause()
