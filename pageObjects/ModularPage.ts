@@ -64,13 +64,12 @@ export default class ModularPage{
         await this.projectInput.click()
         await this.opinionDate.click()
         await this.opinionDate.click()
-        await this.page.getByText(opinionDate, { exact: true }).click()
+        await this.page.getByTitle(opinionDate).click()
         await this.valuationDate.click()
         //valuation date process:
         await this.monthPicker.click()
         await this.july.click()
         await this.thirtyOne.click()
-        
         await this.allProcedures.click()
         await this.fileInput.setInputFiles(counterPartyFilePath)
         await this.addProjectButton.click()

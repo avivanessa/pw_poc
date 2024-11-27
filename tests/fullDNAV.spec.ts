@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
-import ValuationPage from '../pageObjects/valuationPage'
+//import ValuationPage from '../pageObjects/valuationPage'
 import homepage from '../pageObjects/homepage'
 import LoginPage2 from '../pageObjects/loginPage2'
 import dotenv from 'dotenv'
@@ -14,7 +14,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -24,7 +24,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-            valuationPage: new ValuationPage(page),
+            //valuationPage: new ValuationPage(page),
             homepage:new homepage(page),
             fulldnav:new fullDNAVPage(page),
             LoginPage2: new LoginPage2(page),
@@ -53,7 +53,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewwithanotheruser()
@@ -73,7 +73,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewplanningphase()
@@ -105,7 +105,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.executionstatusprepareby()   
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.executionreview()
@@ -127,7 +127,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewconclusion()
@@ -140,7 +140,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
-        expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
+        expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewDataextraction()
