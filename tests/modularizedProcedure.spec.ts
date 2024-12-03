@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 test.describe('Valuation and Reconciliation > Home Page', () => {
-    test.use({ storageState: './user2_auth.json'})
+    test.use({ storageState: './user1_auth.json'})
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
@@ -31,6 +31,6 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await sideMenuComponent.clickModular()
         await valuationPage.selectClient('3M Company')
         await valuationPage.addProject()
-        await page.pause()
+        //await page.pause()
     })
 })
