@@ -31,13 +31,13 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     test('TC09 - Verify user is able to see statistics data for all card types of Dashaboard', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifyDashboardCards()
-        await page.pause()
+        //await page.pause()
     })
 
     test.only('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifyRecentActivity()
-        await page.pause()
+        //await page.pause()
     })
 
     
