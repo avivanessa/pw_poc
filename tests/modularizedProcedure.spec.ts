@@ -31,6 +31,6 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await sideMenuComponent.clickModular()
         await valuationPage.selectClient('3M Company')
         await valuationPage.addProject()
-        await page.pause()
+        //await page.pause()
     })
 })
