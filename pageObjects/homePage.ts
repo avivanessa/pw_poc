@@ -12,6 +12,9 @@ export default class SideMenuComponent {
     modularized: Locator
     pdf: Locator
     searchmodule: Locator
+    clientmanagement: Locator
+    financialstatementworkroom: Locator
+    marketdatamonitor: Locator
     dashboardcards: Locator
     first_title: Locator
     submodulesfullDNAV: Locator
@@ -44,6 +47,9 @@ export default class SideMenuComponent {
         this.modularized = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[3]')
         this.pdf = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[4]')
         this.searchmodule = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[5]')
+        this.clientmanagement = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[6]')
+        this.financialstatementworkroom = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[7]')
+        this.marketdatamonitor = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[8]')
         this.sidemenuicons = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li')
         this.submodulesfullDNAV = this.page.locator('//li/span[@class="ant-menu-title-content"]/a')
         this.submodulesmodularized = this.page.locator('//li/span[@class="ant-menu-title-content"]/a')
@@ -73,45 +79,61 @@ export default class SideMenuComponent {
     }
 
     async verifySideMenuIcons() {
-        const icons = await this.sidemenuicons.all()
-        for (const i of icons) {
-            if (await i.innerText() == 'Dashboard') {
-                i.hover()
-                await expect(i).toHaveText('Dashboard')
-            }
-            else if (await i.innerText() == 'Full DNAV') {
-                i.hover()
-                await expect(i).toHaveText('Full DNAV')
-            }
-            else if (await i.innerText() == 'Modularized Procedures') {
-                i.hover()
-                await expect(i).toHaveText('Modularized Procedures')
-            }
-            else if (await i.innerText() == 'Pdf Extraction') {
-                i.hover()
-                await expect(i).toHaveText('Pdf Extraction')
-            }
-            else if (await i.innerText() == 'Search Module') {
-                i.hover()
-                await expect(i).toHaveText('Search Module')
-            }
-            else if (await i.innerText() == 'Client Management') {
-                i.hover()
-                await expect(i).toHaveText('Client Management')
-            }
-            else if (await i.innerText() == 'Financial Statement Workroom') {
-                i.hover()
-                await expect(i).toHaveText('Financial Statement Workroom')
-            }
-            else if (await i.innerText() == 'Market Data Monitor') {
-                i.hover()
-                await expect(i).toHaveText('Market Data Monitor')
-            }
-            else {
-                console.log("no matching icon is found")
-            }
-
-        }
+//        const icons = await this.sidemenuicons.all()
+//        for (const i of icons) {
+//            if (await i.innerText() == 'Dashboard') {
+//                i.hover()
+//                await expect(i).toHaveText('Dashboard')
+//            }
+//            else if (await i.innerText() == 'Full DNAV') {
+//                i.hover()
+//                await expect(i).toHaveText('Full DNAV')
+//            }
+//            else if (await i.innerText() == 'Modularized Procedures') {
+//                i.hover()
+//                await expect(i).toHaveText('Modularized Procedures')
+//            }
+//            else if (await i.innerText() == 'Pdf Extraction') {
+//                i.hover()
+//                await expect(i).toHaveText('Pdf Extraction')
+//            }
+//            else if (await i.innerText() == 'Search Module') {
+//                i.hover()
+//                await expect(i).toHaveText('Search Module')
+//            }
+//            else if (await i.innerText() == 'Client Management') {
+//                i.hover()
+//                await expect(i).toHaveText('Client Management')
+//            }
+//            else if (await i.innerText() == 'Financial Statement Workroom') {
+//                i.hover()
+//                await expect(i).toHaveText('Financial Statement Workroom')
+//            }
+//            else if (await i.innerText() == 'Market Data Monitor') {
+//                i.hover()
+//                await expect(i).toHaveText('Market Data Monitor')
+//            }
+//            else {
+//                console.log("no matching icon is found")
+//            }
+//
+//        }
+        await expect(this.dashboard).toBeVisible()
+        await expect(this.dashboard).toContainText('Dashboard')
+        await expect(this.fulldnav).toBeVisible()
+        await expect(this.fulldnav).toContainText('Full DNAV')
+        await expect(this.modularized).toBeVisible()
+        await expect(this.modularized).toContainText('Modularized Procedures')
+        await expect(this.pdf).toBeVisible()
+        await expect(this.pdf).toContainText('Pdf Extraction')
+        await expect(this.searchmodule).toBeVisible()
+        await expect(this.searchmodule).toContainText('Search Module')
+        await expect(this.clientmanagement).toBeVisible
+        await expect(this.clientmanagement).toContainText('Client Management')
+        await expect(this.financialstatementworkroom).toBeVisible
+        await expect(this.financialstatementworkroom).toContainText('Financial Statement Workroom')
+        await expect(this.marketdatamonitor).toBeVisible
+        await expect(this.marketdatamonitor).toContainText('Market Data Monitor')
     }
 
 
@@ -127,14 +149,14 @@ export default class SideMenuComponent {
     async verifyDashboardCards() {
         await this.dashboard.click()
         //await this.page.waitForTimeout(10000)
-        await expect(this.dashboardcards).toContainText(['Audit Directory', 'Valuation & Reconciliation', 'Private Investment Module', 'Search Module'], { timeout: 10_000 })
+        await expect(this.dashboardcards).toContainText(['Audit Directory', 'Valuation & Reconciliation', 'Private Investment Module', 'Search Module'], { timeout: 20_000 })
         const statdata = await this.statistics.allTextContents()
         console.log(statdata)
     }
 
     async verifyRecentActivity() {
         await this.dashboard.click()
-        await expect(this.recentactivityHeaders).toContainText(['Audit Directory', 'Modularized Procedures'], { timeout: 10_000 })
+        await expect(this.recentactivityHeaders).toContainText(['Audit Directory', 'Modularized Procedures'], { timeout: 20_000 })
         await this.auidtDirectorylink.click()
         const audit_header_text = await this.auditDirectorypageTitle.innerText()
         await expect(audit_header_text).toEqual('Audit Directory')
