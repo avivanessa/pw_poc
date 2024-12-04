@@ -34,14 +34,14 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     test('TC02 - Verify left navigation panel display appropriate modules', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifySideMenuIcons()
-        await page.pause()
+        //await page.pause()
         // await page.close()
     })
 
     test.only('TC03 - validate the submodules of Full DNAV and Modularized Procedures', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifysubModules()
-        await page.pause()
+        //await page.pause()
     })
 
    

@@ -3,7 +3,5 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-.env
 user1_auth.json
 user2_auth.json
-/test-data
