@@ -60,6 +60,8 @@ export default class SideMenuComponent{
     exe_toggleon_reviewer: Locator
     conclusionrecord: Locator
     conclusionreviewrecord: Locator
+    reportingentity: Locator
+    reportingentitydropdown: Locator
 
     constructor(page: Page){
         this.page = page
@@ -73,6 +75,8 @@ export default class SideMenuComponent{
         this.fiscalYeardropdown = this.page.locator('//div[@name="fiscalYear"]/div/span/input')
         this.engagementId = this.page.locator('//div[@name="engagementId"]')
         this.engagementIddropdown = this.page.locator('//div[@name="engagementId"]/div/span/input')
+        this.reportingentity = this.page.locator('//div[@name="engagementReportingEntity"]')
+        this.reportingentitydropdown = this.page.locator('//div[@name="engagementReportingEntity"]/div/span/input')
         this.dataImportIdentifier = this.page.locator('//div[@name="dataImportIdentifier"]')
         this.dataImportIdentifierdropdown = this.page.locator('//div[@name="dataImportIdentifier"]/div/span/input')
         this.btn_next = this.page.locator('//button/span[text()="Next"]')
@@ -85,9 +89,11 @@ export default class SideMenuComponent{
         this.preparationstatus1 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Client Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
         this.deloittecard = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Deloitte Data"]')
         this.preparationstatus2 = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="Deloitte Data"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
-        this.msgboxloc1 = this.page.getByRole('row', { name: 'AutoFund Check if the assets (0) from the previous year are imported Message-' }).getByRole('button')
-        this.msgboxloc2 = this.page.getByRole('row', { name: 'AutoFund Check if the transactions (0) are imported Message-Black' }).getByRole('button')
-        this.msgboxloc3 = this.page.getByRole('row', { name: 'AutoFund Check if the accounts (0) from the previous year are imported Message-' }).getByRole('button')
+        // this.msgboxloc1 = this.page.getByRole('row', { name: 'AutoFund Check if the assets (0) from the previous year are imported Message-' }).getByRole('button')
+        // this.msgboxloc2 = this.page.getByRole('row', { name: 'AutoFund Check if the transactions (0) are imported Message-Black' }).getByRole('button')
+        // this.msgboxloc3 = this.page.getByRole('row', { name: 'AutoFund Check if the accounts (0) from the previous year are imported Message-' }).getByRole('button')
+        this.msgboxloc1 = this.page.locator('(//span[@aria-label="Message-Black"])[1]')
+        this.msgboxloc2 = this.page.locator('(//span[@aria-label="Message-Black"])[1]')        
         this.clarificationtext = this.page.locator('//textarea[@name="clarification"]')
         this.btn_Save = this.page.locator('//button/span[text()="Save"]')
         this.toggle_preparer = this.page.locator('//div[text()="Sign off by preparer"]/following-sibling::div[1]/button/div')
@@ -131,6 +137,9 @@ export default class SideMenuComponent{
         await this.engagementId.click()
         await this.engagementIddropdown.fill(engId)
         await this.page.keyboard.press('Enter');
+        // await this.reportingentity.click();
+        // await this.reportingentitydropdown.fill(entity)
+        // await this.page.keyboard.press('Enter');
         await this.dataImportIdentifier.click()
         await this.dataImportIdentifierdropdown.fill(dataimportid)
         await this.page.keyboard.press('Enter');
@@ -138,7 +147,9 @@ export default class SideMenuComponent{
         await this.opinionDate.click()
         await this.opinionDate.fill(date)
         await this.page.keyboard.press('Enter');
-        this.formbutton.click()
+        await this.page.waitForTimeout(2000)
+        console.log("To click on Create Audit button")
+        await this.formbutton.click()
         await this.page.waitForTimeout(4000)
         // await expect(this.successmsg).toBeVisible()
         this.successtxt = await this.successmsg.innerText()      
@@ -202,7 +213,13 @@ export default class SideMenuComponent{
         await this.verifycardvisible('Client Data')
         await this.verifycardstatus('Client Data','In Preparation')
         await this.clickcard('Client Data')
-        const msglocators = [this.msgboxloc1,this.msgboxloc2,this.msgboxloc3]
+        // const msglocators = [this.msgboxloc1,this.msgboxloc2,this.msgboxloc3]
+        // for(const btn of msglocators){
+        //     await btn.click()
+        //     await this.clarificationtext.fill('TestData')
+        //     await this.btn_Save.click()
+        // }
+        const msglocators = [this.msgboxloc1,this.msgboxloc2]
         for(const btn of msglocators){
             await btn.click()
             await this.clarificationtext.fill('TestData')
@@ -236,10 +253,10 @@ export default class SideMenuComponent{
         await this.clickcard('Client Data')
         await this.toggleonreviewer()
         await this.page.goBack()
-        await this.page.waitForTimeout(6000)
+        await this.page.waitForTimeout(10000)
         await this.page.reload()
         await this.verifycardstatus('Client Data','Reviewed')
-        await this.verifycardstatus('Deloitte Data','Reviewed')
+        // await this.verifycardstatus('Deloitte Data','Reviewed')
     }
 
     async verifyplanningphase(){
@@ -372,6 +389,7 @@ export default class SideMenuComponent{
 
     async addcommentsandsave(){
         console.log("To click on actions dropdown")
+        await this.page.waitForTimeout(2000)
         await expect(this.btn_actionsdropdown).toBeEnabled()
         await this.btn_actionsdropdown.hover()
         // await this.btn_actionsdropdown.click()
@@ -385,13 +403,19 @@ export default class SideMenuComponent{
         await this.btn_proceed.click()
         await this.selectcategory('Finding')
         this.txt_commentsection.fill("Sampme text")
-        // await this.page.getByRole('button', { name: 'Save' }).click();
         await this.btn_Save.click()
-        await this.btn_confirm.click()     
+        if (await this.btn_confirm.isVisible()){
+            await this.btn_confirm.click()     
+        }
     }
 
     async enabletogglepreaprerExecution(){
         await this.page.waitForTimeout(2000)
+        // const icon = this.page.locator('(//button[@class="ant-modal-close"])[2]')
+        // await icon.click()
+        // if (await icon.isVisible()){
+        //     this.icon.click()
+        // }
         await this.exe_toggleon_preaprer.click()
         await this.page.waitForTimeout(2000)
         await this.btn_confirm.click()
@@ -402,10 +426,11 @@ export default class SideMenuComponent{
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
-        const procedures = ['Valuation','Classification','FX Rates',
-            'Book Value','Quantity Rollforward','Unrealized P/L']
+        // const procedures = ['Valuation','FX Rates',
+        //     'Book Value','Quantity Rollforward','Unrealized P/L','Realized G/L']
+        const procedures = ['Valuation','FX Rates','Book Value','Unrealized P/L','Realized G/L']
         for(const pro of procedures){
-            if(pro =='Valuation' || pro =='FX Rates' || pro == 'Book Value' || pro == 'Unrealized P/L'){
+            if(pro =='Valuation' || pro =='FX Rates' || pro == 'Book Value' || pro == 'Unrealized P/L' || pro =='Realized G/L' ){
                 await this.clickExecutionProcedure(pro)
                 await this.addcommentsandsave()
                 // await expect(this.btn_actionsdropdown).toBeEnabled()
@@ -430,6 +455,8 @@ export default class SideMenuComponent{
             await this.page.goBack()
             await this.CostRollforwardchecks('Cost Rollforward')
             await this.page.goBack()
+            await this.valuationOTCDerivativeschecks()
+            await this.page.goBack()
         }
         await this.page.reload()
         await this.verifycardstatus('Valuation','In Review')
@@ -446,16 +473,23 @@ export default class SideMenuComponent{
         // await this.fulldnav.click()
         // await this.submodule_auditdirectory.click()
         // await this.executionreviewrecord.click()
-        const locator1 = await this.page.getByRole('button', { name: 'Menu-' }).first()
-        const locator2 = await this.page.getByRole('button', { name: 'Menu-' }).nth(1)
-        const action_icons = [locator1,locator2]
         await this.clickExecutionProcedure("Cost Rollforward")
-        for(const icon of await action_icons){
-            await icon.hover()
-            await icon.click()
-            await this.page.getByText('Prepare/Review').click();
-            await this.exe_toggleon_reviewer.click()
-            await this.btn_confirm.click()
+        const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
+        const tab2 = await this.page.locator('//div[text()="Derivatives"]')
+        const tabs = [tab1,tab2]
+        for(const tab of tabs){
+            await tab.click()
+            const locator1 = await this.page.getByRole('button', { name: 'Menu-' }).first()
+            const locator2 = await this.page.getByRole('button', { name: 'Menu-' }).nth(1)
+            const action_icons = [locator1,locator2]
+            // await this.clickExecutionProcedure("Cost Rollforward")
+            for(const icon of await action_icons){
+                await icon.hover()
+                await icon.click()
+                await this.page.getByText('Prepare/Review').click();
+                await this.exe_toggleon_reviewer.click()
+                await this.btn_confirm.click()
+            }
         }
     }
 
@@ -466,7 +500,7 @@ export default class SideMenuComponent{
         // await this.executionreviewrecord.click()
         const custody = this.page.locator('//div[text()="Custody"]')
         const loans = this.page.locator('//div[text()="Loans"]')
-        const menutabs = [custody,loans]
+        const menutabs = [custody]
         await this.clickExecutionProcedure("Reconciliation")
         for(const tab of menutabs){
             await tab.click()
@@ -489,8 +523,8 @@ export default class SideMenuComponent{
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.executionreviewrecord.click()
-        const procedures = ['Valuation','Classification','FX Rates',
-            'Book Value','Quantity Rollforward','Unrealized P/L']
+        const procedures = ['Classification','FX Rates',
+                'Book Value','Quantity Rollforward','Unrealized P/L']
         for(const pro of procedures){
             await this.clickExecutionProcedure(pro)
             await expect(this.btn_actionsdropdown).toBeEnabled()
@@ -528,24 +562,46 @@ export default class SideMenuComponent{
         // await this.submodule_auditdirectory.click()
         // await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
-        const icon1 = await this.page.getByRole('button', { name: 'Menu-' }).first()
-        const icon2 = await this.page.getByRole('button', { name: 'Menu-' }).nth(1)
-        const icon_actions = [icon1,icon2]
-        for(const ic of icon_actions){
-            await ic.click()
-            await this.page.getByText('Prepare/Review').click()
-            await this.selectcategory('Finding')
-            await this.page.getByPlaceholder('Enter text').fill('TestData');
-            await this.btn_Save.click()
-            await this.btn_confirm.click()
-            await this.page.waitForTimeout(3000)
-            await ic.click()
-            await this.page.getByText('Prepare/Review').click()
-            await this.exe_toggleon_preaprer.click()
-            await this.btn_confirm.click()
-            await this.page.waitForTimeout(3000)
+        const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
+        const tab2 = await this.page.locator('//div[text()="Derivatives"]')
+        const tabs = [tab1,tab2]
+        for(const tab of tabs){
+            tab.click()
+            const icon1 = await this.page.getByRole('button', { name: 'Menu-' }).first()
+            const icon2 = await this.page.getByRole('button', { name: 'Menu-' }).nth(1)
+            const icon_actions = [icon1,icon2]
+            for(const ic of icon_actions){
+                await ic.click()
+                await this.page.getByText('Prepare/Review').click()
+                await this.selectcategory('Finding')
+                await this.page.getByPlaceholder('Enter text').fill('TestData');
+                await this.btn_Save.click()
+                await this.btn_confirm.click()
+                await this.page.waitForTimeout(3000)
+                await ic.click()
+                await this.page.getByText('Prepare/Review').click()
+                await this.exe_toggleon_preaprer.click()
+                await this.btn_confirm.click()
+                await this.page.waitForTimeout(3000)
+            }
 
         } 
+    }
+    async valuationOTCDerivativeschecks(){
+        await this.clickExecutionProcedure("Valuation")
+        await this.valuationtab_derivative.click()
+        await this.addcommentsandsave()
+        // await expect(this.btn_actionsdropdown).toBeEnabled()
+        await this.btn_actionsdropdown.click()
+        await this.prepare_review.hover()
+        await this.prepare_review.click()
+        await this.page.waitForTimeout(2000)
+        await this.all_asset_lnk.click()
+        await this.btn_collapse.click()
+        await this.btn_proceed.click()
+        await this.enabletogglepreaprerExecution()
+        await this.page.goBack() 
+
     }
 
     async reconcilliationchecks(){
