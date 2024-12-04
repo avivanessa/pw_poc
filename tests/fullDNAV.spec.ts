@@ -9,15 +9,19 @@ import dotenv from 'dotenv'
 import fullDNAVPage from '../pageObjects/fullDNAVPage'
 dotenv.config()
 
+let username1:string = process.env.USER_1!
+let password1:string = process.env.PASS_USER_1!
+let username2:string = process.env.USER_2!
+let password2:string = process.env.PASS_USER_2!
+
 test.describe('Valuation and Reconciliation > Home Page', () => {
     test.use({ storageState: './user1_auth.json'})
 
     test.beforeEach(async ({ page }) => {
-        // await page.goto(`${process.env.BASE_URL}`)
-        await page.goto('https://qnxdnavportal.aaps.deloitte.com/')
+        console.log("process.env.baseurl")
+        await page.goto('/')
         expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         const {loginPage} = initializePages(page)
-        await loginPage.login("AuditTest10002@deloitte.com","Nsc{RAxj}72CtS_?LYq9/T<")
         await loginPage.acceptCookies()
     })
 
@@ -44,22 +48,19 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     test('TC20 - Verify client and deloitte data are in preparation phase', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyDataPreparationPhase()
-        // await fulldnav.preparationphase()
         await page.pause()
     })
 
-    test('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
+    test.only('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.createnewAudit('Ingeteam, Inc.','2019','MAT-US-83398-2019','CRFIN','12/15/2024')
         await fulldnav.verifyclientDatachecks()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        // await LoginPage2.page2.goto(`${process.env.BASE_URL}`) -- to check env config later
-        await LoginPage2.page2.goto('https://qnxdnavportal.aaps.deloitte.com/')
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
-        // await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`) -- to check env config later
-        await LoginPage2.login('audittest10005@deloitte.com','X9~WmZsqZ6<%wZ(Fxpj8T6*x')
+        await LoginPage2.login(username2,password2)
         await fulldnav.reviewwithanotheruser()
         await LoginPage2.acceptCookies()
         await page.pause()
@@ -76,12 +77,10 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.planningpahsechecks()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        // await LoginPage2.page2.goto(`${process.env.BASE_URL}`) --To check env config later
-        await LoginPage2.page2.goto('https://qnxdnavportal.aaps.deloitte.com/')
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
-        // await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`) -- To check env config later
-        await LoginPage2.login('audittest10005@deloitte.com','X9~WmZsqZ6<%wZ(Fxpj8T6*x')
+        await LoginPage2.login(username2,password2)
         await fulldnav.reviewplanningphase()
         await page.pause()
     })
@@ -105,17 +104,15 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await page.pause()
 
    })
-   test.only('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         // await fulldnav.logout()
         await fulldnav.executionstatusprepareby()   
         const {LoginPage2} = initializePages(page)
-        // // await LoginPage2.page2.goto(`${process.env.BASE_URL}`) --
-        await LoginPage2.page2.goto('https://qnxdnavportal.aaps.deloitte.com/')
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
-        // // await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`) --
-        await LoginPage2.login('audittest10005@deloitte.com','X9~WmZsqZ6<%wZ(Fxpj8T6*x')
+        await LoginPage2.login(username2,password2)
         await fulldnav.executionreview()
         await page.pause()
 
@@ -132,10 +129,10 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.verifyconclusion()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
-        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
+        await LoginPage2.login(username2,password2)
         await fulldnav.reviewconclusion()
         await page.pause() 
 
@@ -145,10 +142,10 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.verifyDataextraction()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qa1dnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
-        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
+        await LoginPage2.login(username2,password2)
         await fulldnav.reviewDataextraction()
         await page.pause() 
 
