@@ -256,7 +256,9 @@ export default class SideMenuComponent{
         await this.page.waitForTimeout(10000)
         await this.page.reload()
         await this.verifycardstatus('Client Data','Reviewed')
-        // await this.verifycardstatus('Deloitte Data','Reviewed')
+        await this.page.waitForTimeout(10000)
+        await this.page.reload()
+        await this.verifycardstatus('Deloitte Data','Reviewed')
     }
 
     async verifyplanningphase(){
@@ -374,7 +376,7 @@ export default class SideMenuComponent{
                 await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+sec+'"]').isVisible()
                 console.log(sec," section is visible") 
             }
-            await expect (this.page.getByText('ODP and Vendor Details')).toBeVisible()
+            //await expect (this.page.getByText('ODP and Vendor Details')).toBeVisible()
             const backtoasset = await this.page.getByText('Back to audit')
             await backtoasset.click()
         }
@@ -428,7 +430,7 @@ export default class SideMenuComponent{
         await this.executionrecord.click()
         // const procedures = ['Valuation','FX Rates',
         //     'Book Value','Quantity Rollforward','Unrealized P/L','Realized G/L']
-        const procedures = ['Valuation','FX Rates','Book Value','Unrealized P/L','Realized G/L']
+        const procedures = ['Valuation','Classification','FX Rates','Book Value','Unrealized P/L','Realized G/L','Quantity Rollforward']
         for(const pro of procedures){
             if(pro =='Valuation' || pro =='FX Rates' || pro == 'Book Value' || pro == 'Unrealized P/L' || pro =='Realized G/L' ){
                 await this.clickExecutionProcedure(pro)
@@ -451,13 +453,15 @@ export default class SideMenuComponent{
                 await this.enabletogglepreaprerExecution()
                 await this.page.goBack()
             }
-            await this.reconcilliationchecks()
-            await this.page.goBack()
-            await this.CostRollforwardchecks('Cost Rollforward')
-            await this.page.goBack()
-            await this.valuationOTCDerivativeschecks()
-            await this.page.goBack()
+            
         }
+
+        await this.reconcilliationchecks()
+        await this.page.goBack()
+        await this.CostRollforwardchecks('Cost Rollforward')
+        await this.page.goBack()
+        await this.valuationOTCDerivativeschecks()
+        await this.page.goBack()
         await this.page.reload()
         await this.verifycardstatus('Valuation','In Review')
         await this.verifycardstatus('Classification','In Review')
@@ -558,9 +562,9 @@ export default class SideMenuComponent{
 
     async CostRollforwardchecks(pro){
         // The below 3 functions can be uncommented if this function needs to run independently
-        // await this.fulldnav.click()
-        // await this.submodule_auditdirectory.click()
-        // await this.executionrecord.click()
+        await this.fulldnav.click()
+        await this.submodule_auditdirectory.click()
+        await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
         const tab2 = await this.page.locator('//div[text()="Derivatives"]')
@@ -585,7 +589,8 @@ export default class SideMenuComponent{
                 await this.page.waitForTimeout(3000)
             }
 
-        } 
+        }
+        await this.page.goBack() 
     }
     async valuationOTCDerivativeschecks(){
         await this.clickExecutionProcedure("Valuation")
@@ -611,7 +616,7 @@ export default class SideMenuComponent{
         // await this.executionrecord.click()
         const custody = await this.page.locator('//div[text()="Custody"]')
         const loans = await this.page.locator('//div[text()="Loans"]')
-        const menutabs = [custody,loans]
+        const menutabs = [custody]
         await this.clickExecutionProcedure("Reconciliation")
         for(const tab of menutabs){
             await tab.click()

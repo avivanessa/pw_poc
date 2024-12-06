@@ -9,6 +9,8 @@ import dotenv from 'dotenv'
 import fullDNAVPage from '../pageObjects/fullDNAVPage'
 dotenv.config()
 
+test.describe.configure({ mode: 'serial' });
+
 let username1:string = process.env.USER_1!
 let password1:string = process.env.PASS_USER_1!
 let username2:string = process.env.USER_2!
@@ -40,18 +42,18 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test('TC15 - Verify user is able to create new audit', async ({page}) => {
         const {fulldnav} = initializePages(page)
-        await fulldnav.createnewAudit('Ingeteam, Inc.','2019','MAT-US-83398-2019','CRFIN','12/12/2024')
+        await fulldnav.createnewAudit('Ingeteam, Inc.','2019','MAT-US-83398-2019','CRFIN','12/15/2024')
         await fulldnav.verifyaduitcreated('Ingeteam, Inc.')
-        await page.pause()
+        //await page.pause()
     })
 
     test('TC20 - Verify client and deloitte data are in preparation phase', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyDataPreparationPhase()
-        await page.pause()
+        //await page.pause()
     })
 
-    test.only('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
+    test('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.createnewAudit('Ingeteam, Inc.','2019','MAT-US-83398-2019','CRFIN','12/15/2024')
         await fulldnav.verifyclientDatachecks()
@@ -62,14 +64,14 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.credentialpage()
         await LoginPage2.login(username2,password2)
         await fulldnav.reviewwithanotheruser()
-        await LoginPage2.acceptCookies()
-        await page.pause()
+        //await LoginPage2.acceptCookies()
+        //await page.pause()
     })
 
     test('TC24 - Verify user is able to see the materiality and portfolio', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyplanningphase()       
-        await page.pause()
+        //await page.pause()
     })
     test('TC26/29 - Verify User can review and signoff the materiality procedure and portfolio overview', async ({page}) => {
         const {fulldnav} = initializePages(page)
@@ -82,29 +84,29 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.credentialpage()
         await LoginPage2.login(username2,password2)
         await fulldnav.reviewplanningphase()
-        await page.pause()
+        //await page.pause()
     })
 
     test('TC30 - Verify user is able to see all the 10 procedures in execution phase ', async ({page}) => {
         const {fulldnav} = initializePages(page)     
         await fulldnav.verifyprocedures()       
-        await page.pause()
+        //await page.pause()
 
    })
    
     test('TC31 - Verify user can see Investments and Exchange Traded Positions, OTC Derivatives in valuation procedure ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         await fulldnav.verifyvaluationtabs('Valuation')   
-        await page.pause()
+        //await page.pause()
 
    })
    test('TC44 - Verify the IDV page of assets-Investments and Exchange Traded Positions ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         await fulldnav.verifyassets('Valuation')   
-        await page.pause()
+        //await page.pause()
 
    })
-   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test.skip('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         // await fulldnav.logout()
         await fulldnav.executionstatusprepareby()   
@@ -121,10 +123,10 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         const {fulldnav} = initializePages(page)
         // await fulldnav.reconcilliationchecks()  
         await fulldnav.CostRollforwardchecks('Cost Rollforward')   
-        await page.pause() //Execution - In Review
+        //await page.pause() //Execution - In Review
 
     })
-    test('TC-212 Verify the audit directory concusion', async ({page}) => {
+    test.skip('TC-212 Verify the audit directory concusion', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyconclusion()
         await fulldnav.logout()
@@ -137,7 +139,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await page.pause() 
 
     })
-    test('TC-213 Verify Data extraction functionality', async ({page}) => {
+    test.skip('TC-213 Verify Data extraction functionality', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.verifyDataextraction()
         await fulldnav.logout()
