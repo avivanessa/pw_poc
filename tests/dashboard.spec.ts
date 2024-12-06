@@ -34,7 +34,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         //await page.pause()
     })
 
-    test.only('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
+    test('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifyRecentActivity()
         //await page.pause()

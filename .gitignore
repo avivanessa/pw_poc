@@ -5,3 +5,4 @@ node_modules/
 /playwright/.cache/
 user1_auth.json
 user2_auth.json
+.env

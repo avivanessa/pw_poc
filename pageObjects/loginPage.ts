@@ -14,7 +14,7 @@ export default class LoginPage {
         this.passwordInput = this.page.getByPlaceholder('Password')
         this.nextButton = this.page.getByRole('button', { name: 'Next' })
         this.signinButton = this.page.getByRole('button', { name: 'Sign in' })
-        this.acceptCookiesButton = this.page.locator('#onetrust-accept-btn-handler')
+        this.acceptCookiesButton = this.page.locator('//button[@id="onetrust-accept-btn-handler"]')
     }
 
     async login(email: string, password: string){
