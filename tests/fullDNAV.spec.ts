@@ -106,23 +106,33 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         //await page.pause()
 
    })
-   test.skip('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {fulldnav} = initializePages(page)  
         // await fulldnav.logout()
         await fulldnav.executionstatusprepareby()   
+        //await page.pause()
+
+    })
+    test('Verify the IDV page of Cost Rollforward and reconciliation', async ({page}) => {
+        const {fulldnav} = initializePages(page)
+        await fulldnav.reconcilliationchecks()
+        await fulldnav.CostRollforwardchecks('Cost Rollforward')
+        await fulldnav.valuationOTCDerivativeschecks()
+        await fulldnav.page.reload()
+        await fulldnav.verifycardstatus('Valuation','In Review')
+        await fulldnav.verifycardstatus('Classification','In Review')
+        await fulldnav.verifycardstatus('Book Value','In Review')
+        await fulldnav.verifycardstatus('Quantity Rollforward','In Review')
+        await fulldnav.verifycardstatus('Unrealized P/L','In Review')
+        await fulldnav.verifycardstatus('FX Rates','In Review')
+        await fulldnav.verifycardstatus('Reconciliation','In Review')
+        await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
         await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await fulldnav.credentialpage()
         await LoginPage2.login(username2,password2)
-        await fulldnav.executionreview()
-        await page.pause()
-
-    })
-    test('Verify the IDV page of Cost Rollforward and reconciliation', async ({page}) => {
-        const {fulldnav} = initializePages(page)
-        // await fulldnav.reconcilliationchecks()  
-        await fulldnav.CostRollforwardchecks('Cost Rollforward')   
+        await fulldnav.executionreview()          
         //await page.pause() //Execution - In Review
 
     })

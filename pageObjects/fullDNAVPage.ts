@@ -456,20 +456,7 @@ export default class SideMenuComponent{
             
         }
 
-        await this.reconcilliationchecks()
-        await this.page.goBack()
-        await this.CostRollforwardchecks('Cost Rollforward')
-        await this.page.goBack()
-        await this.valuationOTCDerivativeschecks()
-        await this.page.goBack()
-        await this.page.reload()
-        await this.verifycardstatus('Valuation','In Review')
-        await this.verifycardstatus('Classification','In Review')
-        await this.verifycardstatus('Book Value','In Review')
-        await this.verifycardstatus('Quantity Rollforward','In Review')
-        await this.verifycardstatus('Unrealized P/L','In Review')
-        await this.verifycardstatus('FX Rates','In Review')
-        await this.verifycardstatus('Reconciliation','In Review')
+
     }
 
     async executionreviewCostRollforward(){
@@ -527,8 +514,8 @@ export default class SideMenuComponent{
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.executionreviewrecord.click()
-        const procedures = ['Classification','FX Rates',
-                'Book Value','Quantity Rollforward','Unrealized P/L']
+        const procedures = ['Valuation','Classification','FX Rates',
+                'Book Value','Quantity Rollforward','Unrealized P/L','Realized G/L']
         for(const pro of procedures){
             await this.clickExecutionProcedure(pro)
             await expect(this.btn_actionsdropdown).toBeEnabled()
@@ -545,10 +532,10 @@ export default class SideMenuComponent{
             await this.page.goBack()
             // await this.page.reload()
         }
-        this.executionreviewCostRollforward()
+        await this.reviewreconciliation()
+        await this.executionreviewCostRollforward()
         await this.page.goBack()
-        this.reviewreconciliation()
-        await this.page.goBack()
+        await this.valuationOTCDerivativesreview()
         await this.page.reload()
         await this.verifycardstatus('Valuation','Reviewed')
         await this.verifycardstatus('Classification','Reviewed')
@@ -562,9 +549,9 @@ export default class SideMenuComponent{
 
     async CostRollforwardchecks(pro){
         // The below 3 functions can be uncommented if this function needs to run independently
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
-        await this.executionrecord.click()
+        //await this.fulldnav.click()
+        //await this.submodule_auditdirectory.click()
+        //await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
         const tab2 = await this.page.locator('//div[text()="Derivatives"]')
@@ -611,9 +598,9 @@ export default class SideMenuComponent{
 
     async reconcilliationchecks(){
         // The below 3 functions can be uncommented if this function needs to run independently
-        // await this.fulldnav.click()
-        // await this.submodule_auditdirectory.click()
-        // await this.executionrecord.click()
+        await this.fulldnav.click()
+        await this.submodule_auditdirectory.click()
+        await this.executionrecord.click()
         const custody = await this.page.locator('//div[text()="Custody"]')
         const loans = await this.page.locator('//div[text()="Loans"]')
         const menutabs = [custody]
@@ -680,6 +667,24 @@ export default class SideMenuComponent{
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
         await this.verifycardstatus('Data Extraction','Reviewed')
+    }
+
+    async valuationOTCDerivativesreview(){
+        await this.clickExecutionProcedure("Valuation")
+        await this.valuationtab_derivative.click()
+        await expect(this.btn_actionsdropdown).toBeEnabled()
+        await this.btn_actionsdropdown.click()
+        await this.prepare_review.hover()
+        await this.prepare_review.click()
+        await this.page.waitForTimeout(2000)
+        await this.all_asset_lnk.click()
+        await this.radiobtn_review.click()
+        await this.btn_proceed.click()
+        await this.exe_toggleon_reviewer.click()
+        await this.page.waitForTimeout(2000)
+        await this.btn_confirm.click()
+        await this.page.goBack()
+
     }
 }
     
