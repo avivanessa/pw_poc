@@ -38,7 +38,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         // await page.close()
     })
 
-    test.only('TC03 - validate the submodules of Full DNAV and Modularized Procedures', async ({page}) => {
+    test('TC03 - validate the submodules of Full DNAV and Modularized Procedures', async ({page}) => {
         const {homepage} = initializePages(page)
         await homepage.verifysubModules()
         //await page.pause()
