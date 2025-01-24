@@ -17,6 +17,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         expect(page.url()).toBe(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
+        // Comentario
     })
 
     const initializePages = (page) => {
