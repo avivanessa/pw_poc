@@ -7,8 +7,7 @@ import { Locator, Page, expect } from '@playwright/test'
 export default class SideMenuComponent{
     readonly page: Page
     readonly dashboard: Locator
-    readonly sidemenuicons: Locator
-    fulldnav: Locator
+    readonly fulldnav: Locator
     btn_createaudit: Locator
     submodule_auditdirectory: Locator
     clientname: Locator
@@ -117,10 +116,7 @@ export default class SideMenuComponent{
         this.exe_toggleon_reviewer = this.page.locator('(//span[@class="ant-switch-inner"])[2]')
    }
 
-    async createnewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
-        // await this.selectsubmoudle(name)
+    async createNewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
         await this.btn_createaudit.click()
         await this.clientname.click()
         await this.clientnamedropdown.fill(cname)
@@ -145,7 +141,7 @@ export default class SideMenuComponent{
         console.log(this.successtxt)        
     }
 
-    async verifyaduitcreated(name:any){
+    async verifyAuditCreated(name:any){
         console.log(this.successtxt)
         const splitmsg = this.successtxt.split(" ")
         const auditnumdata = splitmsg[0]+" "+splitmsg[1]
