@@ -35,7 +35,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     test('TC15 - Verify user is able to create new audit', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.createnewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
-            `${process.env.DATA_IMPORT_IDENTIFIER}`,'10/13/2025')
+            `${process.env.DATA_IMPORT_IDENTIFIER}`,`${process.env.OPINION_DATE}`)
         await fulldnav.verifyaduitcreated(`${process.env.CLIENT_NAME}`)
         //await page.pause()
     })
@@ -50,7 +50,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     test('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
         const {fulldnav} = initializePages(page)
         await fulldnav.createnewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
-            `${process.env.DATA_IMPORT_IDENTIFIER}`,'10/13/2025')
+            `${process.env.DATA_IMPORT_IDENTIFIER}`,`${process.env.OPINION_DATE}`)
         await fulldnav.verifyclientDatachecks()
         await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
