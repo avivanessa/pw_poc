@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
-import ValuationPage from '../pageObjects/valuationPage'
+import ModularPage from '../pageObjects/ModularPage'
 import homepage from '../pageObjects/homepage'
 import LoginPage2 from '../pageObjects/loginPage2'
 import dotenv from 'dotenv'
@@ -17,7 +17,6 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         expect(page.url()).toBe(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
-        // Comentario
     })
 
     const initializePages = (page) => {
@@ -25,7 +24,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-            valuationPage: new ValuationPage(page),
+            modularPage: new ModularPage(page),
             homepage:new homepage(page),
             fulldnav:new fullDNAVPage(page),
             LoginPage2: new LoginPage2(page),

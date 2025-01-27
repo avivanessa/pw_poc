@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
-//import ValuationPage from '../pageObjects/valuationPage'
 import homepage from '../pageObjects/homepage'
 import LoginPage2 from '../pageObjects/loginPage2'
 
@@ -24,7 +23,6 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-//            valuationPage: new ValuationPage(page),
             homepage:new homepage(page),
             LoginPage2: new LoginPage2(page),
 
