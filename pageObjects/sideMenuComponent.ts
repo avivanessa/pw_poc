@@ -4,6 +4,8 @@ export default class SideMenuComponent{
     readonly page: Page
     readonly dashboard: Locator
     readonly valuationAndReconciliation: Locator
+    readonly fullDnav: Locator
+    readonly submenu_auditDirectory: Locator
 
     constructor(page: Page){
         this.page = page
