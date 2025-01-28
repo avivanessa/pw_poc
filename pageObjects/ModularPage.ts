@@ -28,16 +28,16 @@ export default class ModularPage{
         this.addProjectTitle = this.page.getByText('Add Project')
         this.fileInput = this.page.locator('input[type="file"]')
         this.nextButton = this.page.locator('//button[span[text()="Next"]]')
-        this.folderInput = this.page.locator('#rc_select_4')
-        this.folderName = this.page.locator('//div[text()="Automation PW"]') // --> this locator should parameterize the folder name somehow.
+        this.folderInput = this.page.locator('//div[@name="folderId"]')
+        this.folderName = this.page.locator('//div[text()="Automation"]') // --> this locator should parameterize the folder name somehow.
         this.projectInput = this.page.locator('.ant-select-selection-overflow')
         this.projectList = this.page.locator('rc-virtual-list-holder-inner')
         this.projectName = this.page.locator('//div[text()="GD"]') // --> this locator should parameterize the project name somehow.
-        this.opinionDate = this.page.locator('input[name="opinionDate"]')
         this.valuationDate = this.page.locator('input[name="valuationDate"]')
         this.allProcedures = this.page.getByLabel('All Procedures')
         this.addProjectButton = this.page.locator('//button[@type="submit"]/span[contains(text(),"Add Project")]')
         this.monthPicker = this.page.locator('//button[@class="ant-picker-month-btn"]')
+        this.opinionDate = this.page.locator('//input[@name="opinionDate"]')
         this.july = this.page.getByText('Jul')
         this.thirtyOne = this.page.getByText('31')
     }
@@ -49,9 +49,10 @@ export default class ModularPage{
     }
 
     async addProject(){
-        const clientDataFilePath = './test-data/DNAV_Client_Data_Template 1.xlsm'
-        const counterPartyFilePath = './test-data/DNAV_CounterParty_Data_Template 1 1.xlsm'
-        const opinionDate = randomFutureDayCurrentMonth()
+        const clientDataFilePath = './test-data/DNAV_Client_Data_Template.xlsm'
+        const counterPartyFilePath = './test-data/DNAV_CounterParty_Data_Template.xlsm'
+        const futureOpinionDate = randomFutureDayCurrentMonth()
+        const futureValuationDate = randomFutureDayCurrentMonth()
 
         await this.actionsButton.click() 
         await this.addProjectTitle.click()
@@ -64,14 +65,23 @@ export default class ModularPage{
         await this.projectInput.click()
         await this.opinionDate.click()
         await this.opinionDate.click()
-        await this.page.getByTitle(opinionDate).click()
+        //await this.page.getByTitle(futureOpinionDate).click()
+        console.log("Opinion Date" + futureOpinionDate)
+        await this.opinionDate.fill(futureOpinionDate)
+        await this.page.keyboard.press('Enter');
+        //await this.page.getByTitle(futureOpinionDate).click()
         await this.valuationDate.click()
+        await this.valuationDate.click()
+        console.log("Valuation Date" + futureValuationDate)
+        await this.valuationDate.fill(futureValuationDate)
+        await this.page.keyboard.press('Enter');
         //valuation date process:
-        await this.monthPicker.click()
+        /*await this.monthPicker.click()
         await this.july.click()
-        await this.thirtyOne.click()
+        await this.thirtyOne.click()*/
         await this.allProcedures.click()
         await this.fileInput.setInputFiles(counterPartyFilePath)
         await this.addProjectButton.click()
+        
     }
 }

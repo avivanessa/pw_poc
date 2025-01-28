@@ -29,7 +29,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         const {dashboardPage, sideMenuComponent, valuationPage} = initializePages(page)
         await sideMenuComponent.clickDashboard()
         await sideMenuComponent.clickModular()
-        await valuationPage.selectClient('3M Company')
+        await valuationPage.selectClient(`${process.env.CLIENT_NAME}`)
         await valuationPage.addProject()
         //await page.pause()
     })

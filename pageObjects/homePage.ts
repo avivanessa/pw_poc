@@ -1,5 +1,4 @@
 import { Locator, Page, expect, BrowserContext } from '@playwright/test'
-import { assert, log } from 'console'
 import exp from 'constants'
 import { stat } from 'fs'
 import { memoryUsage } from 'process'
@@ -128,11 +127,11 @@ export default class SideMenuComponent {
         await expect(this.pdf).toContainText('Pdf Extraction')
         await expect(this.searchmodule).toBeVisible()
         await expect(this.searchmodule).toContainText('Search Module')
-        await expect(this.clientmanagement).toBeVisible
+        await expect(this.clientmanagement).toBeVisible()
         await expect(this.clientmanagement).toContainText('Client Management')
-        await expect(this.financialstatementworkroom).toBeVisible
+        await expect(this.financialstatementworkroom).toBeVisible()
         await expect(this.financialstatementworkroom).toContainText('Financial Statement Workroom')
-        await expect(this.marketdatamonitor).toBeVisible
+        await expect(this.marketdatamonitor).toBeVisible()
         await expect(this.marketdatamonitor).toContainText('Market Data Monitor')
     }
 
@@ -178,8 +177,4 @@ export default class SideMenuComponent {
             }
         }
     }
-
-
-
-
 }
