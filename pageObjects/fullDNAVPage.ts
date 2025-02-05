@@ -1,16 +1,10 @@
 import { Locator, Page, expect } from '@playwright/test'
-// import exp from 'constants'
-// import { ALL } from 'dns'
-// import { stat } from 'fs'
-// import { memoryUsage } from 'process'
 
 export default class SideMenuComponent{
     readonly page: Page
-    readonly dashboard: Locator
     readonly sidemenuicons: Locator
-    fulldnav: Locator
+    pageTitle: Locator
     btn_createaudit: Locator
-    submodule_auditdirectory: Locator
     clientname: Locator
     clientnamedropdown: Locator
     fiscalYear: Locator
@@ -62,13 +56,12 @@ export default class SideMenuComponent{
     conclusionreviewrecord: Locator
     reportingentity: Locator
     reportingentitydropdown: Locator
+    messageAuditCreated: RegExp
 
     constructor(page: Page){
         this.page = page
-        this.dashboard = this.page.locator('a[href="/US/dashboard"]')
-        this.fulldnav = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[2]') 
         this.btn_createaudit = this.page.locator('//button/span[text()="Create Audit"]')
-        this.submodule_auditdirectory = this.page.getByRole('link', { name: 'Audit Directory' })
+        this.pageTitle = this.page.getByText('Audit Directory')
         this.clientname = this.page.locator('//div[@name="clientName"]')
         this.clientnamedropdown = this.page.locator('//div[@name="clientName"]/div/span/input')
         this.fiscalYear = this.page.locator('//div[@name="fiscalYear"]')
@@ -121,42 +114,47 @@ export default class SideMenuComponent{
         this.txt_commentsection = this.page.locator('//textarea[@name="commentText"]')
         this.radiobtn_review = this.page.locator('//span[text()="Review Exceptions"]')
         this.exe_toggleon_reviewer = this.page.locator('(//span[@class="ant-switch-inner"])[2]')
+        this.messageAuditCreated = new RegExp("^Audit (\d+) for ([\w\W]+) was successfully create")
    }
 
-    async createnewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
+    async createNewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
         // await this.selectsubmoudle(name)
         await this.btn_createaudit.click()
         await this.clientname.click()
         await this.clientnamedropdown.fill(cname)
         await this.page.keyboard.press('Enter');
+        await expect(this.fiscalYear).toBeEnabled()
         await this.fiscalYear.click()
         await this.fiscalYeardropdown.fill(year)
         await this.page.keyboard.press('Enter');
+        await expect(this.engagementId).toBeEnabled()
         await this.engagementId.click()
         await this.engagementIddropdown.fill(engId)
         await this.page.keyboard.press('Enter');
         // await this.reportingentity.click();
         // await this.reportingentitydropdown.fill(entity)
         // await this.page.keyboard.press('Enter');
+        await expect(this.dataImportIdentifier).toBeEnabled()
         await this.dataImportIdentifier.click()
         await this.dataImportIdentifierdropdown.fill(dataimportid)
         await this.page.keyboard.press('Enter');
+        await expect(this.btn_next).toBeEnabled()
         await this.btn_next.click()
         await this.opinionDate.click()
         await this.opinionDate.fill(date)
         await this.page.keyboard.press('Enter');
-        await this.page.waitForTimeout(2000)
+        // await this.page.waitForTimeout(2000)
         console.log("To click on Create Audit button")
         await this.formbutton.click()
-        await this.page.waitForTimeout(4000)
-        // await expect(this.successmsg).toBeVisible()
-        this.successtxt = await this.successmsg.innerText()      
-        console.log(this.successtxt)        
+        //await this.page.waitForTimeout(4000)
+        await expect(this.formbutton).toBeHidden({timeout:120000})
+        await expect(this.successmsg).toBeVisible()
+        expect(this.successmsg.innerText()).toMatch(this.messageAuditCreated)
+
+        this.successtxt = await this.successmsg.innerText()        
     }
 
-    async verifyaduitcreated(name:any){
+    async verifyAuditCreated(name:any){
         console.log(this.successtxt)
         const splitmsg = this.successtxt.split(" ")
         const auditnumdata = splitmsg[0]+" "+splitmsg[1]
@@ -181,8 +179,6 @@ export default class SideMenuComponent{
     }
 
     async verifyDataPreparationPhase(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.verifycardvisible('Client Data')
         await this.verifycardstatus('Client Data','In Preparation')
@@ -207,8 +203,6 @@ export default class SideMenuComponent{
     }
 
     async verifyclientDatachecks(){       
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.verifycardvisible('Client Data')
         await this.verifycardstatus('Client Data','In Preparation')
@@ -246,8 +240,6 @@ export default class SideMenuComponent{
     }
 
     async reviewwithanotheruser(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.verifycardvisible('Client Data')
         await this.clickcard('Client Data')
@@ -262,8 +254,6 @@ export default class SideMenuComponent{
     }
 
     async verifyplanningphase(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         // await this.datapreparationrecord.click()
         await this.selectAuditrecord('Planning - In Preparation')
         await this.verifycardvisible('Materiality')
@@ -283,8 +273,6 @@ export default class SideMenuComponent{
     }
 
     async reviewplanningphase(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.clickcard('Materiality')
         await this.toggleonreviewer()
@@ -305,8 +293,6 @@ export default class SideMenuComponent{
     }
 
     async reviewmateriality(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.clickcard('Materiality')
         await this.toggleonreviewer()
@@ -323,8 +309,6 @@ export default class SideMenuComponent{
     }
 
     async reviewPortfolioOverview(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.clickcard('Portfolio Overview')
         await this.toggleonreviewer()
@@ -333,8 +317,6 @@ export default class SideMenuComponent{
     }
 
     async verifyprocedures(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         const procedures = ['Valuation','Classification','Reconciliation','FX Rates',
             'Book Value','Quantity Rollforward','Cost Rollforward',
@@ -346,8 +328,6 @@ export default class SideMenuComponent{
     }
 
     async verifyvaluationtabs(pro:any){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+pro+'"]').click()
         await expect(await this.valuationtab_investment.innerText()).toEqual('Investments and Exchange Traded Position')
@@ -362,8 +342,6 @@ export default class SideMenuComponent{
     }
 
     async verifyassets(pro){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const asset1 = await this.page.getByLabel('row-button').first()
@@ -425,8 +403,6 @@ export default class SideMenuComponent{
     } 
 
     async executionstatusprepareby(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         // const procedures = ['Valuation','FX Rates',
         //     'Book Value','Quantity Rollforward','Unrealized P/L','Realized G/L']
@@ -524,8 +500,6 @@ export default class SideMenuComponent{
     }
 
     async executionreview(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionreviewrecord.click()
         const procedures = ['Classification','FX Rates',
                 'Book Value','Quantity Rollforward','Unrealized P/L']
@@ -562,8 +536,6 @@ export default class SideMenuComponent{
 
     async CostRollforwardchecks(pro){
         // The below 3 functions can be uncommented if this function needs to run independently
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
@@ -628,8 +600,6 @@ export default class SideMenuComponent{
     }
 
     async verifyconclusion(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.conclusionrecord.click()
         await this.clickcard('Categorized Exceptions')
         await this.toggleonprepareby()
@@ -639,8 +609,6 @@ export default class SideMenuComponent{
     }
 
     async reviewconclusion(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.conclusionreviewrecord.click()
         await this.clickcard('Categorized Exceptions')
         await this.toggleonreviewer()
@@ -655,8 +623,6 @@ export default class SideMenuComponent{
     }
 
     async verifyDataextraction(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.selectAuditrecord('Reporting - In Preparation')
         await this.clickcard('Data Extraction')
         const btn_dataextraction = await this.page.locator('#DataExtractionLanding-empty-DataExtractionButton')
@@ -672,8 +638,6 @@ export default class SideMenuComponent{
     }
 
     async reviewDataextraction(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.selectAuditrecord('Reporting - In Review')
         await this.clickcard('Data Extraction')
         await this.toggleonreviewer()

@@ -11,7 +11,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -29,7 +29,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         const {dashboardPage, sideMenuComponent, valuationPage} = initializePages(page)
         await sideMenuComponent.clickDashboard()
         await sideMenuComponent.clickModular()
-        await valuationPage.selectClient('3M Company')
+        await valuationPage.selectClient(`${process.env.CLIENT_NAME}`)
         await valuationPage.addProject()
         //await page.pause()
     })

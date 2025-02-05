@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
 import SideMenuComponent from '../pageObjects/sideMenuComponent'
-//import ValuationPage from '../pageObjects/valuationPage'
 import homepage from '../pageObjects/homepage'
 import dotenv from 'dotenv'
 import { TIMEOUT } from 'dns/promises'
@@ -13,7 +12,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -23,7 +22,6 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-            //valuationPage: new ValuationPage(page),
             homepage:new homepage(page)
         }
     } 
@@ -40,11 +38,4 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         //await page.pause()
     })
 
-    
-    
-
-
-
-}
-
-)
+})

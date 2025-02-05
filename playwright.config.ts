@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 export default defineConfig({
   globalSetup: './auth.setup.ts',
   testDir: './tests',
-  timeout: 320 * 1000,
+  timeout: 120 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -31,7 +31,7 @@ export default defineConfig({
     // baseURL: 'http://127.0.0.1:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     headless: false
   },
 
