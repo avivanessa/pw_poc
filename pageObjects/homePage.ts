@@ -3,7 +3,7 @@ import exp from 'constants'
 import { stat } from 'fs'
 import { memoryUsage } from 'process'
 
-export default class SideMenuComponent {
+export default class HomePage {
     readonly page: Page
     readonly dashboard: Locator
     readonly sidemenuicons: Locator

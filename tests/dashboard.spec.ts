@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
-import SideMenuComponent from '../pageObjects/sideMenuComponent'
-import homepage from '../pageObjects/homepage'
+import SideMenuComponent from '../pageObjects/components/sideMenuComponent'
+import HomePage from '../pageObjects/homePage'
 import dotenv from 'dotenv'
 import { TIMEOUT } from 'dns/promises'
 dotenv.config()
@@ -22,7 +22,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
             sideMenuComponent: new SideMenuComponent(page),
-            homepage:new homepage(page)
+            homepage:new HomePage(page)
         }
     } 
 
