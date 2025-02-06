@@ -1,6 +1,7 @@
 import { Locator, Page, expect } from '@playwright/test'
+import SideMenuComponent from '../pageObjects/components/sideMenuComponent'
 
-export default class SideMenuComponent{
+export default class FullDNAVPage{
     readonly page: Page
     readonly sidemenuicons: Locator
     pageTitle: Locator
@@ -117,7 +118,12 @@ export default class SideMenuComponent{
         this.messageAuditCreated = new RegExp("^Audit (\d+) for ([\w\W]+) was successfully create")
    }
 
+   sideMenuComponent() {
+        return new SideMenuComponent(this.page)
+   }
+
     async createNewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
+        // await sideMenuComponent.clickAuditDirectory()
         // await this.selectsubmoudle(name)
         await this.btn_createaudit.click()
         await this.clientname.click()
@@ -131,9 +137,6 @@ export default class SideMenuComponent{
         await this.engagementId.click()
         await this.engagementIddropdown.fill(engId)
         await this.page.keyboard.press('Enter');
-        // await this.reportingentity.click();
-        // await this.reportingentitydropdown.fill(entity)
-        // await this.page.keyboard.press('Enter');
         await expect(this.dataImportIdentifier).toBeEnabled()
         await this.dataImportIdentifier.click()
         await this.dataImportIdentifierdropdown.fill(dataimportid)
@@ -147,7 +150,7 @@ export default class SideMenuComponent{
         console.log("To click on Create Audit button")
         await this.formbutton.click()
         //await this.page.waitForTimeout(4000)
-        await expect(this.formbutton).toBeHidden({timeout:120000})
+        await expect(this.formbutton).toBeHidden({timeout:80000})
         await expect(this.successmsg).toBeVisible()
         expect(this.successmsg.innerText()).toMatch(this.messageAuditCreated)
 
@@ -646,9 +649,3 @@ export default class SideMenuComponent{
         await this.verifycardstatus('Data Extraction','Reviewed')
     }
 }
-    
-
-
-
-
-

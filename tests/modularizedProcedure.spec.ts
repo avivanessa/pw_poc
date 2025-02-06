@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import LoginPage from '../pageObjects/loginPage'
 import DashboardPage from '../pageObjects/dashboardPage'
-import SideMenuComponent from '../pageObjects/sideMenuComponent'
+import SideMenuComponent from '../pageObjects/components/sideMenuComponent'
 import ModularPage from '../pageObjects/ModularPage'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -29,7 +29,8 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         const {dashboardPage, sideMenuComponent, valuationPage} = initializePages(page)
         await sideMenuComponent.clickDashboard()
         await sideMenuComponent.clickModular()
-        await valuationPage.selectClient(`${process.env.CLIENT_NAME}`)
+        await valuationPage.selectClient(`${process.env.MD_CLIENT_NAME}`)
+        await page.pause()
         await valuationPage.addProject()
         //await page.pause()
     })
