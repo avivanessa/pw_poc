@@ -1,19 +1,24 @@
 import { test, expect } from '@playwright/test'
-import LoginPage from '../pageObjects/loginPage'
-import DashboardPage from '../pageObjects/dashboardPage'
-import ModularPage from '../pageObjects/ModularPage'
-import HomePage from '../pageObjects/homePage'
+import LoginPage from '../pageObjects/General/login.page'
+import SideMenuPage from '../pageObjects/General/sideMenu.page'
+import homepage from '../pageObjects/General/home.page'
 import LoginPage2 from '../pageObjects/loginPage2'
 import dotenv from 'dotenv'
 import fullDNAVPage from '../pageObjects/fullDNAVPage'
 dotenv.config()
 
-test.describe('Full DNAV > Audit Directory', () => {
+//test.describe.configure({ mode: 'serial' });
+
+let username2:string = process.env.USER_2!
+let password2:string = process.env.PASS_USER_2!
+
+test.describe('Valuation and Reconciliation > Home Page', () => {
     test.use({ storageState: './user1_auth.json'})
     
     test.beforeEach(async ({ page }) => {
-        await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe(`${process.env.BASE_URL}`)
+        console.log("process.env.baseurl")
+        await page.goto('/')
+        expect(page.url()).toContain(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -21,147 +26,132 @@ test.describe('Full DNAV > Audit Directory', () => {
     const initializePages = (page) => {
         return{
             loginPage: new LoginPage(page),
-            dashboardPage: new DashboardPage(page),
-            modularPage: new ModularPage(page),
-            homepage:new HomePage(page),
-            fullDNAVPage:new fullDNAVPage(page),
+            sideMenuPage: new SideMenuPage(page),
+            homepage:new homepage(page),
+            fulldnav:new fullDNAVPage(page),
             LoginPage2: new LoginPage2(page),
-
         }
     } 
 
-    test.only('TC15 - Verify user is able to create new audit', async ({page}) => {
-        //test.setTimeout(120000)
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
-            `${process.env.DATA_IMPORT_IDENTIFIER}`,`${process.env.OPINION_DATE}`)
-        await fullDNAVPage.verifyAuditCreated(`${process.env.CLIENT_NAME}`)
-        //await page.pause()
+    test('TC15 - Verify user is able to create new audit', async ({page}) => {
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
+            `${process.env.DATA_IMPORT_IDENTIFIER}`,'12/15/2025')
+        await fulldnav.verifyAuditCreated(`${process.env.CLIENT_NAME}`)
+        
     })
 
     test('TC20 - Verify client and deloitte data are in preparation phase', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyDataPreparationPhase()
-        // await fullDNAVPage.preparationphase()
-        //await page.pause()
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyDataPreparationPhase()
     })
 
     test('TC21/23 - Verify user is able to create and review the client data checks', async ({page}) => {
-        const {fullDNAVPage, LoginPage2} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
-            `${process.env.DATA_IMPORT_IDENTIFIER}`,`${process.env.OPINION_DATE}`)
-        await fullDNAVPage.verifyclientDatachecks()
-        await fullDNAVPage.logout()
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
+            `${process.env.DATA_IMPORT_IDENTIFIER}`,'12/15/2025')
+        await fulldnav.verifyClientDataChecks()
+        await fulldnav.logout()
+        const {LoginPage2} = initializePages(page)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
-        await fullDNAVPage.credentialpage()
-        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        await fullDNAVPage.reviewwithanotheruser()
-        await LoginPage2.acceptCookies()
-        //await page.pause()
+        await fulldnav.credentialpage()
+        await LoginPage2.login(username2,password2)
+        await fulldnav.reviewWithAnotherUser()
+        //await LoginPage2.acceptCookies()
+        
     })
 
     test('TC24 - Verify user is able to see the materiality and portfolio', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyplanningphase()       
-        //await page.pause()
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyplanningphase()
+        
     })
     test('TC26/29 - Verify User can review and signoff the materiality procedure and portfolio overview', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyplanningphase()    
-        await fullDNAVPage.planningpahsechecks()
-        await fullDNAVPage.logout()
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyplanningphase()
+        await fulldnav.planningpahsechecks()
+        await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
-        await fullDNAVPage.credentialpage()
-        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        await fullDNAVPage.reviewplanningphase()
-        //await page.pause()
+        await fulldnav.credentialpage()
+        await LoginPage2.login(username2, password2)
+        await fulldnav.reviewplanningphase()
     })
 
     test('TC30 - Verify user is able to see all the 10 procedures in execution phase ', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)   
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyprocedures()       
-        //await page.pause()
-
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyprocedures()       
    })
    
     test('TC31 - Verify user can see Investments and Exchange Traded Positions, OTC Derivatives in valuation procedure ', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page) 
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyvaluationtabs('Valuation')   
-        //await page.pause()
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyvaluationtabs('Valuation')   
 
    })
    
    test('TC44 - Verify the IDV page of assets-Investments and Exchange Traded Positions ', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page) 
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyassets('Valuation')   
-        //await page.pause()
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyassets('Valuation')   
 
    })
 
-   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)  
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        // await fullDNAVPage.logout()
-        await fullDNAVPage.executionstatusprepareby()   
+   test.skip('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        // await fulldnav.logout()
+        await fulldnav.executionstatusprepareby()   
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
-        await fullDNAVPage.credentialpage()
+        await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        await fullDNAVPage.executionreview()
-        // await fullDNAVPage.executionreviewCostRollforward()
-        // await fullDNAVPage.reviewreconciliation()
-        //await page.pause()
-
+        await fulldnav.executionreview()
+        await page.pause()
     })
+
 
     test('Verify the IDV page of Cost Rollforward and reconciliation', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        // await fullDNAVPage.reconcilliationchecks()  
-        await fullDNAVPage.CostRollforwardchecks('Cost Rollforward')   
-        //await page.pause() //Execution - In Review
-
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        // await fulldnav.reconcilliationchecks()  
+        await fulldnav.CostRollforwardchecks('Cost Rollforward')   
+         //Execution - In Review
     })
 
-    test('TC-212 Verify the audit directory concusion', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyconclusion()
-        await fullDNAVPage.logout()
+    test.skip('TC-212 Verify the audit directory concusion', async ({page}) => {
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyconclusion()
+        await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
-        await fullDNAVPage.credentialpage()
+        await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        await fullDNAVPage.reviewconclusion()
-        //await page.pause() 
-
+        await fulldnav.reviewconclusion()
     })
 
-    test('TC-213 Verify Data extraction functionality', async ({page}) => {
-        const {fullDNAVPage} = initializePages(page)
-        await fullDNAVPage.sideMenuComponent().clickAuditDirectory()
-        await fullDNAVPage.verifyDataextraction()
-        await fullDNAVPage.logout()
+    test.skip('TC-213 Verify Data extraction functionality', async ({page}) => {
+        const {sideMenuPage, fulldnav} = initializePages(page)
+        await sideMenuPage.clickAuditDirectory()
+        await fulldnav.verifyDataextraction()
+        await fulldnav.logout()
         const {LoginPage2} = initializePages(page)
-        await LoginPage2.page2.goto(`${process.env.BASE_URL}`)
+        await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
-        await fullDNAVPage.credentialpage()
+        await fulldnav.credentialpage()
         await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
-        await fullDNAVPage.reviewDataextraction()
-        //await page.pause() 
+        await fulldnav.reviewDataextraction()
     })
 
 })

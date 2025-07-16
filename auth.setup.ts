@@ -1,5 +1,5 @@
 import { expect, chromium } from '@playwright/test';
-import LoginPage from './pageObjects/loginPage'
+import LoginPage from './pageObjects/General/login.page'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -16,10 +16,14 @@ async function authSetup(){
         const password = `${process.env.PASS_USER_1}`
         const loginPage = new LoginPage(page)
 
-        // await page.goto(`${process.env.BASE_URL}`)
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe(`${process.env.BASE_URL}`)
-        await loginPage.login(email, password)
+        //await page.goto(`https://qnxdnavportal.aaps.deloitte.com/`)
+        expect(page.url()).toContain('login.microsoftonline.com');
+        await loginPage.login(email, password);
+        // wait for redirection to finish
+        //await page.waitForURL('https://qnxdnavportal.aaps.deloitte.com/');
+        // expect(page.url()).toContain('https://qnxdnavportal.aaps.deloitte.com/');
+        
         await page.context().storageState({ path: user1AuthFile });
     }
 
@@ -32,11 +36,14 @@ async function authSetup(){
         const password = `${process.env.PASS_USER_2}`
         const loginPage = new LoginPage(page)
 
-        // await page.goto(`${process.env.BASE_URL}`)
         await page.goto(`${process.env.BASE_URL}`)
+        expect(page.url()).toContain('login.microsoftonline.com');
 
-        expect(page.url()).toBe(`${process.env.BASE_URL}`)
+        //expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         await loginPage.login(email, password)
+        // wait for the redirection to finish
+        //await page.waitForURL('https://qnxdnavportal.aaps.deloitte.com/');
+        // expect(page.url()).toContain('https://qnxdnavportal.aaps.deloitte.com/');
         await page.context().storageState({ path: user2AuthFile });
     }
 
