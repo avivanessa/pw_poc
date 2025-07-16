@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 export default defineConfig({
   globalSetup: './auth.setup.ts',
   testDir: './tests',
-  timeout: 320 * 1000,
+  timeout: 70 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -53,6 +53,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
     */
+   
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

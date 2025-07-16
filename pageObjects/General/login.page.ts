@@ -10,11 +10,11 @@ export default class LoginPage {
 
     constructor(page: Page){
         this.page = page
-        this.emailInput = this.page.locator('[name="loginfmt"]')
-        this.passwordInput = this.page.getByPlaceholder('Password')
-        this.nextButton = this.page.getByRole('button', { name: 'Next' })
-        this.signinButton = this.page.getByRole('button', { name: 'Sign in' })
-        this.acceptCookiesButton = this.page.locator('//button[@id="onetrust-accept-btn-handler"]')
+        this.emailInput = this.page.locator('input[name="loginfmt"]');
+        this.passwordInput = this.page.locator('input[name="passwd"]');
+        this.nextButton = this.page.getByRole('button', { name: 'Next' });
+        this.signinButton = this.page.getByRole('button', { name: 'Sign in' });
+        this.acceptCookiesButton = this.page.locator('button[id="onetrust-accept-btn-handler"]')
     }
 
     async login(email: string, password: string){

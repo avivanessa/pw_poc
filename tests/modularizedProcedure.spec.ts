@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test'
-import LoginPage from '../pageObjects/loginPage'
-import DashboardPage from '../pageObjects/dashboardPage'
-import SideMenuComponent from '../pageObjects/sideMenuComponent'
-import ModularPage from '../pageObjects/ModularPage'
+import LoginPage from '../pageObjects/General/login.page'
+import SideMenuPage from '../pageObjects/General/sideMenu.page'
+import ModularPage from '../pageObjects/Modular/Modular.page'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -11,7 +10,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
+        expect(page.url()).toBe(`${process.env.BASE_URL}`)
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -19,18 +18,17 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
     const initializePages = (page) => {
         return{
             loginPage: new LoginPage(page),
-            dashboardPage: new DashboardPage(page),
-            sideMenuComponent: new SideMenuComponent(page),
+            sideMenuPage: new SideMenuPage(page),
             valuationPage: new ModularPage(page)
         }
     } 
 
     test('TC306 - Validate user can create a project with templates', async ({page}) => {
-        const {dashboardPage, sideMenuComponent, valuationPage} = initializePages(page)
-        await sideMenuComponent.clickDashboard()
-        await sideMenuComponent.clickModular()
-        await valuationPage.selectClient('3M Company')
-        await valuationPage.addProject()
+        const {sideMenuPage, valuationPage} = initializePages(page)
+        await sideMenuPage.clickDashboard()
+        await sideMenuPage.clickModular()
+        await valuationPage.selectClient(`${process.env.CLIENT_NAME}`)
+        await valuationPage.addProject(`${process.env.FOLDER_NAME}`, `${process.env.PROJECT_NAME}`)
         //await page.pause()
     })
 })

@@ -4,7 +4,7 @@ import { Locator, Page, expect } from '@playwright/test'
 // import { stat } from 'fs'
 // import { memoryUsage } from 'process'
 
-export default class SideMenuComponent{
+export default class FullDNAVPage {
     readonly page: Page
     readonly dashboard: Locator
     readonly sidemenuicons: Locator
@@ -14,11 +14,11 @@ export default class SideMenuComponent{
     clientname: Locator
     clientnamedropdown: Locator
     fiscalYear: Locator
-    fiscalYeardropdown: Locator
+    fiscalYearDropdown: Locator
     engagementId: Locator
-    engagementIddropdown: Locator
+    engagementIdDropdown: Locator
     dataImportIdentifier: Locator
-    dataImportIdentifierdropdown: Locator
+    dataImportIdentifierDropdown: Locator
     btn_next: Locator
     opinionDate: Locator
     formbutton: Locator
@@ -30,7 +30,7 @@ export default class SideMenuComponent{
     preparationstatus1: Locator
     deloittecard: Locator
     preparationstatus2: Locator
-    msgboxloc1: Locator
+    itemsPendingComments: Locator
     msgboxloc3: Locator
     msgboxloc2: Locator
     card: Locator
@@ -65,22 +65,21 @@ export default class SideMenuComponent{
 
     constructor(page: Page){
         this.page = page
-        this.dashboard = this.page.locator('a[href="/US/dashboard"]')
         this.fulldnav = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[2]') 
         this.btn_createaudit = this.page.locator('//button/span[text()="Create Audit"]')
         this.submodule_auditdirectory = this.page.getByRole('link', { name: 'Audit Directory' })
-        this.clientname = this.page.locator('//div[@name="clientName"]')
-        this.clientnamedropdown = this.page.locator('//div[@name="clientName"]/div/span/input')
-        this.fiscalYear = this.page.locator('//div[@name="fiscalYear"]')
-        this.fiscalYeardropdown = this.page.locator('//div[@name="fiscalYear"]/div/span/input')
-        this.engagementId = this.page.locator('//div[@name="engagementId"]')
-        this.engagementIddropdown = this.page.locator('//div[@name="engagementId"]/div/span/input')
-        this.reportingentity = this.page.locator('//div[@name="engagementReportingEntity"]')
-        this.reportingentitydropdown = this.page.locator('//div[@name="engagementReportingEntity"]/div/span/input')
-        this.dataImportIdentifier = this.page.locator('//div[@name="dataImportIdentifier"]')
-        this.dataImportIdentifierdropdown = this.page.locator('//div[@name="dataImportIdentifier"]/div/span/input')
+        this.clientname = this.page.locator('div[name="clientName"]')
+        this.clientnamedropdown = this.page.locator('div[name="clientName"] input.ant-select-selection-search-input')
+        this.fiscalYear = this.page.locator('div[name="fiscalYear"]')
+        this.fiscalYearDropdown = this.page.locator('div[name="fiscalYear"] input.ant-select-selection-search-input')
+        this.engagementId = this.page.locator('div[name="engagementId"]')
+        this.engagementIdDropdown = this.page.locator('div[name="engagementId"] input.ant-select-selection-search-input')
+        this.reportingentity = this.page.locator('div[name="engagementReportingEntity"]')
+        this.reportingentitydropdown = this.page.locator('div[name="engagementReportingEntity"] input.ant-select-selection-search-input')
+        this.dataImportIdentifier = this.page.locator('div[name="dataImportIdentifier"]')
+        this.dataImportIdentifierDropdown = this.page.locator('div[name="dataImportIdentifier"] input.ant-select-selection-search-input')
         this.btn_next = this.page.locator('//button/span[text()="Next"]')
-        this.opinionDate = this.page.locator('//input[@name="opinionDate"]')
+        this.opinionDate = this.page.locator('input[name="opinionDate"]')
         this.formbutton = this.page.locator('(//button/span[text()="Create Audit"])[2]')
         this.successmsg = this.page.locator('//div[@class="ant-notification-notice-message"]')
         this.auditnamerecord = this.page.locator('.ant-table-row > td').first()
@@ -92,8 +91,7 @@ export default class SideMenuComponent{
         // this.msgboxloc1 = this.page.getByRole('row', { name: 'AutoFund Check if the assets (0) from the previous year are imported Message-' }).getByRole('button')
         // this.msgboxloc2 = this.page.getByRole('row', { name: 'AutoFund Check if the transactions (0) are imported Message-Black' }).getByRole('button')
         // this.msgboxloc3 = this.page.getByRole('row', { name: 'AutoFund Check if the accounts (0) from the previous year are imported Message-' }).getByRole('button')
-        this.msgboxloc1 = this.page.locator('(//span[@aria-label="Message-Black"])[1]')
-        this.msgboxloc2 = this.page.locator('(//span[@aria-label="Message-Black"])[1]')        
+        this.itemsPendingComments = this.page.locator('(//span[@aria-label="Message-Black"])')
         this.clarificationtext = this.page.locator('//textarea[@name="clarification"]')
         this.btn_Save = this.page.locator('//button/span[text()="Save"]')
         this.toggle_preparer = this.page.locator('//div[text()="Sign off by preparer"]/following-sibling::div[1]/button/div')
@@ -123,25 +121,19 @@ export default class SideMenuComponent{
         this.exe_toggleon_reviewer = this.page.locator('(//span[@class="ant-switch-inner"])[2]')
    }
 
-    async createnewAudit(cname:any,year:any,engId:any,dataimportid:any,date:any){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
-        // await this.selectsubmoudle(name)
+    async createNewAudit(cname:string,year:any,engId:any,dataimportid:any,date:any){
         await this.btn_createaudit.click()
         await this.clientname.click()
         await this.clientnamedropdown.fill(cname)
         await this.page.keyboard.press('Enter');
         await this.fiscalYear.click()
-        await this.fiscalYeardropdown.fill(year)
+        await this.fiscalYearDropdown.fill(year)
         await this.page.keyboard.press('Enter');
         await this.engagementId.click()
-        await this.engagementIddropdown.fill(engId)
+        await this.engagementIdDropdown.fill(engId)
         await this.page.keyboard.press('Enter');
-        // await this.reportingentity.click();
-        // await this.reportingentitydropdown.fill(entity)
-        // await this.page.keyboard.press('Enter');
         await this.dataImportIdentifier.click()
-        await this.dataImportIdentifierdropdown.fill(dataimportid)
+        await this.dataImportIdentifierDropdown.fill(dataimportid)
         await this.page.keyboard.press('Enter');
         await this.btn_next.click()
         await this.opinionDate.click()
@@ -150,13 +142,13 @@ export default class SideMenuComponent{
         await this.page.waitForTimeout(2000)
         console.log("To click on Create Audit button")
         await this.formbutton.click()
-        await this.page.waitForTimeout(4000)
+        //await this.page.waitForTimeout(4000)
         // await expect(this.successmsg).toBeVisible()
         this.successtxt = await this.successmsg.innerText()      
         console.log(this.successtxt)        
     }
 
-    async verifyaduitcreated(name:any){
+    async verifyAuditCreated(name:any){
         console.log(this.successtxt)
         const splitmsg = this.successtxt.split(" ")
         const auditnumdata = splitmsg[0]+" "+splitmsg[1]
@@ -165,70 +157,67 @@ export default class SideMenuComponent{
         await expect(await this.clientnamerecord.innerText()).toEqual(name)
     }
 
-    async verifycardvisible(cardname){
+    async verifyCardVisible(cardname){
         const card = this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+cardname+'"]')
         await card.isVisible()
     }
 
-    async clickcard(cardname){
+    async clickCard(cardname){
         const card = await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+cardname+'"]')
         await card.click()
     }
 
-    async verifycardstatus(card, expectedstatus){
+    async verifyCardStatus(card, expectedstatus){
         const cardstatus = await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+card+'"]/parent::div/following-sibling::span/div/div/span/span/span[2]')
         await expect(await cardstatus.innerText()).toEqual(expectedstatus)
     }
 
     async verifyDataPreparationPhase(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.verifycardvisible('Client Data')
-        await this.verifycardstatus('Client Data','In Preparation')
+        await this.verifyCardVisible('Client Data')
+        await this.verifyCardStatus('Client Data','In Preparation')
         console.log("Client Data card in preparation status")      
-        await this.verifycardvisible('Deloitte Data')     
-        await this.verifycardstatus('Deloitte Data','In Preparation')
+        await this.verifyCardVisible('Deloitte Data')     
+        await this.verifyCardStatus('Deloitte Data','In Preparation')
         console.log("Deloitte Data card in preparation status")
     }
 
-    async toggleonprepareby(){
+    async toggleOnPrepareBy(){
         await this.toggle_preparer.click()
         await this.page.waitForTimeout(5000)
         console.log(await this.email_preparedby.innerText())
         await expect(await this.email_preparedby).toBeVisible()
     }
 
-    async toggleonreviewer(){
+    async toggleOnReview(){
         await this.toggle_reviewer.click()
         await this.page.waitForTimeout(6000)
         console.log(await this.email_reviewedby.innerText())
         await expect(this.email_reviewedby).toBeVisible()
     }
 
-    async verifyclientDatachecks(){       
+    async verifyClientDataChecks(){       
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.verifycardvisible('Client Data')
-        await this.verifycardstatus('Client Data','In Preparation')
-        await this.clickcard('Client Data')
-        // const msglocators = [this.msgboxloc1,this.msgboxloc2,this.msgboxloc3]
-        // for(const btn of msglocators){
-        //     await btn.click()
-        //     await this.clarificationtext.fill('TestData')
-        //     await this.btn_Save.click()
-        // }
-        const msglocators = [this.msgboxloc1,this.msgboxloc2]
-        for(const btn of msglocators){
+        await this.verifyCardVisible('Client Data')
+        await this.verifyCardStatus('Client Data','In Preparation')
+        await this.clickCard('Client Data')
+        await this.commentAllPendingItems()
+        await this.toggleOnPrepareBy()
+        await this.page.goBack()
+        await this.page.waitForTimeout(5000)
+        await this.verifyCardStatus('Client Data','In Review')
+    }
+
+    async commentAllPendingItems() {
+        await this.page.reload()
+        const items = await this.itemsPendingComments.elementHandles()
+        for (const btn of items) {
             await btn.click()
             await this.clarificationtext.fill('TestData')
             await this.btn_Save.click()
         }
-        await this.toggleonprepareby()
-        await this.page.goBack()
-        await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Client Data','In Review')
     }
 
     async logout(){
@@ -245,96 +234,91 @@ export default class SideMenuComponent{
         await this.page.locator('//div[@id="otherTile"]').click()
     }
 
-    async reviewwithanotheruser(){
+    async reviewWithAnotherUser(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.verifycardvisible('Client Data')
-        await this.clickcard('Client Data')
-        await this.toggleonreviewer()
+        await this.verifyCardVisible('Client Data')
+        await this.clickCard('Client Data')
+        await this.toggleOnReview()
         await this.page.goBack()
         await this.page.waitForTimeout(10000)
         await this.page.reload()
-        await this.verifycardstatus('Client Data','Reviewed')
+        await this.verifyCardStatus('Client Data','Reviewed')
         await this.page.waitForTimeout(10000)
         await this.page.reload()
-        await this.verifycardstatus('Deloitte Data','Reviewed')
+        await this.verifyCardStatus('Deloitte Data','Reviewed')
     }
 
     async verifyplanningphase(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
-        // await this.datapreparationrecord.click()
         await this.selectAuditrecord('Planning - In Preparation')
-        await this.verifycardvisible('Materiality')
-        await this.verifycardvisible('Portfolio Overview')
+        await this.verifyCardVisible('Materiality')
+        await this.verifyCardVisible('Portfolio Overview')
     }
 
     async planningpahsechecks(){
-        this.clickcard('Materiality')
-        await this.toggleonprepareby()
+        this.clickCard('Materiality')
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
-        this.clickcard('Portfolio Overview')
-        await this.toggleonprepareby()
+        this.clickCard('Portfolio Overview')
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Materiality','In Review')
-        await this.verifycardstatus('Portfolio Overview','In Review')
+        await this.verifyCardStatus('Materiality','In Review')
+        await this.verifyCardStatus('Portfolio Overview','In Review')
     }
 
     async reviewplanningphase(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.clickcard('Materiality')
-        await this.toggleonreviewer()
+        await this.clickCard('Materiality')
+        await this.toggleOnReview()
         await this.page.goBack()
-        await this.clickcard('Portfolio Overview')
-        await this.toggleonreviewer()
+        await this.clickCard('Portfolio Overview')
+        await this.toggleOnReview()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Materiality','Reviewed')
-        await this.verifycardstatus('Portfolio Overview','Reviewed')
+        await this.verifyCardStatus('Materiality','Reviewed')
+        await this.verifyCardStatus('Portfolio Overview','Reviewed')
     }
     async materialityprocedurechecks(){    
-        this.clickcard('Materiality')
-        await this.toggleonprepareby()
+        this.clickCard('Materiality')
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Materiality','In Review')   
+        await this.verifyCardStatus('Materiality','In Review')   
     }
 
     async reviewmateriality(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.clickcard('Materiality')
-        await this.toggleonreviewer()
+        await this.clickCard('Materiality')
+        await this.toggleOnReview()
         await this.page.goBack()
-        await this.verifycardstatus('Materiality','Reviewed')
+        await this.verifyCardStatus('Materiality','Reviewed')
     }
 
     async porfoliooverviewchecks(){
-        this.clickcard('Portfolio Overview')
-        await this.toggleonprepareby()
+        this.clickCard('Portfolio Overview')
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Portfolio Overview','In Review')
+        await this.verifyCardStatus('Portfolio Overview','In Review')
     }
 
     async reviewPortfolioOverview(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
-        await this.clickcard('Portfolio Overview')
-        await this.toggleonreviewer()
+        await this.clickCard('Portfolio Overview')
+        await this.toggleOnReview()
         await this.page.goBack()
-        await this.verifycardstatus('Portfolio Overview','Reviewed')
+        await this.verifyCardStatus('Portfolio Overview','Reviewed')
     }
 
     async verifyprocedures(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         const procedures = ['Valuation','Classification','Reconciliation','FX Rates',
             'Book Value','Quantity Rollforward','Cost Rollforward',
@@ -346,8 +330,6 @@ export default class SideMenuComponent{
     }
 
     async verifyvaluationtabs(pro:any){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+pro+'"]').click()
         await expect(await this.valuationtab_investment.innerText()).toEqual('Investments and Exchange Traded Position')
@@ -362,8 +344,6 @@ export default class SideMenuComponent{
     }
 
     async verifyassets(pro){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const asset1 = await this.page.getByLabel('row-button').first()
@@ -425,8 +405,6 @@ export default class SideMenuComponent{
     } 
 
     async executionstatusprepareby(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         // const procedures = ['Valuation','FX Rates',
         //     'Book Value','Quantity Rollforward','Unrealized P/L','Realized G/L']
@@ -463,13 +441,13 @@ export default class SideMenuComponent{
         await this.valuationOTCDerivativeschecks()
         await this.page.goBack()
         await this.page.reload()
-        await this.verifycardstatus('Valuation','In Review')
-        await this.verifycardstatus('Classification','In Review')
-        await this.verifycardstatus('Book Value','In Review')
-        await this.verifycardstatus('Quantity Rollforward','In Review')
-        await this.verifycardstatus('Unrealized P/L','In Review')
-        await this.verifycardstatus('FX Rates','In Review')
-        await this.verifycardstatus('Reconciliation','In Review')
+        await this.verifyCardStatus('Valuation','In Review')
+        await this.verifyCardStatus('Classification','In Review')
+        await this.verifyCardStatus('Book Value','In Review')
+        await this.verifyCardStatus('Quantity Rollforward','In Review')
+        await this.verifyCardStatus('Unrealized P/L','In Review')
+        await this.verifyCardStatus('FX Rates','In Review')
+        await this.verifyCardStatus('Reconciliation','In Review')
     }
 
     async executionreviewCostRollforward(){
@@ -550,20 +528,18 @@ export default class SideMenuComponent{
         this.reviewreconciliation()
         await this.page.goBack()
         await this.page.reload()
-        await this.verifycardstatus('Valuation','Reviewed')
-        await this.verifycardstatus('Classification','Reviewed')
-        await this.verifycardstatus('Book Value','Reviewed')
-        await this.verifycardstatus('Quantity Rollforward','Reviewed')
-        await this.verifycardstatus('Unrealized P/L','Reviewed')
-        await this.verifycardstatus('FX Rates','Reviewed')  
-        await this.verifycardstatus('Cost Rollforward','Reviewed') 
-        await this.verifycardstatus('Reconciliation','Reviewed')     
+        await this.verifyCardStatus('Valuation','Reviewed')
+        await this.verifyCardStatus('Classification','Reviewed')
+        await this.verifyCardStatus('Book Value','Reviewed')
+        await this.verifyCardStatus('Quantity Rollforward','Reviewed')
+        await this.verifyCardStatus('Unrealized P/L','Reviewed')
+        await this.verifyCardStatus('FX Rates','Reviewed')  
+        await this.verifyCardStatus('Cost Rollforward','Reviewed') 
+        await this.verifyCardStatus('Reconciliation','Reviewed')     
     }
 
     async CostRollforwardchecks(pro){
         // The below 3 functions can be uncommented if this function needs to run independently
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.executionrecord.click()
         await this.clickExecutionProcedure(pro)
         const tab1 = await this.page.locator('//div[text()="Investments/Exchange"]')
@@ -628,25 +604,23 @@ export default class SideMenuComponent{
     }
 
     async verifyconclusion(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.conclusionrecord.click()
-        await this.clickcard('Categorized Exceptions')
-        await this.toggleonprepareby()
+        await this.clickCard('Categorized Exceptions')
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Categorized Exceptions','In Review')
+        await this.verifyCardStatus('Categorized Exceptions','In Review')
     }
 
     async reviewconclusion(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.conclusionreviewrecord.click()
-        await this.clickcard('Categorized Exceptions')
-        await this.toggleonreviewer()
+        await this.clickCard('Categorized Exceptions')
+        await this.toggleOnReview()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Categorized Exceptions','Reviewed')
+        await this.verifyCardStatus('Categorized Exceptions','Reviewed')
     }
 
     async selectAuditrecord(record){
@@ -655,31 +629,29 @@ export default class SideMenuComponent{
     }
 
     async verifyDataextraction(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
         await this.selectAuditrecord('Reporting - In Preparation')
-        await this.clickcard('Data Extraction')
+        await this.clickCard('Data Extraction')
         const btn_dataextraction = await this.page.locator('#DataExtractionLanding-empty-DataExtractionButton')
         await btn_dataextraction.click()
         const modal_btn_extraction = await this.page.locator('//div[@class="ant-modal-footer"]/button/span[text()="Generate Data Extract"]')
         await modal_btn_extraction.click()
         await this.page.waitForTimeout(5000)
         await expect(this.page.locator('//tbody/tr[2]')).toBeVisible()
-        await this.toggleonprepareby()
+        await this.toggleOnPrepareBy()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Data Extraction','In Review')
+        await this.verifyCardStatus('Data Extraction','In Review')
     }
 
     async reviewDataextraction(){
         await this.fulldnav.click()
         await this.submodule_auditdirectory.click()
         await this.selectAuditrecord('Reporting - In Review')
-        await this.clickcard('Data Extraction')
-        await this.toggleonreviewer()
+        await this.clickCard('Data Extraction')
+        await this.toggleOnReview()
         await this.page.goBack()
         await this.page.waitForTimeout(5000)
-        await this.verifycardstatus('Data Extraction','Reviewed')
+        await this.verifyCardStatus('Data Extraction','Reviewed')
     }
 }
     

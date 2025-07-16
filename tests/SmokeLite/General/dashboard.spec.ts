@@ -1,9 +1,10 @@
-import { test, expect } from '@playwright/test'
-import LoginPage from '../pageObjects/loginPage'
-import DashboardPage from '../pageObjects/dashboardPage'
-import SideMenuComponent from '../pageObjects/sideMenuComponent'
-//import ValuationPage from '../pageObjects/valuationPage'
-import homepage from '../pageObjects/homepage'
+import { expect, test } from '@playwright/test'
+//import { test } from '../../fixtures/auth.fixture';
+import LoginPage from '../../../pageObjects/General/login.page'
+
+import DashboardPage from '../../../pageObjects/Dashboard/dashboard.page'
+import SideMenuPage from '../../../pageObjects/General/sideMenu.page'
+import HomePage from '../../../pageObjects/General/home.page'
 import dotenv from 'dotenv'
 import { TIMEOUT } from 'dns/promises'
 dotenv.config()
@@ -13,7 +14,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)
-        expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
+        //expect(page.url()).toBe('https://qnxdnavportal.aaps.deloitte.com/')
         const {loginPage} = initializePages(page)
         await loginPage.acceptCookies()
     })
@@ -22,29 +23,20 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         return{
             loginPage: new LoginPage(page),
             dashboardPage: new DashboardPage(page),
-            sideMenuComponent: new SideMenuComponent(page),
-            //valuationPage: new ValuationPage(page),
-            homepage:new homepage(page)
+            sideMenuComponent: new SideMenuPage(page),
+            homePage:new HomePage(page)
         }
     } 
 
     test('TC09 - Verify user is able to see statistics data for all card types of Dashaboard', async ({page}) => {
-        const {homepage} = initializePages(page)
-        await homepage.verifyDashboardCards()
+        const {homePage} = initializePages(page)
+        await homePage.verifyDashboardCards()
         //await page.pause()
     })
 
     test('TC10 - Verify user can see Recent Activity for Audit Directory and Modularized Procedure and navigate to respective page', async ({page}) => {
-        const {homepage} = initializePages(page)
-        await homepage.verifyRecentActivity()
+        const {homePage} = initializePages(page)
+        await homePage.verifyRecentActivity()
         //await page.pause()
     })
-
-    
-    
-
-
-
-}
-
-)
+})
