@@ -97,6 +97,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await fulldnav.verifyvaluationtabs('Valuation')   
 
    })
+   
    test('TC44 - Verify the IDV page of assets-Investments and Exchange Traded Positions ', async ({page}) => {
         const {sideMenuPage, fulldnav} = initializePages(page)
         await sideMenuPage.clickAuditDirectory()
@@ -113,10 +114,11 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
         await fulldnav.credentialpage()
-        await LoginPage2.login(username2,password2)
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.executionreview()
         await page.pause()
     })
+
 
     test('Verify the IDV page of Cost Rollforward and reconciliation', async ({page}) => {
         const {sideMenuPage, fulldnav} = initializePages(page)
@@ -135,7 +137,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
         await fulldnav.credentialpage()
-        await LoginPage2.login(username2,password2)
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewconclusion()
     })
 
@@ -148,8 +150,8 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
         await LoginPage2.page2.goto('/')
         expect(LoginPage2.page2.url()).toBe(`${process.env.BASE_URL}`)
         await fulldnav.credentialpage()
-        await LoginPage2.login(username2,password2)
+        await LoginPage2.login(`${process.env.USER_2}`,`${process.env.PASS_USER_2}`)
         await fulldnav.reviewDataextraction()
     })
-}
-)
+
+})

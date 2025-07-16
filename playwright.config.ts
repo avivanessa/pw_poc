@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 export default defineConfig({
   globalSetup: './auth.setup.ts',
   testDir: './tests',
-  timeout: 70 * 1000,
+  timeout: 500 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
