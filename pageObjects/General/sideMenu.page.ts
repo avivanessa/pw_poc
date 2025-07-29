@@ -4,15 +4,20 @@ export default class SideMenuPage{
     readonly page: Page
     readonly dashboard: Locator
     readonly valuationAndReconciliation: Locator
-    readonly fullDnav: Locator    
+    readonly fullDnav: Locator 
+    readonly auditDirectorySubMenu: Locator   
+    auditDirectoryTitle: Locator
 
     constructor(page: Page){
         this.page = page
         this.dashboard = this.page.locator('a[href="/US/dashboard"]')
         this.valuationAndReconciliation = this.page.locator('a[href="/US/modularized-procedures"]')
         // this.fullDnav = this.page.locator('a[href="/US/audits"]') 
-        this.fullDnav = this.page.locator('span.ant-menu-title-content >> text="Audit Directory"') 
-        
+        //this.fullDnav = this.page.locator('span.ant-menu-title-content >> text="Audit Directory"') 
+
+        this.fullDnav = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[2]')
+        this.auditDirectorySubMenu = this.page.getByRole('link', { name: 'Audit Directory' })
+        this.auditDirectoryTitle = this.page.locator('span.ant-page-header-heading-title >> text="Audit Directory"')
     }
 
     async clickDashboard(){
@@ -24,6 +29,10 @@ export default class SideMenuPage{
     }
 
     async clickAuditDirectory(){
-        await this.fullDnav.locator(`div.ant-space-item>span.ant-typography >>text="Audit Directory"`).click()
+        await this.fullDnav.click()
+        await this.auditDirectorySubMenu.click()
+        await this.auditDirectoryTitle.waitFor({ state: 'visible' })
+        //await expect(this.page).toHaveURL(/.*\/audits/);
+        await expect(this.auditDirectoryTitle).toBeVisible();
     }
 }
