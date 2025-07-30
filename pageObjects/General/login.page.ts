@@ -7,6 +7,8 @@ export default class LoginPage {
     readonly nextButton: Locator
     readonly signinButton: Locator
     readonly acceptCookiesButton: Locator
+    readonly accountName: Locator
+    readonly logoutOption: Locator
 
     constructor(page: Page){
         this.page = page
@@ -15,6 +17,8 @@ export default class LoginPage {
         this.nextButton = this.page.getByRole('button', { name: 'Next' });
         this.signinButton = this.page.getByRole('button', { name: 'Sign in' });
         this.acceptCookiesButton = this.page.locator('button[id="onetrust-accept-btn-handler"]')
+        this.accountName = this.page.locator('span.ant-avatar-string').first()
+        this.logoutOption = this.page.locator('//div[text()="Log Out"]')
     }
 
     async login(email: string, password: string){
@@ -26,5 +30,13 @@ export default class LoginPage {
 
     async acceptCookies(){
         await this.acceptCookiesButton.click()
+    }
+
+    async logout(){
+        await this.accountName.click()
+        await this.logoutOption.click()
+        await this.page.locator('//div[@data-test-id="audittest10002@deloitte.com"]').click()
+        await this.page.waitForTimeout(6000)
+        await this.page.locator('//div[@id="otherTile"]').click()
     }
 }

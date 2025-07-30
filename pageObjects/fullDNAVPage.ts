@@ -61,9 +61,9 @@ export default class FullDNAVPage {
 
     constructor(page: Page){
         this.page = page
-        this.fulldnav = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[2]') 
-        this.btn_createaudit = this.page.locator('//button/span[text()="Create Audit"]')
-        this.submodule_auditdirectory = this.page.getByRole('link', { name: 'Audit Directory' })
+        //this.fulldnav = this.page.locator('//div[@class="ant-layout-sider-children"]/ul/li[2]') 
+        this.btn_createaudit = this.page.locator('')
+        //this.submodule_auditdirectory = this.page.getByRole('link', { name: 'Audit Directory' })
         this.clientname = this.page.locator('div[name="clientName"]')
         this.clientnamedropdown = this.page.locator('div[name="clientName"] input.ant-select-selection-search-input')
         this.fiscalYear = this.page.locator('div[name="fiscalYear"]')
@@ -201,8 +201,8 @@ export default class FullDNAVPage {
     }
 
     async verifyClientDataChecks(){       
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
+        //await this.fulldnav.click()
+        //await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.verifyCardVisible('Client Data')
         await this.verifyCardStatus('Client Data','In Preparation')
@@ -239,8 +239,8 @@ export default class FullDNAVPage {
     }
 
     async reviewWithAnotherUser(){
-        await this.fulldnav.click()
-        await this.submodule_auditdirectory.click()
+        //await this.fulldnav.click()
+        //await this.submodule_auditdirectory.click()
         await this.auditnamerecord.click()
         await this.verifyCardVisible('Client Data')
         await this.clickCard('Client Data')
