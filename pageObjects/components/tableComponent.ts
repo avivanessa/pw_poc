@@ -12,7 +12,7 @@ export class TableComponent {
     */
   constructor(page: Page) {
     this.page = page;
-    this.table = page.locator('.ant-table-container table');
+    this.table = this.page.locator('.ant-table-container table');
     this.rows = this.table.locator('tbody > tr:not(.ant-table-measure-row)');
     this.headers = this.table.locator('thead.ant-table-thead th');
   }
@@ -40,6 +40,7 @@ export class TableComponent {
    * @returns {string} - Text content of the specified cell
    */
   async getCellText(rowIdx: number, colIdx: number): Promise<string> {
+    await this.page.waitForLoadState('domcontentloaded');
     return await this.table.locator(`tbody tr`).nth(rowIdx)
       .locator('td').nth(colIdx).innerText();
   }
@@ -50,6 +51,7 @@ export class TableComponent {
    * @param colIdx - index of the column (0-based)
    */
   async clickCell(rowIdx: number, colIdx: number) {
+    await this.page.waitForLoadState('load');
     await this.table.locator(`tbody tr`).nth(rowIdx)
       .locator('td').nth(colIdx).click();
   }
@@ -63,8 +65,9 @@ export class TableComponent {
   }
 
   async verifyIsVisible() {
-    expect (await this.table.isVisible()).toBeTruthy();
+    expect (await this.table).toBeVisible();
     expect (await this.table.locator(`tbody tr`));
+    expect (await this.rows.nth(1)).toBeVisible();
     expect (await this.rows.count()).toBeGreaterThan(0);
   }
 }

@@ -35,8 +35,9 @@ export default class LoginPage {
     async logout(){
         await this.accountName.click()
         await this.logoutOption.click()
-        await this.page.locator('//div[@data-test-id="audittest10002@deloitte.com"]').click()
-        await this.page.waitForTimeout(6000)
-        await this.page.locator('//div[@id="otherTile"]').click()
+        await this.page.close()
+        //await this.page.locator('//div[@data-test-id="audittest10019@deloitte.com"]').click()
+        //await this.page.waitForTimeout(6000)
+        //await this.page.locator('//div[@id="otherTile"]').click()
     }
 }

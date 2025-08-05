@@ -21,8 +21,10 @@ export class CardComponent {
   }
 
   async verifyCardVisible(){
-      expect (await this.card.isVisible()).toBeTruthy();
-      console.log(`Card with name "${this.cardName}" is visible.`);
+    await this.page.waitForLoadState('load');
+    this.card.waitFor({ state: 'visible' });
+    expect (await this.card.isVisible()).toBeTruthy();
+    console.log(`Card with name "${this.cardName}" is visible.`);
   }
 
   async clickCard(){
@@ -30,7 +32,8 @@ export class CardComponent {
   }
 
   async verifyCardStatus(expectedstatus){
-      await expect(await this.cardStatus.innerText()).toEqual(expectedstatus)
+    //await this.page.waitForLoadState('load');
+    await expect(await this.cardStatus.innerText()).toEqual(expectedstatus)
   }
   
 }

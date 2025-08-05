@@ -1,7 +1,7 @@
 // import { test } from '../../fixtures/auth.fixture';
 import { test, expect } from '@playwright/test'
-import LoginPage from '../pageObjects/General/login.page'
-import homepage from '../pageObjects/General/home.page'
+import LoginPage from '../../../pageObjects/General/login.page'
+import homepage from '../../../pageObjects/General/home.page'
 
 import dotenv from 'dotenv'
 dotenv.config()
