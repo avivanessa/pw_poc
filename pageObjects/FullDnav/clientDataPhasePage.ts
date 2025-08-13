@@ -19,6 +19,7 @@ export default class ClientDataPage {
     
     constructor(page: Page) {
         this.page = page;
+        // this.titlePage = this.page.locator('.ant-page-header-heading-title');
         this.ClientDataCard = new CardComponent(this.page, 'Client Data');
         this.DeloitteDataCard = new CardComponent(this.page, 'Deloitte Data');
         this.titlePage = this.page.locator('span.ant-page-header-heading-title').nth(1);    
@@ -67,9 +68,9 @@ export default class ClientDataPage {
         // await this.verifyPageIsOpen('Client Data');
         await this.prepare()
         await this.page.goBack()
-        await this.page.waitForTimeout(2000)
+        await this.titlePage.waitFor({ state: 'visible' })
         await this.page.reload()
-        await this.page.waitForTimeout(2000)
+        await this.titlePage.waitFor({ state: 'visible' })
         await this.verifyClientDataInReview()
     }
 
@@ -102,7 +103,6 @@ export default class ClientDataPage {
     async verifyClientDataChecks(){
         await this.page.waitForTimeout(3000)
         await this.commentAllPendingItems()
-        // await this.prepare()
     }
     
     async commentAllPendingItems() {
@@ -111,7 +111,7 @@ export default class ClientDataPage {
         const items = await this.itemsPendingComments.elementHandles()
         console.log(`Number of items pending comments: ${items.length}`);
         for (const btn of await items) {
-            await btn.click()
+            await this.itemsPendingComments.first().click()
             await this.clarificationText.fill('Test Data from Automation Testing')
             await this.saveButton.click()
         }

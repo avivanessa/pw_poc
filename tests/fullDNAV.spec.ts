@@ -105,7 +105,7 @@ test.describe.skip('Valuation and Reconciliation > Home Page', () => {
 
    })
 
-   test.skip('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {sideMenuPage, fulldnav} = initializePages(page)
         await sideMenuPage.clickAuditDirectory()
         // await fulldnav.logout()

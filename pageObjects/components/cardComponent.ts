@@ -23,7 +23,7 @@ export class CardComponent {
   async verifyCardVisible(){
     await this.page.waitForLoadState('load');
     this.card.waitFor({ state: 'visible' });
-    expect (await this.card.isVisible()).toBeTruthy();
+    expect (await this.card).toBeVisible();
     console.log(`Card with name "${this.cardName}" is visible.`);
   }
 

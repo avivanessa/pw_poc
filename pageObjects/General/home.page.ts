@@ -1,7 +1,4 @@
 import { Locator, Page, expect, BrowserContext } from '@playwright/test'
-import exp from 'constants'
-import { stat } from 'fs'
-import { memoryUsage } from 'process'
 
 export default class HomePage {
     readonly page: Page

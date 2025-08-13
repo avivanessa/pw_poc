@@ -1,8 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
-// import { test } from '../../fixtures/auth.fixture';
 
 import { DropdownComponent } from '../components/dropdownComponent';
 import { TableComponent } from '../components/tableComponent';
+import ExecutionPhasePage from './executionPhasePage';
 
 
 export default class FullDnavPage {
@@ -20,6 +20,7 @@ export default class FullDnavPage {
     successMessage: string
     auditTable: TableComponent
     auditIdCreated: number
+    executionPhasePage: ExecutionPhasePage
 
 
     constructor(page: Page) {
@@ -34,6 +35,7 @@ export default class FullDnavPage {
         this.saveCreateAuditButton = this.page.getByRole('button', { name: 'Create Audit' }).nth(1) // this.page.locator('(//button/span[text()="Create Audit"])[2]') // this.page.getByRole('button', { name: 'Create Audit' });
         this.successToastmsg = this.page.locator('div.ant-notification-notice-message')
         this.auditTable = new TableComponent(this.page);
+        this.executionPhasePage = new ExecutionPhasePage(this.page);
 
         // this.titlePage = this.page.locator('span.ant-page-header-heading-title >> text="Phase Detail"');
     }
@@ -82,7 +84,6 @@ export default class FullDnavPage {
     async openFirstAudit(auditId) {
         await this.auditTable.verifyIsVisible();
         await this.auditTable.clickCell(1, 1);
-        //await this.page.waitForLoadState('load');
         expect(this.page.url()).toContain("/"+auditId+"/");
     }
 }
