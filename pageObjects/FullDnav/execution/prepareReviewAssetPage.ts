@@ -15,7 +15,7 @@ export class PrepareReviewAssetPage{
     
     constructor(private page: Page) {
         this.emailPreparedByLabel = this.page.locator('div:has-text("Prepared by") + div').nth(0)
-        this.reviewerToggle = this.page.locator('div:has-text("Sign off by reviewer") + div > button > div')
+        this.reviewerToggle = this.page.locator('span.ant-switch-inner').nth(1)
         this.emailReviewerByLabel = this.page.locator('div:has-text("Reviewed by") + div').nth(0)
         
         this.exceptionCategoryDropdown = new DropdownComponent(this.page, 'commentCategory');
@@ -31,23 +31,6 @@ export class PrepareReviewAssetPage{
         
     }
 
-    /*
-    This method is used to toggle the Prepare/Review section out of the Prepare/Review popup. Into Phase Detail Page.
-    */
-    async toggleOnPrepareBy(){
-        await this.prepareToggle.click()
-        await this.page.waitForTimeout(5000)
-        console.log(await this.emailPreparedByLabel.innerText())
-        await expect(await this.emailPreparedByLabel).toBeVisible()
-    }
-
-    async toggleOnReview(){
-        await this.reviewerToggle.click()
-        await this.page.waitForTimeout(5000)
-        console.log(await this.emailReviewerByLabel.innerText())
-        await expect(this.emailReviewerByLabel).toBeVisible()
-    }/* to This */ 
-
     async addCommentsAndSave() {
         console.log("addCommentsAndSave - To add comments and save Prepare/Review");
         await this.exceptionCategoryDropdown.selectOption('Finding');
@@ -56,7 +39,7 @@ export class PrepareReviewAssetPage{
             await this.savePrepareReviewButton.click();
             if (await this.confirmButton.isVisible()) {
                 await this.confirmButton.click();
-                await this.verifyToasterMessage('Category and Clarification saved');
+                await this.verifyToasterMessage('Category');
                 // await this.savePrepareReviewButton.waitFor({ state: 'hidden' });
             }
         }

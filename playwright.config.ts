@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 export default defineConfig({
   globalSetup: require.resolve('./global.setup.ts'),// './auth.setup.ts',
   testDir: './tests',
-  timeout: 250 * 1000,
+  timeout: 150 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

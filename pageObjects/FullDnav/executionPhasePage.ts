@@ -27,6 +27,7 @@ export default class ExecutionPhasePage {
     FDroutines: string[];
     breadCrumbAudit: Locator
     titlePage: Locator;
+    reviewExceptionsRadiobutton: Locator;
 ;
 
     constructor(page: Page) {
@@ -43,6 +44,7 @@ export default class ExecutionPhasePage {
         this.proceedButton = this.page.getByRole('button', { name: 'Proceed' });
         this.proceduresDropdown = new DropdownComponent(this.page, 'Procedures');
         this.breadCrumbAudit = this.page.locator('.ant-breadcrumb-link').nth(1);
+        this.reviewExceptionsRadiobutton = this.page.locator('span:has-text("Review Exceptions")').first();
         
 
         this.prepareReviewAssetPage = new PrepareReviewAssetPage(this.page);
@@ -95,11 +97,11 @@ export default class ExecutionPhasePage {
     }
 
     async bulkCommentsForPrepare() {
-        await this.gotoBulkPrepareReview();
+        await this.gotoBulkPrepare();
         await this.prepareReviewAssetPage.addCommentsAndSave()
     }
 
-    async gotoBulkPrepareReview() {
+    async gotoBulkPrepare() {
         await this.page.waitForTimeout(4000);
         if (!await this.prepareReviewAssetPage.commentSectionInput.isVisible()) {
             console.log("gotoBulkPrepareReview - To click on actions dropdown and select Prepare/Review option");
@@ -114,10 +116,29 @@ export default class ExecutionPhasePage {
         }
     }
 
+
+    async gotoBulkReview() {
+        await this.page.waitForTimeout(4000);
+        if (!await this.prepareReviewAssetPage.commentSectionInput.isVisible()) {
+            console.log("gotoBulkPrepareReview - To click on actions dropdown and select Prepare/Review option");
+            await this.actionsButton.hover();
+            await this.actionsButton.click({ force: true });
+            await this.page.waitForTimeout(2000);
+            await this.prepareReviewOption.hover();
+            await this.prepareReviewOption.click();
+            await this.page.waitForTimeout(2000);
+            await this.allAssetLink.click();
+            await this.reviewExceptionsRadiobutton.click();
+            //await this.proceduresDropdown.selectValue('Review');
+            await this.proceedButton.click();
+        }
+    }
+    
+
     async completeBulkPrepare() {
         console.log("completeBulkPrepare");
         await this.bulkCommentsForPrepare();
-        await this.gotoBulkPrepareReview();
+        await this.gotoBulkPrepare();
         await this.prepareReviewAssetPage.enableTogglePreparerExecution();
     }
 
@@ -127,7 +148,7 @@ export default class ExecutionPhasePage {
 
     async completeBulkReview() {
         console.log("completeBulkReview");
-        await this.gotoBulkPrepareReview();
+        await this.gotoBulkReview();
         await this.prepareReviewAssetPage.enableToggleReviewExecution();
     }
 }
