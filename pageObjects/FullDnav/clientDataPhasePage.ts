@@ -19,7 +19,6 @@ export default class ClientDataPage {
     
     constructor(page: Page) {
         this.page = page;
-        // this.titlePage = this.page.locator('.ant-page-header-heading-title');
         this.ClientDataCard = new CardComponent(this.page, 'Client Data');
         this.DeloitteDataCard = new CardComponent(this.page, 'Deloitte Data');
         this.titlePage = this.page.locator('span.ant-page-header-heading-title').nth(1);    
@@ -41,7 +40,6 @@ export default class ClientDataPage {
     /// Verify Client Data and Deloitte Data cards are in preparation phase
     async verifyDataPreparationPhase(){
         console.log("To verify Client Data and Deloitte Data cards are in preparation phase")
-        // await this.verifyPageIsOpen('Client Data');
         await this.ClientDataCard.verifyCardStatus('In Preparation');
         await this.DeloitteDataCard.verifyCardStatus('In Preparation');  
     }
@@ -63,9 +61,7 @@ export default class ClientDataPage {
     async prepareClientData(){
         await this.verifyDataPreparationPhase();
         await this.ClientDataCard.clickCard();
-        //await this.verifyPageIsOpen('Client Data');
         await this.verifyClientDataChecks()
-        // await this.verifyPageIsOpen('Client Data');
         await this.prepare()
         await this.page.goBack()
         await this.titlePage.waitFor({ state: 'visible' })

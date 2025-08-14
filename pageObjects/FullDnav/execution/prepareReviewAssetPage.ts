@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { DropdownComponent } from '../../components/dropdownComponent';
+import { ToasterMessageComponent } from '../../components/toasterMessageComponent';
 
 export class PrepareReviewAssetPage{
     prepareToggle: Locator
@@ -11,7 +12,7 @@ export class PrepareReviewAssetPage{
     commentSectionInput: Locator;
     savePrepareReviewButton: Locator;
     closeIcon: Locator;
-    toasterMessage: Locator;
+    toasterMessage: ToasterMessageComponent ;
     
     constructor(private page: Page) {
         this.emailPreparedByLabel = this.page.locator('div:has-text("Prepared by") + div').nth(0)
@@ -27,7 +28,7 @@ export class PrepareReviewAssetPage{
         this.confirmButton = this.page.getByRole('button', { name: 'Confirm' });
         
         this.closeIcon = this.page.getByRole('button', { name: 'Close', exact: true });
-        this.toasterMessage = this.page.locator('div.ant-notification-notice-message');
+        this.toasterMessage = new ToasterMessageComponent(this.page);
         
     }
 
@@ -39,7 +40,7 @@ export class PrepareReviewAssetPage{
             await this.savePrepareReviewButton.click();
             if (await this.confirmButton.isVisible()) {
                 await this.confirmButton.click();
-                await this.verifyToasterMessage('Category');
+                await this.toasterMessage.verifyToasterMessage('Category');
                 // await this.savePrepareReviewButton.waitFor({ state: 'hidden' });
             }
         }
@@ -50,37 +51,25 @@ export class PrepareReviewAssetPage{
     It waits for the toggle to be visible, clicks it, and confirms the action.
     */
     async enableTogglePreparerExecution() {
-        // await this.page.waitForTimeout(2000);
         await this.prepareToggle.waitFor({ state: 'visible' });
         await this.prepareToggle.click();
-        // await this.page.waitForTimeout(2000);
         await this.confirmButton.waitFor({ state: 'visible' });
         await this.confirmButton.click();
-        //await this.page.waitForTimeout(2000);
-        await this.verifyToasterMessage('Prepare signed off');
+        await this.toasterMessage.verifyToasterMessage('Prepare signed off');
     }
 
     async enableToggleReviewExecution() {
-        // await this.page.waitForTimeout(2000);
         await this.reviewerToggle.waitFor({ state: 'visible' });
         await this.reviewerToggle.click();
-        // await this.page.waitForTimeout(2000);
         await this.confirmButton.waitFor({ state: 'visible' });
         await this.confirmButton.click();
-        //await this.page.waitForTimeout(2000);
-        await this.verifyToasterMessage('Review signed off');
+        await this.toasterMessage.verifyToasterMessage('Review signed off');
     }
 
     async close() {
         console.log("Closing Prepare / Review popup");
         await this.closeIcon.click();
         await this.page.waitForTimeout(2000);
-    }
-
-    async verifyToasterMessage(expectedMessage: string) {
-        await this.toasterMessage.waitFor({ state: 'visible' }); 
-        await expect(this.toasterMessage).toContainText(expectedMessage);
-        console.log(`Toaster message verified: ${expectedMessage}`);
     }
 }
 

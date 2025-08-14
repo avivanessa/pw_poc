@@ -479,7 +479,7 @@ let auditID: number
                 await executionPhasePage.verifyRoutineStatus('Income', 'Reviewed');
         })
 
-        test('[Execution Phase][Review][Income Routine] Verify the Income asset on IDV page and asset status changes to prepared',
+        test('[Execution Phase][Review][Unique Positions] Verify the Income asset on IDV page and asset status changes to prepared',
             async ({userReviewPage}) => {
                 const { loginPage, sideMenuPage, fullDnavPage, executionPhasePage } = inicializePages(userReviewPage)
                 await loginPage.navigateToLoginPage(userReviewPage);
@@ -487,11 +487,8 @@ let auditID: number
 
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
-                await executionPhasePage.openRoutine('Income');
-                await executionPhasePage.completeBulkReview();
-                
-                await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Income', 'Reviewed');
+                await executionPhasePage.reviewUniqueItems();
         })
 
     })

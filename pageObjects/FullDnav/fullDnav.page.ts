@@ -22,7 +22,6 @@ export default class FullDnavPage {
     auditIdCreated: number
     executionPhasePage: ExecutionPhasePage
 
-
     constructor(page: Page) {
         this.page = page
         this.createAuditButton = this.page.getByRole('button', { name: 'Create Audit' })
@@ -30,14 +29,12 @@ export default class FullDnavPage {
         this.engagementIdDropdown = new DropdownComponent(this.page, 'engagementId')
         this.fiscalYearDropdown = new DropdownComponent(this.page, 'fiscalYear')
         this.dataImportIdentifierDropdown = new DropdownComponent(this.page, 'dataImportIdentifier')
-        this.nextButton = this.page.getByRole('button', { name: 'Next' });
+        this.nextButton = this.page.getByRole('button', { name: 'Next' })
         this.opinionDateInput = this.page.locator('input[name="opinionDate"]')
         this.saveCreateAuditButton = this.page.getByRole('button', { name: 'Create Audit' }).nth(1) // this.page.locator('(//button/span[text()="Create Audit"])[2]') // this.page.getByRole('button', { name: 'Create Audit' });
         this.successToastmsg = this.page.locator('div.ant-notification-notice-message')
         this.auditTable = new TableComponent(this.page);
         this.executionPhasePage = new ExecutionPhasePage(this.page);
-
-        // this.titlePage = this.page.locator('span.ant-page-header-heading-title >> text="Phase Detail"');
     }
 
     async createNewAudit(cname:string,year:any,engId:any,dataimportid:any,date:any){

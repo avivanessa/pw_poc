@@ -50,8 +50,8 @@ export default class ModularPage{
     }
 
     async addProject(folderName: string, projectName: string ){
-        const clientDataFilePath = './test-data/DNAV_Client_Data_Template 1.xlsm'
-        const counterPartyFilePath = './test-data/DNAV_CounterParty_Data_Template 1 1.xlsm'
+        const clientDataFilePath = './test-data/DNAV_Client_Data_Template.xlsm'
+        const counterPartyFilePath = './test-data/DNAV_CounterParty_Data_Template.xlsm'
         //const opinionDate = randomFutureDayCurrentMonth()
 
         await this.actionsButton.click() 

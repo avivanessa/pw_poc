@@ -6,6 +6,7 @@ import { ReconciliationRoutinePage } from './execution/reconciliationRoutinePage
 import { CostRollforwardRoutinePage } from './execution/costRollforwardRoutinePage';
 import dotenv from 'dotenv'
 import { DropdownComponent } from '../components/dropdownComponent';
+import { UniquePositionsPage } from './execution/uniquePositionsPage';
 
 dotenv.config()
 
@@ -28,7 +29,8 @@ export default class ExecutionPhasePage {
     breadCrumbAudit: Locator
     titlePage: Locator;
     reviewExceptionsRadiobutton: Locator;
-;
+    uniquePositionIcons: Locator;
+    uniquePositionsPage: UniquePositionsPage;
 
     constructor(page: Page) {
         this.page = page;
@@ -45,12 +47,13 @@ export default class ExecutionPhasePage {
         this.proceduresDropdown = new DropdownComponent(this.page, 'Procedures');
         this.breadCrumbAudit = this.page.locator('.ant-breadcrumb-link').nth(1);
         this.reviewExceptionsRadiobutton = this.page.locator('span:has-text("Review Exceptions")').first();
+        this.uniquePositionIcons = this.page.locator('button.ant-btn-circle.ant-btn-text.ant-btn-color-default.ant-btn-variant-text > span[aria-label="Warning-Circle-Warning"]');
         
-
         this.prepareReviewAssetPage = new PrepareReviewAssetPage(this.page);
         this.valuationRoutinePage = new ValuationRoutinePage(this.page);
         this.reconciliationRoutinePage = new ReconciliationRoutinePage(this.page);
         this.costRollforwardRoutinePage = new CostRollforwardRoutinePage(this.page);
+        this.uniquePositionsPage = new UniquePositionsPage(this.page);
     }
 
     async verifyProcedures() {
@@ -133,7 +136,6 @@ export default class ExecutionPhasePage {
             await this.proceedButton.click();
         }
     }
-    
 
     async completeBulkPrepare() {
         console.log("completeBulkPrepare");
@@ -150,5 +152,26 @@ export default class ExecutionPhasePage {
         console.log("completeBulkReview");
         await this.gotoBulkReview();
         await this.prepareReviewAssetPage.enableToggleReviewExecution();
+    }
+
+    async reviewUniqueItems() {
+        console.log("reviewUniqueItems");
+
+        /*const items = await this.uniquePositionIcons.elementHandles()
+        console.log(`Number of unique positions pending to review: ${items.length}`);
+
+        for (let index = 0; index < items.length; index++) {
+
+            const itemsUpdated = await this.uniquePositionIcons.elementHandles()
+            const iconButton = itemsUpdated[index]
+            await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
+            await iconButton.click()
+            await this.uniquePositionsPage.reviewUniqueItems();
+        }*/
+
+        await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
+        await this.uniquePositionIcons.first().click(); 
+        await this.uniquePositionsPage.reviewUniqueItems();
+        console.log("Unique items reviewed successfully");
     }
 }
