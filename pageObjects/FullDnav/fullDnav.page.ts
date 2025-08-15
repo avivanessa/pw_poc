@@ -1,9 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
-// import { test } from '../../fixtures/auth.fixture';
 
 import { DropdownComponent } from '../components/dropdownComponent';
 import { TableComponent } from '../components/tableComponent';
-import { CardComponent } from '../components/cardComponent';
+import ExecutionPhasePage from './executionPhasePage';
 
 
 export default class FullDnavPage {
@@ -21,22 +20,21 @@ export default class FullDnavPage {
     successMessage: string
     auditTable: TableComponent
     auditIdCreated: number
-
+    executionPhasePage: ExecutionPhasePage
 
     constructor(page: Page) {
         this.page = page
         this.createAuditButton = this.page.getByRole('button', { name: 'Create Audit' })
-        this.clientNameDropdown = new DropdownComponent(page, 'clientName')
-        this.engagementIdDropdown = new DropdownComponent(page, 'engagementId')
-        this.fiscalYearDropdown = new DropdownComponent(page, 'fiscalYear')
-        this.dataImportIdentifierDropdown = new DropdownComponent(page, 'dataImportIdentifier')
-        this.nextButton = this.page.getByRole('button', { name: 'Next' });
-        this.opinionDateInput = this.page.locator('input[name="opinionDate"]') // this.page.getByRole('button', { name: 'opinionDate' });
+        this.clientNameDropdown = new DropdownComponent(this.page, 'clientName')
+        this.engagementIdDropdown = new DropdownComponent(this.page, 'engagementId')
+        this.fiscalYearDropdown = new DropdownComponent(this.page, 'fiscalYear')
+        this.dataImportIdentifierDropdown = new DropdownComponent(this.page, 'dataImportIdentifier')
+        this.nextButton = this.page.getByRole('button', { name: 'Next' })
+        this.opinionDateInput = this.page.locator('input[name="opinionDate"]')
         this.saveCreateAuditButton = this.page.getByRole('button', { name: 'Create Audit' }).nth(1) // this.page.locator('(//button/span[text()="Create Audit"])[2]') // this.page.getByRole('button', { name: 'Create Audit' });
         this.successToastmsg = this.page.locator('div.ant-notification-notice-message')
-        this.auditTable = new TableComponent(page);
-
-        // this.titlePage = this.page.locator('span.ant-page-header-heading-title >> text="Phase Detail"');
+        this.auditTable = new TableComponent(this.page);
+        this.executionPhasePage = new ExecutionPhasePage(this.page);
     }
 
     async createNewAudit(cname:string,year:any,engId:any,dataimportid:any,date:any){
@@ -64,20 +62,25 @@ export default class FullDnavPage {
         this.auditIdCreated = parseInt(splitmsg[1]);
         expect(this.auditIdCreated).toBeGreaterThan(0);
         console.log("Audit ID Created: " + this.auditIdCreated);
+        await this.auditTable.verifyIsVisible();
+
         // Verify Table is not empty
+        await this.page.waitForTimeout(2000)
         const rows = await this.auditTable.getRowCount();
         console.log("Row Count: " + rows );
         expect(rows).toBeGreaterThan(0);
+
+
         // Verify Audit ID in Audit Table
         const firstCellText = await this.auditTable.getCellText(1, 1);
         console.log(firstCellText)
         expect(firstCellText).toContain(clientName);
+        return this.auditIdCreated;
     }
 
-    async openFirstAudit() {
-        await this.page.waitForTimeout(3000)
+    async openFirstAudit(auditId) {
         await this.auditTable.verifyIsVisible();
         await this.auditTable.clickCell(1, 1);
-        // TODO: Include validation of Audit ID - Validate if this is the created one 
+        expect(this.page.url()).toContain("/"+auditId+"/");
     }
 }

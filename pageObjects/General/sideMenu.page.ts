@@ -30,9 +30,9 @@ export default class SideMenuPage{
 
     async clickAuditDirectory(){
         await this.fullDnav.click()
+        await this.auditDirectorySubMenu.waitFor({ state: 'visible' })
         await this.auditDirectorySubMenu.click()
         await this.auditDirectoryTitle.waitFor({ state: 'visible' })
-        //await expect(this.page).toHaveURL(/.*\/audits/);
         await expect(this.auditDirectoryTitle).toBeVisible();
     }
 }

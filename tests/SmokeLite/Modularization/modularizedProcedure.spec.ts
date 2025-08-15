@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
-import LoginPage from '../pageObjects/General/login.page'
-import SideMenuPage from '../pageObjects/General/sideMenu.page'
-import ModularPage from '../pageObjects/Modular/Modular.page'
+import LoginPage from '../../../pageObjects/General/login.page'
+import SideMenuPage from '../../../pageObjects/General/sideMenu.page'
+import ModularPage from '../../../pageObjects/Modular/Modular.page'
 import dotenv from 'dotenv'
 dotenv.config()
 

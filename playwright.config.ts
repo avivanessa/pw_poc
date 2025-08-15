@@ -11,7 +11,7 @@ import dotenv from 'dotenv';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  globalSetup: './auth.setup.ts',
+  globalSetup: require.resolve('./global.setup.ts'),// './auth.setup.ts',
   testDir: './tests',
   timeout: 150 * 1000,
   /* Run tests in files in parallel */

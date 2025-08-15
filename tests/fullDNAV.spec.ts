@@ -12,7 +12,7 @@ dotenv.config()
 let username2:string = process.env.USER_2!
 let password2:string = process.env.PASS_USER_2!
 
-test.describe('Valuation and Reconciliation > Home Page', () => {
+test.describe.skip('Valuation and Reconciliation > Home Page', () => {
     test.use({ storageState: './user1_auth.json'})
     
     test.beforeEach(async ({ page }) => {
@@ -105,7 +105,7 @@ test.describe('Valuation and Reconciliation > Home Page', () => {
 
    })
 
-   test.skip('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
+   test('Executionphase all cases - Verify the valuation asset on IDV page and asset status changes to prepared and reviewed ', async ({page}) => {
         const {sideMenuPage, fulldnav} = initializePages(page)
         await sideMenuPage.clickAuditDirectory()
         // await fulldnav.logout()

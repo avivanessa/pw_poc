@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
 export default class LoginPage {
     readonly page: Page
@@ -21,6 +21,13 @@ export default class LoginPage {
         this.logoutOption = this.page.locator('//div[text()="Log Out"]')
     }
 
+    async navigateToLoginPage(page: Page) {
+        console.log("process.env.baseurl")
+        await page.goto('/')
+        expect(page.url()).toContain(`${process.env.BASE_URL}`)
+        await this.acceptCookies();
+    }
+
     async login(email: string, password: string){
         await this.emailInput.fill(email)
         await this.nextButton.click()
@@ -29,14 +36,13 @@ export default class LoginPage {
     }
 
     async acceptCookies(){
+        await this.acceptCookiesButton.waitFor({ state: 'visible' })
         await this.acceptCookiesButton.click()
     }
 
     async logout(){
         await this.accountName.click()
         await this.logoutOption.click()
-        await this.page.locator('//div[@data-test-id="audittest10002@deloitte.com"]').click()
-        await this.page.waitForTimeout(6000)
-        await this.page.locator('//div[@id="otherTile"]').click()
+        await this.page.close()
     }
 }
