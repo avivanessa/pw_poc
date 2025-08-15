@@ -1,29 +1,19 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 import { CardComponent } from '../components/cardComponent';
 import { PrepareReviewComponent } from '../components/prepareReviewComponent';
 
 export default class ClientDataPage {
     private readonly page: Page;
-    titlePage: Locator;
     prepareReviewComponent: PrepareReviewComponent
     MaterialityCard: CardComponent
     PortfolioCard: CardComponent
 
     constructor(page: Page) {
         this.page = page;
-        this.titlePage = this.page.locator('span.ant-page-header-heading-title').nth(1);
         this.MaterialityCard = new CardComponent(this.page, 'Materiality');
         this.PortfolioCard = new CardComponent(this.page, 'Portfolio Overview');
         this.prepareReviewComponent = new PrepareReviewComponent(this.page);
-    }
-
-    async verifyPageIsOpen(auditName: string){
-        await this.page.waitForLoadState('load');
-        await expect(this.titlePage).toBeVisible();
-        const pageTitle = await this.titlePage.innerText();
-        expect(pageTitle).toContain(auditName)
-        console.log(`Phase Detail Page is open with title: ${pageTitle}`);
     }
 
     /// Verify Materiality and Portfolio cards are in preparation phase
