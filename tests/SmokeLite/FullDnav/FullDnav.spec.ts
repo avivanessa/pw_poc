@@ -1,5 +1,5 @@
 import { test } from '../../../fixtures/users.fixture';
-import { expect, BrowserContext, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import dotenv from 'dotenv'
 import LoginPage from '../../../pageObjects/General/login.page';
 import SideMenuPage from '../../../pageObjects/General/sideMenu.page';
@@ -22,7 +22,7 @@ let auditID: number
 
     const inicializePages = (page) => {
         // this.auditID 
-        globalThis.auditIdSmoke = 8999;
+        //  globalThis.auditIdSmoke = 8999;
         return{
             loginPage: new LoginPage(page),
             sideMenuPage: new SideMenuPage(page),
@@ -496,7 +496,7 @@ let auditID: number
     /* 
         Conclusion Phase
     */
-    test('TC24 [Conclusion Phase] Verify user is able to see the Categorized Exception', 
+    test('[Conclusion Phase] Verify user is able to see the Categorized Exception', 
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
@@ -506,7 +506,7 @@ let auditID: number
             await planningPhasePage.verifyPlanningPhaseInPreparation()     
     })
 
-    test('TC26 [Conclusion Phase] [Prepare] Verify User can prepare and signoff the materiality procedure and portfolio overview', 
+    test('[Conclusion Phase] [Prepare] Verify User can prepare and signoff the materiality procedure and portfolio overview', 
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
@@ -516,7 +516,7 @@ let auditID: number
             await planningPhasePage.prepare()  
     })
 
-    test('TC29 [Conclusion Phase] [Review] Verify User can review and signoff the materiality procedure and portfolio overview', 
+    test('[Conclusion Phase] [Review] Verify User can review and signoff the materiality procedure and portfolio overview', 
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
