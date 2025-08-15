@@ -47,7 +47,7 @@ export default class ExecutionPhasePage {
         this.proceduresDropdown = new DropdownComponent(this.page, 'Procedures');
         this.breadCrumbAudit = this.page.locator('.ant-breadcrumb-link').nth(1);
         this.reviewExceptionsRadiobutton = this.page.locator('span:has-text("Review Exceptions")').first();
-        this.uniquePositionIcons = this.page.locator('button.ant-btn-circle.ant-btn-text.ant-btn-color-default.ant-btn-variant-text > span[aria-label="Warning-Circle-Warning"]');
+        this.uniquePositionIcons = page.locator('button.ant-btn-circle.ant-btn-text', { has: page.locator('span.icon-Warning-Circle-Warning')});
         
         this.prepareReviewAssetPage = new PrepareReviewAssetPage(this.page);
         this.valuationRoutinePage = new ValuationRoutinePage(this.page);

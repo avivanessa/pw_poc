@@ -496,7 +496,7 @@ let auditID: number
     /* 
         Conclusion Phase
     */
-    test('TC24 [Conclusion Phase] Verify user is able to see the materiality and portfolio', 
+    test('TC24 [Conclusion Phase] Verify user is able to see the Categorized Exception', 
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
