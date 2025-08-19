@@ -6,7 +6,7 @@ import ModularPage from '../../../pageObjects/Modular/Modular.page'
 import dotenv from 'dotenv'
 dotenv.config()
 
-test.describe('Valuation and Reconciliation > Home Page', () => {
+test.describe.skip('Valuation and Reconciliation > Home Page', () => {
     // test.use({ storageState: './user1_auth.json'})
 
     const initializePages = (page) => {

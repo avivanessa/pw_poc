@@ -7,11 +7,13 @@ export default class SideMenuPage{
     readonly fullDnav: Locator 
     readonly auditDirectorySubMenu: Locator   
     auditDirectoryTitle: Locator
+    spiner: Locator
 
     constructor(page: Page){
         this.page = page
         this.dashboard = this.page.locator('a[href="/US/dashboard"]')
         this.valuationAndReconciliation = this.page.locator('a[href="/US/modularized-procedures"]')
+        this.spiner = this.page.locator('div.ant-spin.ant-spin-spinning')
         // this.fullDnav = this.page.locator('a[href="/US/audits"]') 
         //this.fullDnav = this.page.locator('span.ant-menu-title-content >> text="Audit Directory"') 
 
@@ -21,18 +23,26 @@ export default class SideMenuPage{
     }
 
     async clickDashboard(){
-       await this.dashboard.click()
+        await this.waitForPage()
+        await this.dashboard.click()
     }
 
     async clickModular(){
+        await this.waitForPage()
         await this.valuationAndReconciliation.locator(`div.ant-space-item>span.ant-typography >>text="Valuation & Reconciliation"`).click()
     }
 
     async clickAuditDirectory(){
+        await this.waitForPage()
+        await this.fullDnav.waitFor({state: 'attached'})
         await this.fullDnav.click()
         await this.auditDirectorySubMenu.waitFor({ state: 'visible' })
         await this.auditDirectorySubMenu.click()
         await this.auditDirectoryTitle.waitFor({ state: 'visible' })
         await expect(this.auditDirectoryTitle).toBeVisible();
+    }
+
+    async waitForPage() {
+        await this.spiner.waitFor({state:'hidden'})
     }
 }

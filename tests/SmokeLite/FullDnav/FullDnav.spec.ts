@@ -7,6 +7,8 @@ import FullDnavPage from '../../../pageObjects/FullDnav/FullDnav.page';
 import ClientDataPhasePage from '../../../pageObjects/FullDnav/clientDataPhasePage';
 import PlanningPhasePage from '../../../pageObjects/FullDnav/planningPhasePage';
 import { ValuationRoutinePage } from '../../../pageObjects/FullDnav/execution/valuationRoutinePage';
+import ConclusionPhasePage from '../../../pageObjects/FullDnav/conclusionPhasePage';
+import ReportingPhasePage from '../../../pageObjects/FullDnav/reportingPhasePage';
 
 dotenv.config()
 
@@ -18,11 +20,13 @@ let fullDnavPage: FullDnavPage
 let clientDataPhasePage: ClientDataPhasePage
 let planningPhasePage: PlanningPhasePage
 let valuationRoutinePage: ValuationRoutinePage
+let conclusionPhasePage: ConclusionPhasePage
+let reportingPhasePage: ReportingPhasePage
 let auditID: number
 
     const inicializePages = (page) => {
         // this.auditID 
-        //  globalThis.auditIdSmoke = 8999;
+        //globalThis.auditIdSmoke = 9007;
         return{
             loginPage: new LoginPage(page),
             sideMenuPage: new SideMenuPage(page),
@@ -30,21 +34,26 @@ let auditID: number
             clientDataPhasePage: new ClientDataPhasePage(page),
             planningPhasePage: new PlanningPhasePage(page),
             executionPhasePage: new FullDnavPage(page).executionPhasePage,
-            valuationRoutinePage: new ValuationRoutinePage(page)
+            valuationRoutinePage: new ValuationRoutinePage(page),
+            conclusionPhasePage: new ConclusionPhasePage(page),
+            reportingPhasePage: new ReportingPhasePage(page)
         }
     } 
 
     test('TC15 [Create Audit] Verify user is able to create new audit', 
         async ({userPreparePage}) => {
-            const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userPreparePage)
+            const { loginPage, sideMenuPage , fullDnavPage, clientDataPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
             
-            await sideMenuPage.clickAuditDirectory()
+            await sideMenuPage.clickAuditDirectory();
             await fullDnavPage.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
                 `${process.env.DATA_IMPORT_IDENTIFIER}`,'12/15/2025')
             globalThis.auditIdSmoke = await fullDnavPage.verifyAuditCreated(`${process.env.CLIENT_NAME}`)
             // TC20 - Verify client and deloitte data are in preparation phase
-            await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
+            
+            //const { fullDnavPage, clientDataPhasePage } = inicializePages(userPreparePage)
+            await fullDnavPage.verifyStatusFirstAudit('Data Preparation - In Preparation');
+            await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke);
             await clientDataPhasePage.verifyDataPreparationPhase()
     })
 
@@ -65,7 +74,7 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
+            await loginPage.navigateToLoginPage(userReviewPage);
             
             // Login with Reviewer User
             //User 2 New Context and Page
@@ -103,7 +112,7 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
+            await loginPage.navigateToLoginPage(userReviewPage);
             //User 2 New Context and Page
             
             await sideMenuPage.clickAuditDirectory()
@@ -216,6 +225,7 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('FX Rates');
                 await executionPhasePage.gotoAuditFromBreadCrumb();
+                await userPreparePage.waitForTimeout(2000);
                 await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
         })
 
@@ -496,35 +506,70 @@ let auditID: number
     /* 
         Conclusion Phase
     */
-    test('[Conclusion Phase] Verify user is able to see the Categorized Exception', 
+    test('[Conclusion Phase] Verify user is able to see the Categorized Exceptions', 
         async ({userPreparePage}) => {
-            const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
+            const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
             await sideMenuPage.clickAuditDirectory()
             // Open the created audit
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
-            await planningPhasePage.verifyPlanningPhaseInPreparation()     
+            await conclusionPhasePage.verifyConclusionPhaseInPreparation()     
     })
 
-    test('[Conclusion Phase] [Prepare] Verify User can prepare and signoff the materiality procedure and portfolio overview', 
+    test('[Conclusion Phase] [Prepare] Verify User can prepare and signoff the Categorized Exceptions', 
         async ({userPreparePage}) => {
-            const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
+            const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
             await sideMenuPage.clickAuditDirectory()
             // Open the created audit
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
-            await planningPhasePage.prepare()  
+            await conclusionPhasePage.prepare()  
     })
 
-    test('[Conclusion Phase] [Review] Verify User can review and signoff the materiality procedure and portfolio overview', 
+    test('[Conclusion Phase] [Review] Verify User can review and signoff the Categorized Exception', 
         async ({userReviewPage}) => {
-            const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
+            const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
+            await loginPage.navigateToLoginPage(userReviewPage);
             //User 2 New Context and Page
             
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
-            await planningPhasePage.review()    
+            await conclusionPhasePage.review()    
+    })
+
+    /* 
+        Reporting Phase
+    */
+    test('[Reporting Phase] Verify user is able to see the Data Extraction', 
+        async ({userPreparePage}) => {
+            const { loginPage, sideMenuPage, fullDnavPage, reportingPhasePage } = inicializePages(userPreparePage)
+            await loginPage.navigateToLoginPage(userPreparePage);
+            await sideMenuPage.clickAuditDirectory()
+            // Open the created audit
+            await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
+            await reportingPhasePage.verifyReportingPhaseInPreparation()     
+    })
+
+    test('[Reporting Phase] [Prepare] Verify User can prepare and signoff the Data Extraction', 
+        async ({userPreparePage}) => {
+            const { loginPage, sideMenuPage, fullDnavPage, reportingPhasePage } = inicializePages(userPreparePage)
+            await loginPage.navigateToLoginPage(userPreparePage);
+            await sideMenuPage.clickAuditDirectory()
+            // Open the created audit
+            await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
+            await reportingPhasePage.prepare()  
+    })
+
+    test('[Reporting Phase] [Review] Verify User can review and signoff the Data Extraction', 
+        async ({userReviewPage}) => {
+            const { loginPage, sideMenuPage, fullDnavPage, reportingPhasePage } = inicializePages(userReviewPage)
+            // Login with Reviewer User
+            await loginPage.navigateToLoginPage(userReviewPage);
+            //User 2 New Context and Page
+            
+            await sideMenuPage.clickAuditDirectory()
+            await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
+            await reportingPhasePage.review()    
     })
 })

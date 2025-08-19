@@ -31,9 +31,9 @@ export class CardComponent {
       await this.card.click();
   }
 
-  async verifyCardStatus(expectedstatus){
-    //await this.page.waitForLoadState('load');
-    await expect(await this.cardStatus.innerText()).toEqual(expectedstatus)
+  async verifyCardStatus(expectedStatus: string){
+    await this.cardStatus.waitFor({state: 'attached'})
+    // await this.page.waitForFunction(async selector => await selector.innerText() === expectedStatus, this.cardStatus);
+    await expect(await this.cardStatus.innerText()).toEqual(expectedStatus)
   }
-  
 }

@@ -8,6 +8,7 @@ export class PrepareReviewAssetPage{
     reviewerToggle: Locator
     emailReviewerByLabel: Locator
     confirmButton: Locator
+    popupTitle: Locator
     exceptionCategoryDropdown: DropdownComponent;
     commentSectionInput: Locator;
     savePrepareReviewButton: Locator;
@@ -22,6 +23,7 @@ export class PrepareReviewAssetPage{
         this.exceptionCategoryDropdown = new DropdownComponent(this.page, 'commentCategory');
         this.prepareToggle = page.locator('span.ant-switch-inner').nth(0); // this.page.locator('(//span[@class="ant-switch-inner"])[1]');
         this.confirmButton = this.page.getByRole('button', { name: 'Confirm' });
+        this.popupTitle = this.page.locator('');
 
         this.commentSectionInput =  this.page.locator('//textarea[@name="commentText"]'); // page.getByRole('textbox', { name: 'commentText' });
         this.savePrepareReviewButton = this.page.locator('//button/span[text()="Save"]');
@@ -38,6 +40,7 @@ export class PrepareReviewAssetPage{
         await this.commentSectionInput.fill("Automation from PW text");
         if (await this.savePrepareReviewButton.isEnabled()) {
             await this.savePrepareReviewButton.click();
+            await this.confirmButton.waitFor();
             if (await this.confirmButton.isVisible()) {
                 await this.confirmButton.click();
                 await this.toasterMessage.verifyToasterMessage('Category');

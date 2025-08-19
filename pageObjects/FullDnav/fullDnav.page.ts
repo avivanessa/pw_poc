@@ -80,7 +80,32 @@ export default class FullDnavPage {
 
     async openFirstAudit(auditId) {
         await this.auditTable.verifyIsVisible();
+        await this.page.waitForTimeout(2000);
         await this.auditTable.clickCell(1, 1);
         expect(this.page.url()).toContain("/"+auditId+"/");
+    }
+
+    async verifyStatusFirstAudit(status) {
+        await this.auditTable.verifyIsVisible();
+        
+        const maxRetries = 5; // Set the maximum number of retries
+        let attempt = 0;
+        let success = false;
+        while (attempt <= maxRetries && !success) {
+            var currentStatus = await this.auditTable.getCellText(1, 4);
+            try {
+                console.log(`Status by Audit in the list is '${currentStatus}'`)
+                await expect(currentStatus).toContain(status);
+                success = true; // If no error, mark as successful
+            } catch (error) {
+                attempt++;
+                console.log(`Attempt ${attempt} Creating audit is in correct status, retrying...`);
+                await this.page.waitForTimeout(5000)
+                if (attempt === maxRetries) {
+                    throw new Error(`Failed - Created Audit is still in '${currentStatus}' after ${maxRetries} attempts.`);
+                }
+            }
+        }
+
     }
 }
