@@ -10,6 +10,7 @@ export default class ClientDataPage {
     itemsPendingComments: Locator
     clarificationText: Locator
     saveButton: Locator
+    spiner: Locator
     prepareReviewComponent: PrepareReviewComponent
 
     itemsTable: TableComponent
@@ -25,11 +26,13 @@ export default class ClientDataPage {
         this.itemsPendingComments = this.page.locator('span[aria-label="Message-Black"]')     
         this.clarificationText = this.page.locator('textarea[name="clarification"]')
         this.saveButton = this.page.locator('button:has(span:has-text("Save"))')
+        this.spiner = this.page.locator('div.ant-spin.ant-spin-spinning');
         this.itemsTable = new TableComponent(this.page);
         this.prepareReviewComponent = new PrepareReviewComponent(this.page);
     }
 
     async verifyPageIsOpen(auditName: string){
+        await this.waitForPage()
         await this.page.waitForLoadState('load');
         await expect(this.titlePage).toBeVisible();
         const pageTitle = await this.titlePage.innerText();
@@ -59,6 +62,7 @@ export default class ClientDataPage {
 
     /// Prepare Client Data phase
     async prepareClientData(){
+        await this.waitForPage()
         await this.verifyDataPreparationPhase();
         await this.ClientDataCard.clickCard();
         await this.verifyClientDataChecks()
@@ -66,12 +70,14 @@ export default class ClientDataPage {
         await this.page.goBack()
         await this.titlePage.waitFor({ state: 'visible' })
         await this.page.reload()
+        await this.waitForPage()
         await this.titlePage.waitFor({ state: 'visible' })
         await this.verifyClientDataInReview()
     }
 
     /// Review Client Data phase
     async reviewClientData(){
+        await this.waitForPage()
         await this.ClientDataCard.clickCard();
         await this.page.waitForTimeout(2000)
         await this.review()
@@ -88,7 +94,9 @@ export default class ClientDataPage {
                 console.log(`Attempt ${attempt} to validate Deloitte Data is turning Green failed, retrying...`);
                 // Optionally: wait a bit before retrying
                 await this.page.reload()
-                await this.page.waitForTimeout(10000)
+                await this.waitForPage()
+                await this.page.waitForLoadState('load', {timeout: 15000})
+                await this.page.waitForTimeout(5000)
                 if (attempt === maxRetries) {
                     throw new Error(`Failed to validate Deloitte Data turning green after ${maxRetries} attempts.`);
                 }
@@ -97,12 +105,13 @@ export default class ClientDataPage {
     }
 
     async verifyClientDataChecks(){
+        await this.waitForPage()
         await this.page.waitForTimeout(3000)
         await this.commentAllPendingItems()
     }
     
     async commentAllPendingItems() {
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.waitForPage()
         await this.itemsTable.verifyIsVisible();
         const items = await this.itemsPendingComments.elementHandles()
         console.log(`Number of items pending comments: ${items.length}`);
@@ -120,4 +129,10 @@ export default class ClientDataPage {
     async review(){
         await this.prepareReviewComponent.toggleOnReview()
     }
+
+    async waitForPage() {
+        await this.spiner.waitFor({state: 'hidden', timeout: 10000})
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
 }

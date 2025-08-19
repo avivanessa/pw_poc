@@ -2,9 +2,10 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class TableComponent {
   readonly page: Page;
-  readonly table: Locator;
+  table: Locator;
   readonly rows: Locator;
   readonly headers: Locator;
+  readonly spiner: Locator;
 
   /** Constructor to initialize the TableComponent with a Playwright Page.
     * @param {Page} page - The Playwright Page object.   
@@ -15,6 +16,7 @@ export class TableComponent {
     this.table = this.page.locator('.ant-table-container table');
     this.rows = this.table.locator('tbody > tr:not(.ant-table-measure-row)');
     this.headers = this.table.locator('thead.ant-table-thead th');
+    this.spiner = this.page.locator('div.ant-spin-container.ant-spin-blur')
   }
 
   /**
@@ -40,7 +42,6 @@ export class TableComponent {
    * @returns {string} - Text content of the specified cell
    */
   async getCellText(rowIdx: number, colIdx: number): Promise<string> {
-    await this.page.waitForLoadState('domcontentloaded');
     return await this.table.locator(`tbody tr`).nth(rowIdx)
       .locator('td').nth(colIdx).innerText();
   }
@@ -66,6 +67,7 @@ export class TableComponent {
 
   async verifyIsVisible() {
     expect (await this.table).toBeVisible();
+    await this.spiner.waitFor({state: 'hidden', timeout: 10000})
     expect (await this.table.locator(`tbody tr`));
     expect (await this.rows.nth(1)).toBeVisible();
     expect (await this.rows.count()).toBeGreaterThan(0);
