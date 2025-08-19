@@ -74,8 +74,7 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            await loginPage.navigateToLoginPage(userReviewPage);
-            
+            await loginPage.navigateToLoginPage(userReviewPage)
             // Login with Reviewer User
             //User 2 New Context and Page
             
@@ -517,6 +516,7 @@ let auditID: number
     })
 
     test('[Conclusion Phase] [Prepare] Verify User can prepare and signoff the Categorized Exceptions', 
+
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
