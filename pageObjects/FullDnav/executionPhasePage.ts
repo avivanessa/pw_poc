@@ -114,11 +114,11 @@ export default class ExecutionPhasePage {
             await this.prepareReviewOption.hover();
             await this.prepareReviewOption.click();
             await this.page.waitForTimeout(2000);
+            await this.allAssetLink.waitFor({state: 'visible'});
             await this.allAssetLink.click();
             await this.proceedButton.click();
         }
     }
-
 
     async gotoBulkReview() {
         await this.page.waitForTimeout(4000);
@@ -156,19 +156,6 @@ export default class ExecutionPhasePage {
 
     async reviewUniqueItems() {
         console.log("reviewUniqueItems");
-
-        /*const items = await this.uniquePositionIcons.elementHandles()
-        console.log(`Number of unique positions pending to review: ${items.length}`);
-
-        for (let index = 0; index < items.length; index++) {
-
-            const itemsUpdated = await this.uniquePositionIcons.elementHandles()
-            const iconButton = itemsUpdated[index]
-            await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
-            await iconButton.click()
-            await this.uniquePositionsPage.reviewUniqueItems();
-        }*/
-
         await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
         await this.uniquePositionIcons.first().click(); 
         await this.uniquePositionsPage.reviewUniqueItems();

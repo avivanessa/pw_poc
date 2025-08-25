@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import dotenv from 'dotenv'
 import LoginPage from '../../../pageObjects/General/login.page';
 import SideMenuPage from '../../../pageObjects/General/sideMenu.page';
-import FullDnavPage from '../../../pageObjects/FullDnav/FullDnav.page';
+import FullDnavPage from '../../../pageObjects/FullDnav/fullDnav.page';
 import ClientDataPhasePage from '../../../pageObjects/FullDnav/clientDataPhasePage';
 import PlanningPhasePage from '../../../pageObjects/FullDnav/planningPhasePage';
 import { ValuationRoutinePage } from '../../../pageObjects/FullDnav/execution/valuationRoutinePage';
@@ -26,7 +26,8 @@ let auditID: number
 
     const inicializePages = (page) => {
         // this.auditID 
-        //globalThis.auditIdSmoke = 9007;
+        //globalThis.auditIdSmoke = 1288;
+        globalThis.userEmail = process.env.USER_1;
         return{
             loginPage: new LoginPage(page),
             sideMenuPage: new SideMenuPage(page),
@@ -75,6 +76,7 @@ let auditID: number
             const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
             await loginPage.navigateToLoginPage(userReviewPage)
+            globalThis.userEmail = process.env.USER_2
             // Login with Reviewer User
             //User 2 New Context and Page
             
@@ -101,6 +103,7 @@ let auditID: number
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
+            globalThis.userEmail = process.env.USER_1
             await sideMenuPage.clickAuditDirectory()
             // Open the created audit
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
@@ -112,6 +115,7 @@ let auditID: number
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
             await loginPage.navigateToLoginPage(userReviewPage);
+            globalThis.userEmail = process.env.USER_2
             //User 2 New Context and Page
             
             await sideMenuPage.clickAuditDirectory()
@@ -509,6 +513,7 @@ let auditID: number
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
+            globalThis.userEmail = process.env.USER_1
             await sideMenuPage.clickAuditDirectory()
             // Open the created audit
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
@@ -531,6 +536,7 @@ let auditID: number
             const { loginPage, sideMenuPage, fullDnavPage, conclusionPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
             await loginPage.navigateToLoginPage(userReviewPage);
+            globalThis.userEmail = process.env.USER_2
             //User 2 New Context and Page
             
             await sideMenuPage.clickAuditDirectory()
@@ -555,6 +561,7 @@ let auditID: number
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, reportingPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
+            globalThis.userEmail = process.env.USER_1
             await sideMenuPage.clickAuditDirectory()
             // Open the created audit
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
@@ -566,6 +573,7 @@ let auditID: number
             const { loginPage, sideMenuPage, fullDnavPage, reportingPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
             await loginPage.navigateToLoginPage(userReviewPage);
+            globalThis.userEmail = process.env.USER_2
             //User 2 New Context and Page
             
             await sideMenuPage.clickAuditDirectory()

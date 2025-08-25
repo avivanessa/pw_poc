@@ -20,6 +20,7 @@ export class PrepareReviewComponent{
         await this.page.waitForTimeout(5000)
         console.log(await this.emailPreparedByLabel.innerText())
         await expect(await this.emailPreparedByLabel).toBeVisible()
+        await expect(await this.emailPreparedByLabel.innerText()).toContain(globalThis.userEmail)
     }
 
     async toggleOnReview(){
