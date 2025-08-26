@@ -47,6 +47,7 @@ export class CostRollforwardRoutinePage {
         const itemsUpdated = await this.pendingIcons.elementHandles()
             const iconButton = itemsUpdated[index] 
             await this.pendingIcons.first().waitFor({ state: 'visible' });
+            await iconButton.waitForElementState('visible');
             await iconButton.click()
             await this.prepareReviewOption.click()
             await this.prepareReviewAssetPage.commentSectionInput.waitFor({ state: 'visible' });

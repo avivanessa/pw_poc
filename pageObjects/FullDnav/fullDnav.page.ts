@@ -51,6 +51,7 @@ export default class FullDnavPage {
         await this.page.keyboard.press('Enter')
         console.log("To click on Create Audit button")
         await this.saveCreateAuditButton.click()
+        await this.successToastmsg.waitFor({state: 'visible', timeout: 15000})
         this.successMessage = await this.successToastmsg.innerText()      
         console.log(this.successMessage)        
     }

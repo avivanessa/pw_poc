@@ -9,6 +9,7 @@ export default class LoginPage {
     readonly acceptCookiesButton: Locator
     readonly accountName: Locator
     readonly logoutOption: Locator
+    readonly spiner: Locator
 
     constructor(page: Page){
         this.page = page
@@ -19,12 +20,14 @@ export default class LoginPage {
         this.acceptCookiesButton = this.page.locator('button[id="onetrust-accept-btn-handler"]')
         this.accountName = this.page.locator('span.ant-avatar-string').first()
         this.logoutOption = this.page.locator('//div[text()="Log Out"]')
+        this.spiner = this.page.locator('div.ant-spin.ant-spin-spinning')
     }
 
     async navigateToLoginPage(page: Page) {
         console.log("Loading DNAV Page")
         await page.goto('/')
         expect(page.url()).toContain(`${process.env.BASE_URL}`)
+        await this.waitForPage()
         await this.acceptCookies();
     }
 
@@ -36,13 +39,22 @@ export default class LoginPage {
     }
 
     async acceptCookies(){
-        await this.acceptCookiesButton.waitFor({ state: 'visible' })
-        await this.acceptCookiesButton.click()
+        try {
+            await this.acceptCookiesButton.waitFor({ state: 'visible', timeout: 15000 })
+            await this.acceptCookiesButton.click()
+        } catch (error) {
+            console.log('Accept cookies button not found, probably already accepted or not present.')   
+        }
     }
 
     async logout(){
         await this.accountName.click()
         await this.logoutOption.click()
         await this.page.close()
+    }
+
+    async waitForPage(){
+        await this.spiner.first().waitFor({state:'hidden'})
+        await this.page.waitForLoadState('load');
     }
 }

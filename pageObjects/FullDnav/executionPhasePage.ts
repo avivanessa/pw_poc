@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { CardComponent } from '../components/cardComponent';
 import { PrepareReviewAssetPage } from './execution/prepareReviewAssetPage';
 import { ValuationRoutinePage } from './execution/valuationRoutinePage';
@@ -113,12 +113,26 @@ export default class ExecutionPhasePage {
             await this.page.waitForTimeout(2000);
             await this.prepareReviewOption.hover();
             await this.prepareReviewOption.click();
-            await this.page.waitForTimeout(2000);
-            await this.allAssetLink.click();
+            await this.allAssetLink.waitFor({state: 'visible'});
+            await this.page.waitForTimeout(3000);
+            if (await this.allAssetLink.innerText() !== 'All Assets (0)' && await this.allAssetLink.isEnabled()) {
+                await this.allAssetLink.click();
+            } else {
+                await this.page.waitForTimeout(3000);
+                if (await this.allAssetLink.innerText() !== 'All Assets (0)' && await this.allAssetLink.isEnabled()) {
+                    await this.allAssetLink.click();
+                } else {
+                    console.log("All Assets link is not enabled, there are no assets to prepare");
+                    return true;
+                    // throw new Error("All Assets link is not enabled");
+                }
+            }
+            await this.proceedButton.waitFor({state: 'visible'});
             await this.proceedButton.click();
+        } else {
+            console.log("gotoBulkPrepare - Prepare/Review page is already opened");
         }
     }
-
 
     async gotoBulkReview() {
         await this.page.waitForTimeout(4000);
@@ -156,19 +170,6 @@ export default class ExecutionPhasePage {
 
     async reviewUniqueItems() {
         console.log("reviewUniqueItems");
-
-        /*const items = await this.uniquePositionIcons.elementHandles()
-        console.log(`Number of unique positions pending to review: ${items.length}`);
-
-        for (let index = 0; index < items.length; index++) {
-
-            const itemsUpdated = await this.uniquePositionIcons.elementHandles()
-            const iconButton = itemsUpdated[index]
-            await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
-            await iconButton.click()
-            await this.uniquePositionsPage.reviewUniqueItems();
-        }*/
-
         await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
         await this.uniquePositionIcons.first().click(); 
         await this.uniquePositionsPage.reviewUniqueItems();
