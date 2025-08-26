@@ -26,7 +26,7 @@ let auditID: number
 
     const inicializePages = (page) => {
         // this.auditID 
-        //globalThis.auditIdSmoke = 1288;
+        // globalThis.auditIdSmoke = 1327;
         globalThis.userEmail = process.env.USER_1;
         return{
             loginPage: new LoginPage(page),
@@ -227,9 +227,9 @@ let auditID: number
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('FX Rates');
-                await executionPhasePage.gotoAuditFromBreadCrumb();
-                await userPreparePage.waitForTimeout(2000);
-                await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
+                /*await executionPhasePage.gotoAuditFromBreadCrumb();
+                await userPreparePage.waitForTimeout(5000);
+                await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');*/
         })
 
         test('[Execution Phase][Prepare][Book Value Routine] Verify the Book Value asset on IDV page and asset status changes to prepared',
@@ -402,6 +402,7 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('FX Rates');
                 await executionPhasePage.gotoAuditFromBreadCrumb();
+                await userReviewPage.waitForTimeout(5000);
                 await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
         })
 

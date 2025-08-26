@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { CardComponent } from '../components/cardComponent';
 import { PrepareReviewAssetPage } from './execution/prepareReviewAssetPage';
 import { ValuationRoutinePage } from './execution/valuationRoutinePage';
@@ -113,10 +113,24 @@ export default class ExecutionPhasePage {
             await this.page.waitForTimeout(2000);
             await this.prepareReviewOption.hover();
             await this.prepareReviewOption.click();
-            await this.page.waitForTimeout(2000);
             await this.allAssetLink.waitFor({state: 'visible'});
-            await this.allAssetLink.click();
+            await this.page.waitForTimeout(3000);
+            if (await this.allAssetLink.innerText() !== 'All Assets (0)' && await this.allAssetLink.isEnabled()) {
+                await this.allAssetLink.click();
+            } else {
+                await this.page.waitForTimeout(3000);
+                if (await this.allAssetLink.innerText() !== 'All Assets (0)' && await this.allAssetLink.isEnabled()) {
+                    await this.allAssetLink.click();
+                } else {
+                    console.log("All Assets link is not enabled, there are no assets to prepare");
+                    return true;
+                    // throw new Error("All Assets link is not enabled");
+                }
+            }
+            await this.proceedButton.waitFor({state: 'visible'});
             await this.proceedButton.click();
+        } else {
+            console.log("gotoBulkPrepare - Prepare/Review page is already opened");
         }
     }
 

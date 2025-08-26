@@ -67,10 +67,10 @@ export default class ReportingPhasePage {
             this.popupConfirmation = new PopupComponent(this.page, 'Generate Data Extract')
             await this.popupConfirmation.verifyPopupVisible()
             await this.popupConfirmation.clickSubmit('Generate Data Extract')
-            this.dataExtractTable = new TableComponent(this.page);
             await this.alertWarningMessage.filter({ hasText: 'Data extractions process is in progress'}).waitFor({state: 'hidden'})
             await this.alertSuccessMessage.filter({ hasText: 'Data extractions process is finished. Audit is unlocked'}).waitFor({state: 'visible'})
-            await this.spinerInstedTable.waitFor({state:'hidden'})
+            this.dataExtractTable = new TableComponent(this.page);
+            await this.spinerInstedTable.first().waitFor({state:'hidden'})
             await this.dataExtractTable.verifyIsVisible();
             await console.log('Data extractions process is finished. Audit is unlocked')
         })
