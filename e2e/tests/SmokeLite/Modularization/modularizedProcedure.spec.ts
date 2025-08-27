@@ -2,8 +2,9 @@ import { test, expect } from '@playwright/test'
 import LoginPage from '../../../pageObjects/General/login.page'
 import SideMenuPage from '../../../pageObjects/General/sideMenu.page'
 import ModularPage from '../../../pageObjects/Modular/Modular.page'
-import dotenv from 'dotenv'
-dotenv.config()
+/*import dotenv from 'dotenv'
+dotenv.config()*/
+import '../../../../configs/env-config';
 
 test.describe('Valuation and Reconciliation > Home Page', () => {
     test.use({ storageState: './configs/users_auth/user_prepare_auth.json'})

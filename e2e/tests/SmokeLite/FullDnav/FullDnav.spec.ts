@@ -1,14 +1,13 @@
 import { test } from '../../../fixtures/users.fixture';
 import { expect, BrowserContext, Page } from '@playwright/test';
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import LoginPage from '../../../pageObjects/General/login.page';
 import SideMenuPage from '../../../pageObjects/General/sideMenu.page';
 import FullDnavPage from '../../../pageObjects/FullDnav/FullDnav.page';
 import ClientDataPhasePage from '../../../pageObjects/FullDnav/clientDataPhasePage';
 import PlanningPhasePage from '../../../pageObjects/FullDnav/planningPhasePage';
 import { ValuationRoutinePage } from '../../../pageObjects/FullDnav/execution/valuationRoutinePage';
-
-dotenv.config()
+import '../../../../configs/env-config';
 
 test.describe.serial('Full DNAV - Validate 5 Phases', () => {
 
