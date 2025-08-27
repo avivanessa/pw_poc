@@ -1,18 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
-dotenv.config()
+import './configs/env-config';
+// dotenv.config()
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  globalSetup: require.resolve('./global.setup.ts'),// './auth.setup.ts',
-  testDir: './tests',
+  globalSetup: require.resolve('./configs/global.setup.ts'),// './auth.setup.ts',
+  testDir: './e2e/tests',
   timeout: 150 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -38,10 +39,24 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'smokeLite',
+      testDir: './e2e/tests/SmokeLite',  // Path of smoke lite suite
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+    },
+    {
+      name: 'smokeIntegration',
+      testDir: './e2e/tests/SmokeIntegration',  // Path of smoke integration suite
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+    },
+    /*{
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'] },
-    },
+    },*/
     /*
     {
       name: 'firefox',

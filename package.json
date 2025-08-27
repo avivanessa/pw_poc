@@ -2,7 +2,14 @@
   "name": "dnav",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:smokeLite": "npx playwright test --project=smokeLite",
+    "test:smokeIntegration": "npx playwright test --project=smokeIntegration",
+    "test:dax": "ENV_TYPE=d ENV_VERSION=ax npx playwright test",
+    "test:dnx": "ENV_TYPE=d ENV_VERSION=nx npx playwright test",
+    "test:qax": "ENV_TYPE=q ENV_VERSION=ax npx playwright test",
+    "test:qnx": "ENV_TYPE=q ENV_VERSION=nx npx playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -15,5 +22,5 @@
   },
   "dependencies": {
     "playwright": "^1.49.0"
-  }
+  }  
 }

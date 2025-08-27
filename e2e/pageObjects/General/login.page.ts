@@ -22,7 +22,7 @@ export default class LoginPage {
     }
 
     async navigateToLoginPage(page: Page) {
-        console.log("process.env.baseurl")
+        // console.log("process.env.baseurl")
         await page.goto('/')
         expect(page.url()).toContain(`${process.env.BASE_URL}`)
         await this.acceptCookies();

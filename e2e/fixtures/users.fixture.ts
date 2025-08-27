@@ -9,7 +9,7 @@ type UsersFixture = {
 
 export const test = base.extend<UsersFixture>({
   userPrepareContext: async ({ browser }, use) => {
-    const context = await browser.newContext({ storageState: './user1_auth.json' });
+    const context = await browser.newContext({ storageState: './configs/users_auth/user_prepare_auth.json' });
     await use(context);
     await context.close();
   },
@@ -19,7 +19,7 @@ export const test = base.extend<UsersFixture>({
     await page.close();
   },
   userReviewContext: async ({ browser }, use) => {
-    const context = await browser.newContext({ storageState: './user2_auth.json' });
+    const context = await browser.newContext({ storageState: './configs/users_auth/user_review_auth.json' });
     await use(context);
     await context.close();
   },

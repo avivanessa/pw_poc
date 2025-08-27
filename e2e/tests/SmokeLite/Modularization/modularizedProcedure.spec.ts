@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 test.describe('Valuation and Reconciliation > Home Page', () => {
-    test.use({ storageState: './user1_auth.json'})
+    test.use({ storageState: './configs/users_auth/user_prepare_auth.json'})
 
     test.beforeEach(async ({ page }) => {
         await page.goto(`${process.env.BASE_URL}`)

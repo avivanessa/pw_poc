@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test'
-import { randomFutureDayCurrentMonth } from '../../utils/functions'
+import { randomFutureDayCurrentMonth } from '../../../utils/functions'
 
 export default class ModularPage{
     readonly page: Page
