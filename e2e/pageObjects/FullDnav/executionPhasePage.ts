@@ -157,18 +157,6 @@ export default class ExecutionPhasePage {
     async reviewUniqueItems() {
         console.log("reviewUniqueItems");
 
-        /*const items = await this.uniquePositionIcons.elementHandles()
-        console.log(`Number of unique positions pending to review: ${items.length}`);
-
-        for (let index = 0; index < items.length; index++) {
-
-            const itemsUpdated = await this.uniquePositionIcons.elementHandles()
-            const iconButton = itemsUpdated[index]
-            await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
-            await iconButton.click()
-            await this.uniquePositionsPage.reviewUniqueItems();
-        }*/
-
         await this.uniquePositionIcons.first().waitFor({ state: 'visible' });
         await this.uniquePositionIcons.first().click(); 
         await this.uniquePositionsPage.reviewUniqueItems();

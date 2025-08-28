@@ -7,9 +7,5 @@ const envVersion = process.env.ENV_VERSION || 'ax'; // version of environment, e
 
 // Build the name of the environment path
 const envFile = `./envs/.env.${envType}${envVersion}`;
-// const envFile = `.env`;
-
-console.log(`Loading environment configuration from: ${envFile}`);
 
 dotenv.config({ path: path.resolve(__dirname, envFile) });
-// dotenv.config({ path: envFile });

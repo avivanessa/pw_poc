@@ -10,5 +10,5 @@ import { users } from '../test-data/usersClass';
  * @returns A user object if found, otherwise undefined.
  */
 export function findUser({ role, username }: { role?: string; username?: string }): User | undefined {
-  return users.find(user => (role && user.role === role) || (username && user.username === username));
+  return users.find(user => (role && user.role === role) && (username && user.username === username));
 }

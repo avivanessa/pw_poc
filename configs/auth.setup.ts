@@ -15,7 +15,6 @@ export async function authSetup(){
         const page = await context.newPage()
         const user = findUser({ role: 'Engagement Manager', username: 'AuditTest10019@deloitte.com'}); 
 
-        console.log(`Environment ${process.env.BASE_URL}`)
         if (!user) 
             throw new Error('User not found');
 
@@ -41,6 +40,7 @@ export async function authSetup(){
         await page.goto(`${process.env.BASE_URL}`)
         expect(page.url()).toContain('login.microsoftonline.com');
 
+        console.log(`Logging in with user: ${user.username} and password: ${user.password}`);
         await loginPage.login(user.username, user.password)
         await page.context().storageState({ path: userReviewAuthFile });
     }

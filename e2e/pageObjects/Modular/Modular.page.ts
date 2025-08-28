@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test'
-import { randomFutureDayCurrentMonth } from '../../../utils/functions'
+import { randomFutureDayCurrentMonth } from '../../utils/functions'
 
 export default class ModularPage{
     readonly page: Page
@@ -50,8 +50,8 @@ export default class ModularPage{
     }
 
     async addProject(folderName: string, projectName: string ){
-        const clientDataFilePath = './test-data/DNAV_Client_Data_Template.xlsm'
-        const counterPartyFilePath = './test-data/DNAV_CounterParty_Data_Template.xlsm'
+        const clientDataFilePath = '../../test-data/DNAV_Client_Data_Template.xlsm'
+        const counterPartyFilePath = '../../test-data/DNAV_CounterParty_Data_Template.xlsm'
         //const opinionDate = randomFutureDayCurrentMonth()
 
         await this.actionsButton.click() 

@@ -21,7 +21,7 @@ let auditID: number
 
     const inicializePages = (page) => {
         // this.auditID 
-        globalThis.auditIdSmoke = 8999;
+        // globalThis.auditIdSmoke = 8999;
         return{
             loginPage: new LoginPage(page),
             sideMenuPage: new SideMenuPage(page),
