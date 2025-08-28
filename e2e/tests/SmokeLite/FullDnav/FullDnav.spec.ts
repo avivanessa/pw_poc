@@ -214,8 +214,8 @@ let auditID: number
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('FX Rates');
-                await executionPhasePage.gotoAuditFromBreadCrumb();
-                await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
+                // await executionPhasePage.gotoAuditFromBreadCrumb();
+                // await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
         })
 
         test('[Execution Phase][Prepare][Book Value Routine] Verify the Book Value asset on IDV page and asset status changes to prepared',

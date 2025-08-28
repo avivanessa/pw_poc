@@ -140,6 +140,7 @@ export default class ExecutionPhasePage {
     async completeBulkPrepare() {
         console.log("completeBulkPrepare");
         await this.bulkCommentsForPrepare();
+        
         await this.gotoBulkPrepare();
         await this.prepareReviewAssetPage.enableTogglePreparerExecution();
     }

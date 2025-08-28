@@ -20,10 +20,10 @@ export class PrepareReviewAssetPage{
         this.emailReviewerByLabel = this.page.locator('div:has-text("Reviewed by") + div').nth(0)
         
         this.exceptionCategoryDropdown = new DropdownComponent(this.page, 'commentCategory');
-        this.prepareToggle = page.locator('span.ant-switch-inner').nth(0); // this.page.locator('(//span[@class="ant-switch-inner"])[1]');
+        this.prepareToggle = page.locator('span.ant-switch-inner').nth(0); 
         this.confirmButton = this.page.getByRole('button', { name: 'Confirm' });
 
-        this.commentSectionInput =  this.page.locator('//textarea[@name="commentText"]'); // page.getByRole('textbox', { name: 'commentText' });
+        this.commentSectionInput =  this.page.locator('//textarea[@name="commentText"]');
         this.savePrepareReviewButton = this.page.locator('//button/span[text()="Save"]');
         this.confirmButton = this.page.getByRole('button', { name: 'Confirm' });
         
@@ -38,10 +38,10 @@ export class PrepareReviewAssetPage{
         await this.commentSectionInput.fill("Automation from PW text");
         if (await this.savePrepareReviewButton.isEnabled()) {
             await this.savePrepareReviewButton.click();
+            await this.confirmButton.waitFor({ state: 'visible' });
             if (await this.confirmButton.isVisible()) {
                 await this.confirmButton.click();
                 await this.toasterMessage.verifyToasterMessage('Category');
-                // await this.savePrepareReviewButton.waitFor({ state: 'hidden' });
             }
         }
     }

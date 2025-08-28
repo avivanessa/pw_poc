@@ -29,7 +29,14 @@ export default class SideMenuPage{
     }
 
     async clickAuditDirectory(){
+        await this.fullDnav.waitFor({ state: 'visible' })
         await this.fullDnav.click()
+        if (await this.auditDirectorySubMenu.isVisible()){
+            console.log('Audit Directory submenu is visible')
+        } else {
+            console.log('Audit Directory submenu is NOT visible, trying to click Full DNAV again')
+            await this.fullDnav.click()
+        }
         await this.auditDirectorySubMenu.waitFor({ state: 'visible' })
         await this.auditDirectorySubMenu.click()
         await this.auditDirectoryTitle.waitFor({ state: 'visible' })
