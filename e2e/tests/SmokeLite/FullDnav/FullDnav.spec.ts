@@ -28,7 +28,7 @@ test.describe.serial('Full DNAV - Validate 5 Phases', () => {
             await loginPage.navigateToLoginPage(userPreparePage);
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
-                `${process.env.DATA_IMPORT_IDENTIFIER}`,'12/15/2025')
+                `${process.env.DATA_IMPORT_IDENTIFIER}`,`${process.env.VALUATION_DATE}`)
             globalThis.auditIdSmoke = await fullDnavPage.verifyAuditCreated(`${process.env.CLIENT_NAME}`)
             // TC20 - Verify client and deloitte data are in preparation phase
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
