@@ -32,6 +32,7 @@ export class PrepareReviewAssetPage{
         
     }
 
+    // add comments and save Prepare/Review
     async addCommentsAndSave() {
         console.log("addCommentsAndSave - To add comments and save Prepare/Review");
         await this.exceptionCategoryDropdown.selectOption('Finding');
@@ -58,6 +59,10 @@ export class PrepareReviewAssetPage{
         await this.toasterMessage.verifyToasterMessage('Prepare signed off');
     }
 
+    /*
+    This method is used to enable the toggle for Reviewer Execution into the Prepare/Review popup.  
+    It waits for the toggle to be visible, clicks it, and confirms the action.
+    */
     async enableToggleReviewExecution() {
         await this.reviewerToggle.waitFor({ state: 'visible' });
         await this.reviewerToggle.click();
@@ -66,6 +71,7 @@ export class PrepareReviewAssetPage{
         await this.toasterMessage.verifyToasterMessage('Review signed off');
     }
 
+    // Close Prepare / Review popup
     async close() {
         console.log("Closing Prepare / Review popup");
         await this.closeIcon.click();

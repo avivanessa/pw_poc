@@ -20,22 +20,26 @@ export class CostRollforwardRoutinePage {
         this.prepareReviewOption = this.page.getByText('Prepare/Review');
     }
 
+    // Verify Cost Rollforward Tabs
     async verifyCostRollforwardTabs(){
         await expect(await this.investmentTab.innerText()).toEqual('Investments/Exchange')
         await expect(await this.derivativeTab.innerText()).toEqual('Derivatives')
     }
 
+    /// Navigate to Investments/Exchange tab
     async gotoTabInvestments(){
         await expect(await this.investmentTab).toBeVisible()
         await this.investmentTab.click()
     }
 
+    /// Navigate to Derivatives tab
     async gotoTabDerivatives(){
         console.log('Open Derivatives tab');
         await expect(await this.derivativeTab).toBeVisible()
         await this.derivativeTab.click()
     }
 
+    // Prepare all items
     async prepareAllItems(){
         await this.page.waitForLoadState('domcontentloaded');
         await this.pendingIcons.first().waitFor({ state: 'visible' });
@@ -70,7 +74,7 @@ export class CostRollforwardRoutinePage {
         }
     }
 
-
+    // Review all items
     async reviewAllItems(){
         await this.page.waitForLoadState('domcontentloaded');
         await this.pendingIcons.first().waitFor({ state: 'visible' });

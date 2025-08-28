@@ -11,7 +11,6 @@ export default class ClientDataPage {
     clarificationText: Locator
     saveButton: Locator
     prepareReviewComponent: PrepareReviewComponent
-
     itemsTable: TableComponent
     ClientDataCard: CardComponent
     DeloitteDataCard: CardComponent
@@ -96,11 +95,13 @@ export default class ClientDataPage {
         }
     }
 
+    /// Verify all items in Client Data card and add comments to pending items
     async verifyClientDataChecks(){
         await this.page.waitForTimeout(3000)
         await this.commentAllPendingItems()
     }
     
+    /// Add comments to all items pending comments
     async commentAllPendingItems() {
         await this.page.waitForLoadState('domcontentloaded');
         await this.itemsTable.verifyIsVisible();
@@ -113,10 +114,12 @@ export default class ClientDataPage {
         }
     }
 
+    /// Complete Prepare for Client Data card
     async prepare(){
         await this.prepareReviewComponent.toggleOnPrepareBy()
     }
 
+    /// Complete Review for Client Data card
     async review(){
         await this.prepareReviewComponent.toggleOnReview()
     }

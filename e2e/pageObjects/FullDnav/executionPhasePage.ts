@@ -11,7 +11,6 @@ import { UniquePositionsPage } from './execution/uniquePositionsPage';
 dotenv.config()
 
 export default class ExecutionPhasePage {
-
     private readonly page: Page;
     executionCard: CardComponent;
     backToAssetList: Locator;
@@ -83,6 +82,7 @@ export default class ExecutionPhasePage {
         console.log(`The routine ${routine} is in ${expectedStatus} status`);
     }
 
+    // Verify IDV content sections in an asset
     async verifyAssets(routine) {
         await this.openRoutine(routine);
         const asset1 = await this.page.getByLabel('row-button').first();
@@ -99,11 +99,13 @@ export default class ExecutionPhasePage {
         }
     }
 
+    // Add comments in bulk for Prepare
     async bulkCommentsForPrepare() {
         await this.gotoBulkPrepare();
         await this.prepareReviewAssetPage.addCommentsAndSave()
     }
 
+    // Go to Bulk Prepare from Actions dropdown
     async gotoBulkPrepare() {
         await this.page.waitForTimeout(4000);
         if (!await this.prepareReviewAssetPage.commentSectionInput.isVisible()) {
@@ -119,7 +121,7 @@ export default class ExecutionPhasePage {
         }
     }
 
-
+    // Go to Bulk Review from Actions dropdown
     async gotoBulkReview() {
         await this.page.waitForTimeout(4000);
         if (!await this.prepareReviewAssetPage.commentSectionInput.isVisible()) {
@@ -132,11 +134,11 @@ export default class ExecutionPhasePage {
             await this.page.waitForTimeout(2000);
             await this.allAssetLink.click();
             await this.reviewExceptionsRadiobutton.click();
-            //await this.proceduresDropdown.selectValue('Review');
             await this.proceedButton.click();
         }
     }
 
+    // Complete Bulk Prepare
     async completeBulkPrepare() {
         console.log("completeBulkPrepare");
         await this.bulkCommentsForPrepare();
@@ -145,16 +147,19 @@ export default class ExecutionPhasePage {
         await this.prepareReviewAssetPage.enableTogglePreparerExecution();
     }
 
+    /// Navigate back to Audit from breadcrumb
     async gotoAuditFromBreadCrumb(){
         await this.breadCrumbAudit.click();
     }
 
+    // Complete Bulk Review
     async completeBulkReview() {
         console.log("completeBulkReview");
         await this.gotoBulkReview();
         await this.prepareReviewAssetPage.enableToggleReviewExecution();
     }
 
+    // Review Unique Items
     async reviewUniqueItems() {
         console.log("reviewUniqueItems");
 

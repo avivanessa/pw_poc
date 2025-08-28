@@ -29,7 +29,6 @@ export default class ClientDataPage {
     /// Verify Materiality and Portfolio cards are in preparation phase
     async verifyPlanningPhaseInPreparation(){
         console.log("To verify Materiality and Portfolio cards are in preparation phase")
-        //await this.verifyPageIsOpen('Client Data');
         await this.MaterialityCard.verifyCardStatus('In Preparation');
         await this.PortfolioCard.verifyCardStatus('In Preparation');  
     }
@@ -47,6 +46,7 @@ export default class ClientDataPage {
         await this.PortfolioCard.verifyCardStatus('Reviewed');
     }
 
+    /// Complete Prepare and Review for Materiality and Portfolio cards
     async prepare(){
         await this.MaterialityCard.clickCard()
         await this.prepareReviewComponent.toggleOnPrepareBy()
@@ -61,6 +61,7 @@ export default class ClientDataPage {
         await this.verifyPlanningInReview()
     }
 
+    /// Complete Review for Materiality and Portfolio cards
     async review(){
         await this.MaterialityCard.clickCard()
         await this.prepareReviewComponent.toggleOnReview()

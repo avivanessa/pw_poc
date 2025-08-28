@@ -31,18 +31,19 @@ export default class FullDnavPage {
         this.dataImportIdentifierDropdown = new DropdownComponent(this.page, 'dataImportIdentifier')
         this.nextButton = this.page.getByRole('button', { name: 'Next' })
         this.opinionDateInput = this.page.locator('input[name="opinionDate"]')
-        this.saveCreateAuditButton = this.page.getByRole('button', { name: 'Create Audit' }).nth(1) // this.page.locator('(//button/span[text()="Create Audit"])[2]') // this.page.getByRole('button', { name: 'Create Audit' });
+        this.saveCreateAuditButton = this.page.getByRole('button', { name: 'Create Audit' }).nth(1)
         this.successToastmsg = this.page.locator('div.ant-notification-notice-message')
         this.auditTable = new TableComponent(this.page);
         this.executionPhasePage = new ExecutionPhasePage(this.page);
     }
 
-    async createNewAudit(cname:string,year:any,engId:any,dataimportid:any,date:any){
+    /// Create a new Audit with provided details
+    async createNewAudit(clienteName:string,fiscalYear:any,engId:any,dataImportId:any,date:any){
         await this.createAuditButton.click()
-        await this.clientNameDropdown.selectValue(cname)
-        await this.fiscalYearDropdown.selectValue(year)
+        await this.clientNameDropdown.selectValue(clienteName)
+        await this.fiscalYearDropdown.selectValue(fiscalYear)
         await this.engagementIdDropdown.selectValue(engId)
-        await this.dataImportIdentifierDropdown.selectValue(dataimportid)
+        await this.dataImportIdentifierDropdown.selectValue(dataImportId)
         await this.page.keyboard.press('Enter');
         await expect(this.nextButton).toBeEnabled()
         await this.nextButton.click()
@@ -55,6 +56,7 @@ export default class FullDnavPage {
         console.log(this.successMessage)        
     }
 
+    /// Verify Audit is created and visible in the table
     async verifyAuditCreated(clientName:any){
         // Get Audit ID from success message
         console.log(this.successMessage)
@@ -70,7 +72,6 @@ export default class FullDnavPage {
         console.log("Row Count: " + rows );
         expect(rows).toBeGreaterThan(0);
 
-
         // Verify Audit ID in Audit Table
         const firstCellText = await this.auditTable.getCellText(1, 1);
         console.log(firstCellText)
@@ -78,6 +79,7 @@ export default class FullDnavPage {
         return this.auditIdCreated;
     }
 
+    /// Open the first audit in the table
     async openFirstAudit(auditId) {
         await this.auditTable.verifyIsVisible();
         await this.auditTable.clickCell(1, 1);

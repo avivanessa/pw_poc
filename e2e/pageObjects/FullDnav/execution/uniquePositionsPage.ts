@@ -18,29 +18,34 @@ export class UniquePositionsPage{
         this.toasterMessage = new ToasterMessageComponent(this.page);
     }
 
+    // Go back to Asset List
     async clickBackToAssetList() {
         console.log("Clicking on Back to Asset List");
         await this.backToAssetList.click();
         await expect(this.page.getByText('Assets')).toBeVisible();
     }
 
+    // Click on Actions button
     async clickActionsButton() {
         console.log("Clicking on Actions button");
         await this.actionsButton.click();
     }
 
+    // Click on Mark as Sign off option
     async clickMarkAsSignOff() {
         console.log("Clicking on Mark as Sign off option");
         await this.markAsSignOffOption.click();
         await expect(this.page.getByText('Mark as Sign off')).toBeVisible();
     }
 
+    // Click on All Assets link
     async clickAllAssetsLink() {
         console.log("Clicking on All Assets link");
         await this.allAssetLink.click();
         await expect(this.page.getByText('All Assets')).toBeVisible();
     }
 
+    // Review Unique Items
     async reviewUniqueItems() {
         console.log("Reviewing unique items");
         await this.clickActionsButton();

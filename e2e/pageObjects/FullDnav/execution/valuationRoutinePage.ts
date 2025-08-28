@@ -11,11 +11,11 @@ export class ValuationRoutinePage {
         this.page = page;
         this.investmentTab = this.page.locator('#valuationTabs-tab-investments')
         this.derivativeTab = this.page.locator('#valuationTabs-tab-derivatives')
-        this.alertDescription = this.page.locator('//div[@class="ant-alert-description"]')
+        this.alertDescription = this.page.locator('div.ant-alert-description')
     }
 
+    /// Verify Valuation Tabs and Alert message
     async verifyValuationTabs(){
-        // await this.page.locator('//span[@class="ant-page-header-heading-title" and @title="'+pro+'"]').click()
         await expect(await this.investmentTab.innerText()).toEqual('Investments and Exchange Traded Position')
         await expect(await this.derivativeTab.innerText()).toEqual('OTC Derivatives')
         await expect(this.alertDescription).toBeVisible()
@@ -23,6 +23,7 @@ export class ValuationRoutinePage {
         await expect(this.alertDescription).toBeVisible()
     }
 
+    /// Navigate to Investment and Exchange Traded Position tab
     async gotoTabOtcDerivatives(){
         await expect(await this.derivativeTab).toBeVisible()
         await this.derivativeTab.click()

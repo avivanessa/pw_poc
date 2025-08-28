@@ -10,6 +10,10 @@ export default class SideMenuComponent{
     readonly submenu_statusMonitor: Locator
     readonly submenu_procedureView: Locator
 
+    /**
+     * This component is for manage Menu and SubMenu options
+     * @param page - instance of Playwright Page
+     */
     constructor(page: Page){
         this.page = page
         this.dashboard = this.page.locator('a[href="/US/dashboard"]')

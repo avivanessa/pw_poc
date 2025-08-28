@@ -1,6 +1,4 @@
 import { test } from '../../../fixtures/users.fixture';
-import { expect, BrowserContext, Page } from '@playwright/test';
-// import dotenv from 'dotenv'
 import LoginPage from '../../../pageObjects/General/login.page';
 import SideMenuPage from '../../../pageObjects/General/sideMenu.page';
 import FullDnavPage from '../../../pageObjects/FullDnav/FullDnav.page';
@@ -11,17 +9,8 @@ import '../../../../configs/env-config';
 
 test.describe.serial('Full DNAV - Validate 5 Phases', () => {
 
-let loginPage: LoginPage
-let sideMenuPage: SideMenuPage
-let fullDnavPage: FullDnavPage
-let clientDataPhasePage: ClientDataPhasePage
-let planningPhasePage: PlanningPhasePage
-let valuationRoutinePage: ValuationRoutinePage
-let auditID: number
-
     const inicializePages = (page) => {
-        // this.auditID 
-        // globalThis.auditIdSmoke = 8999;
+        // globalThis.auditIdSmoke = 8999; // for debug purposes
         return{
             loginPage: new LoginPage(page),
             sideMenuPage: new SideMenuPage(page),
@@ -37,7 +26,6 @@ let auditID: number
         async ({userPreparePage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userPreparePage)
             await loginPage.navigateToLoginPage(userPreparePage);
-            
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.createNewAudit(`${process.env.CLIENT_NAME}`,`${process.env.FISCAL_YEAR}`,`${process.env.ENGAGEMENT_ID}`,
                 `${process.env.DATA_IMPORT_IDENTIFIER}`,'12/15/2025')
@@ -64,10 +52,7 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, clientDataPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
-            
-            // Login with Reviewer User
-            //User 2 New Context and Page
+            await loginPage.navigateToLoginPage(userReviewPage);
             
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
@@ -102,8 +87,7 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
-            //User 2 New Context and Page
+            await loginPage.navigateToLoginPage(userReviewPage);
             
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
@@ -137,7 +121,6 @@ let auditID: number
 
 
     test.describe('[Execution Phase] [Prepare] All phases', () => {
-        // test.use({ pararel})
         test('TC44 [Execution Phase] Verify the IDV page of assets- Valuation Phase - Investments and Exchange Traded Positions ', 
             async ({userPreparePage}) => {
                 const { loginPage, sideMenuPage, fullDnavPage, executionPhasePage } = inicializePages(userPreparePage)
@@ -214,8 +197,6 @@ let auditID: number
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('FX Rates');
-                // await executionPhasePage.gotoAuditFromBreadCrumb();
-                // await executionPhasePage.verifyRoutineStatus('FX Rates', 'Reviewed');
         })
 
         test('[Execution Phase][Prepare][Book Value Routine] Verify the Book Value asset on IDV page and asset status changes to prepared',
@@ -227,7 +208,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Book Value');
                 await executionPhasePage.completeBulkPrepare();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Book Value', 'In Review');
         })
@@ -241,7 +221,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Quantity Rollforward');
                 await executionPhasePage.completeBulkPrepare();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Quantity Rollforward', 'In Review');
         })
@@ -298,12 +277,10 @@ let auditID: number
                 const { loginPage, sideMenuPage, fullDnavPage, executionPhasePage } = inicializePages(userPreparePage)
                 await loginPage.navigateToLoginPage(userPreparePage);
                 // Open the created audit
-
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Income');
                 await executionPhasePage.completeBulkPrepare();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Income', 'In Review');
         })
@@ -332,7 +309,6 @@ let auditID: number
                 await executionPhasePage.completeBulkReview();
                 await executionPhasePage.valuationRoutinePage.gotoTabOtcDerivatives();
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Valuation', 'Reviewed');
         })
@@ -346,7 +322,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Classification');
                 await executionPhasePage.completeBulkReview();
-
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Classification', 'Reviewed');
         })
@@ -400,7 +375,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Book Value');
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Book Value', 'Reviewed');
         })
@@ -414,7 +388,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Quantity Rollforward');
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Quantity Rollforward', 'Reviewed');
         })
@@ -430,7 +403,6 @@ let auditID: number
                 await executionPhasePage.costRollforwardRoutinePage.reviewAllItems();
                 await executionPhasePage.costRollforwardRoutinePage.gotoTabDerivatives();
                 await executionPhasePage.costRollforwardRoutinePage.reviewAllItems();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Cost Rollforward', 'Reviewed');
         })
@@ -444,7 +416,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Realized G/L');
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Realized G/L', 'Reviewed');
         })
@@ -458,7 +429,6 @@ let auditID: number
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Unrealized P/L');
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Unrealized P/L', 'Reviewed');
         })
@@ -468,12 +438,10 @@ let auditID: number
                 const { loginPage, sideMenuPage, fullDnavPage, executionPhasePage } = inicializePages(userReviewPage)
                 await loginPage.navigateToLoginPage(userReviewPage);
                 // Open the created audit
-
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.openRoutine('Income');
                 await executionPhasePage.completeBulkReview();
-                
                 await executionPhasePage.gotoAuditFromBreadCrumb();
                 await executionPhasePage.verifyRoutineStatus('Income', 'Reviewed');
         })
@@ -483,7 +451,6 @@ let auditID: number
                 const { loginPage, sideMenuPage, fullDnavPage, executionPhasePage } = inicializePages(userReviewPage)
                 await loginPage.navigateToLoginPage(userReviewPage);
                 // Open the created audit
-
                 await sideMenuPage.clickAuditDirectory()
                 await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
                 await executionPhasePage.verifyRoutineStatus('Income', 'Reviewed');
@@ -519,9 +486,8 @@ let auditID: number
         async ({userReviewPage}) => {
             const { loginPage, sideMenuPage, fullDnavPage, planningPhasePage } = inicializePages(userReviewPage)
             // Login with Reviewer User
-            loginPage.navigateToLoginPage(userReviewPage);
+            await loginPage.navigateToLoginPage(userReviewPage);
             //User 2 New Context and Page
-            
             await sideMenuPage.clickAuditDirectory()
             await fullDnavPage.openFirstAudit(globalThis.auditIdSmoke)
             await planningPhasePage.review()    
